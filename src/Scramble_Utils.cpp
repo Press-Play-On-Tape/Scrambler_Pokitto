@@ -72,3 +72,21 @@ void Game::playSoundEffect(SoundEffect soundEffect) {
     #endif
 
 }    
+
+
+
+bool Game::collide(Rect rect1, Rect rect2) {
+
+   return !(rect2.x                >= rect1.x + rect1.width  ||
+            rect2.x + rect2.width  <= rect1.x                ||
+            rect2.y                >= rect1.y + rect1.height ||
+            rect2.y + rect2.height <= rect1.y);
+
+ }
+
+bool Game::collide(Point point, Rect rect) {
+
+   return ((point.getX() >= rect.x) && (point.getX() < rect.x + rect.width) &&
+       (point.getY() >= rect.y) && (point.getY() < rect.y + rect.height));
+
+}

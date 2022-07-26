@@ -20,16 +20,30 @@ class Game {
 
         SplashScreenVariables splashScreenVariables;
         GameState gameState = GameState::Splash;
-        // GameState nextGameState;
-        // GamePlay gamePlay;
         GameCookie *cookie;
 
         File mainThemeFile;      
 
-        Scenery scenery;
-
         Particles particles;
         Shockwaves shockwaves;
+        Player player;
+
+
+
+
+        int8_t scenery_Top_Inc;
+        uint8_t scenery_Top_Counter;
+        int8_t scenery_Bottom_Inc;
+        uint8_t scenery_Bottom_Counter;
+        int16_t scenery_Top[220];
+        uint8_t scenery_Bot[220];
+
+        int16_t viewY = 980;
+        uint16_t distTravelled = 0;
+
+        Enemies enemies;
+
+
 
 
     public:
@@ -45,9 +59,24 @@ class Game {
         void game_Init();
         void game();
 
+
+        bool collide(Rect rect1, Rect rect2);
+        bool collide(Point point, Rect rect);
+
+
+        // Music and sounds ..
+
         void playTheme(Themes theme);
         void muteTheme();
         void playSoundEffect(SoundEffect soundEffect);
+
+
+        // Scenery ..
+
+        void launchEnemy(EnemyType enemyType, uint16_t x, int16_t y);
+        void createScenery(uint8_t x);
+        void moveScenery(uint8_t x);
+        void resetScenery();
 
 
         // Explosions ..

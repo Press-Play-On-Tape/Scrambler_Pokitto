@@ -6,6 +6,7 @@
 #include "Structs.h"
 #include "Enemy.h"
 #include "Enemies.h"
-#include "Scenery.h"
 #include "Shockwave.h"
 #include "Shockwaves.h"
+#include "Player.h"
+#include "Rect.h"

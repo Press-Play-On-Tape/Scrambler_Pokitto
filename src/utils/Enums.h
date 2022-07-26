@@ -8,6 +8,9 @@ namespace Constants {
 
     constexpr uint8_t Screen_Height = 188;
 
+    constexpr uint8_t Player_Width = 12;
+    constexpr uint8_t Player_Height = 8;
+
     constexpr uint8_t Enemy_Count = 10;
     constexpr uint8_t Enemy_None = 255;    
 
