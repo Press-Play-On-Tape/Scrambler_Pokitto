@@ -19,6 +19,7 @@ class Game {
     private:
 
         SplashScreenVariables splashScreenVariables;
+        GameScreenVars gameScreenVars;
         GameState gameState = GameState::Splash;
         GameCookie *cookie;
 
@@ -42,6 +43,14 @@ class Game {
         uint16_t distTravelled = 0;
 
         Enemies enemies;
+        Bullets bullets;
+
+
+
+
+
+
+
 
 
 
@@ -62,6 +71,7 @@ class Game {
 
         bool collide(Rect rect1, Rect rect2);
         bool collide(Point point, Rect rect);
+        void checkBulletCollision(Bullet &bullet);
 
 
         // Music and sounds ..

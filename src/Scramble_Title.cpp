@@ -12,7 +12,7 @@ using PD = Pokitto::Display;
 void Game::title_Init() {
 
     this->gameState = GameState::Title;
-    // this->playTheme(Themes::Main);
+    this->playTheme(Themes::Main);
     // this->gamePlay.setCounter(0);
 
 }   
@@ -43,7 +43,7 @@ void Game::title() {
         }
         else {
 
-            //this->playTheme(Themes::Main);
+            this->playTheme(Themes::Main);
 
         }
 
@@ -61,7 +61,7 @@ void Game::title() {
         }
         else {
 
-            //this->playTheme(Themes::Main);
+            this->playTheme(Themes::Main);
             
         }
         

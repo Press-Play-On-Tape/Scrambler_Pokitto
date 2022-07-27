@@ -8,8 +8,11 @@ namespace Constants {
 
     constexpr uint8_t Screen_Height = 188;
 
-    constexpr uint8_t Player_Width = 12;
-    constexpr uint8_t Player_Height = 8;
+    constexpr uint8_t Player_Width = 20;
+    constexpr uint8_t Player_Height = 13;
+    constexpr uint8_t Player_Inertia = 8;
+    constexpr uint8_t Player_Bullet_Count = 4;
+    constexpr uint8_t Bullet_None = 255;
 
     constexpr uint8_t Enemy_Count = 10;
     constexpr uint8_t Enemy_None = 255;    
@@ -77,6 +80,12 @@ enum class ExplosionSize : int8_t {
 enum class ExplosionColor : int8_t {
     Blue,
     Red
+};
+
+enum class Direction : uint8_t {
+    None,
+    Up,
+    Down,
 };
 
 enum class SoundEffects : uint8_t {

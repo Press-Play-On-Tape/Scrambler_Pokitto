@@ -18,7 +18,7 @@ void Game::launchEnemy(EnemyType enemyType, uint16_t x, int16_t y) {
 
     }
 
-    // printf("One Rocket %i, %i, %i - %i, %i\n", this->scenery_Top[217]  ,  scenery_Top_Inc , this->scenery_Bot[217], enemy.getX(), enemy.getY());
+    // ////printf("One Rocket %i, %i, %i - %i, %i\n", this->scenery_Top[217]  ,  scenery_Top_Inc , this->scenery_Bot[217], enemy.getX(), enemy.getY());
 
 }
 
