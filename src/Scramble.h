@@ -38,6 +38,7 @@ class Game {
         uint8_t scenery_Bottom_Counter;
         int16_t scenery_Top[220];
         uint8_t scenery_Bot[220];
+        uint8_t scenery_Rand;
 
         int16_t viewY = 980;
         uint16_t distTravelled = 0;
@@ -72,6 +73,7 @@ class Game {
         bool collide(Rect rect1, Rect rect2);
         bool collide(Point point, Rect rect);
         void checkBulletCollision(Bullet &bullet);
+        void playerActions();
 
 
         // Music and sounds ..
@@ -83,10 +85,11 @@ class Game {
 
         // Scenery ..
 
-        void launchEnemy(EnemyType enemyType, uint16_t x, int16_t y);
+        uint16_t launchEnemy(EnemyType enemyType, uint16_t x, int16_t y);
         void createScenery(uint8_t x);
         void moveScenery(uint8_t x);
         void resetScenery();
+        uint8_t getScenerySpace(uint8_t rockets, uint8_t fuelDepots);
 
 
         // Explosions ..

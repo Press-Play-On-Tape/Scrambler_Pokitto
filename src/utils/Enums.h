@@ -11,15 +11,29 @@ namespace Constants {
     constexpr uint8_t Player_Width = 20;
     constexpr uint8_t Player_Height = 13;
     constexpr uint8_t Player_Inertia = 8;
+
     constexpr uint8_t Player_Bullet_Count = 4;
+    constexpr uint8_t Player_Bullet_Width = 8;
+    constexpr uint8_t Player_Bullet_Height = 5;
     constexpr uint8_t Bullet_None = 255;
 
+    constexpr uint8_t Player_Bomb_Count = 4;
+    constexpr uint8_t Player_Bomb_Width = 5;
+    constexpr uint8_t Player_Bomb_Height = 8;
+
+    constexpr uint8_t Bomb_None = 255;
+
+    constexpr uint8_t Enemy_Max_Width = 40;
     constexpr uint8_t Enemy_Count = 10;
     constexpr uint8_t Enemy_None = 255;    
 
     constexpr uint8_t Rocket_Width = 9;
     constexpr uint8_t Rocket_Space = 3;
     constexpr uint8_t Rocket_Height = 20;
+
+    constexpr uint8_t FuelDepot_Width = 25;
+    constexpr uint8_t FuelDepot_Space = 3;
+    constexpr uint8_t FuelDepot_Height = 15;
 
     constexpr uint8_t Particle_Count = 75;
     constexpr uint8_t Particle_None = 255;
@@ -28,17 +42,14 @@ namespace Constants {
 
 
 
-    constexpr uint8_t Scenery_Top = 15;
-    constexpr uint8_t Scenery_DistanceBetween_Min_Start = 0;
-    constexpr uint8_t Scenery_DistanceBetween_Min_End = Scenery_DistanceBetween_Min_Start + 79;
-    constexpr uint8_t Scenery_DistanceBetween_Normal_Start = Scenery_DistanceBetween_Min_End + 1;
-    constexpr uint8_t Scenery_DistanceBetween_Normal_End = Scenery_DistanceBetween_Normal_Start + 100;
-
-
+    constexpr uint16_t Scenery_Top = 15;
+    constexpr uint16_t Scenery_DistanceBetween_Min_Start = 0;
+    constexpr uint16_t Scenery_DistanceBetween_Min_End = Scenery_DistanceBetween_Min_Start + 100;
+    constexpr uint16_t Scenery_DistanceBetween_Normal_Start = Scenery_DistanceBetween_Min_End + 1;
+    constexpr uint16_t Scenery_DistanceBetween_Normal_End = Scenery_DistanceBetween_Normal_Start + 100;
 
     constexpr uint8_t LaunchEnemy_Start = 0;
-    constexpr uint8_t LaunchEnemy_Nothing = LaunchEnemy_Start + 180;
-    constexpr uint8_t LaunchEnemy_OneRocket_Start = LaunchEnemy_Nothing + 1;
+    constexpr uint8_t LaunchEnemy_OneRocket_Start = LaunchEnemy_Start + 1;
     constexpr uint8_t LaunchEnemy_OneRocket_End = LaunchEnemy_OneRocket_Start + 4;
     constexpr uint8_t LaunchEnemy_TwoRocket_Start = LaunchEnemy_OneRocket_End + 1;
     constexpr uint8_t LaunchEnemy_TwoRocket_End = LaunchEnemy_TwoRocket_Start + 1;
@@ -47,9 +58,21 @@ namespace Constants {
     constexpr uint8_t LaunchEnemy_FourRocket_Start = LaunchEnemy_ThreeRocket_End + 1;
     constexpr uint8_t LaunchEnemy_FourRocket_End = LaunchEnemy_FourRocket_Start + 0;
 
-    constexpr uint8_t LaunchEnemy_Max = LaunchEnemy_FourRocket_Start;
+    constexpr uint8_t LaunchEnemy_OneRocket_FuelDepot_Start = LaunchEnemy_FourRocket_End + 1;
+    constexpr uint8_t LaunchEnemy_OneRocket_FuelDepot_End = LaunchEnemy_OneRocket_FuelDepot_Start + 2;
+    constexpr uint8_t LaunchEnemy_TwoRocket_FuelDepot_Start = LaunchEnemy_OneRocket_FuelDepot_End + 1;
+    constexpr uint8_t LaunchEnemy_TwoRocket_FuelDepot_End = LaunchEnemy_TwoRocket_FuelDepot_Start + 2;
 
+    constexpr uint8_t LaunchEnemy_FuelDepot_OneRocket_Start = LaunchEnemy_TwoRocket_FuelDepot_End + 1;
+    constexpr uint8_t LaunchEnemy_FuelDepot_OneRocket_End = LaunchEnemy_FuelDepot_OneRocket_Start + 2;
+    constexpr uint8_t LaunchEnemy_FuelDepot_TwoRocket_Start = LaunchEnemy_FuelDepot_OneRocket_End + 1;
+    constexpr uint8_t LaunchEnemy_FuelDepot_TwoRocket_End = LaunchEnemy_FuelDepot_TwoRocket_Start + 2;
 
+    constexpr uint8_t LaunchEnemy_OneRocket_FuelDepot_OneRocket_Start = LaunchEnemy_FuelDepot_TwoRocket_End + 1;
+    constexpr uint8_t LaunchEnemy_OneRocket_FuelDepot_OneRocket_End = LaunchEnemy_OneRocket_FuelDepot_OneRocket_Start + 2;
+
+    constexpr uint16_t LaunchEnemy_Nothing = LaunchEnemy_OneRocket_FuelDepot_OneRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_Max = LaunchEnemy_Nothing + 300;
 
 }
 
@@ -64,6 +87,7 @@ enum class GameState : uint8_t {
 
 enum class EnemyType : uint8_t {
     Rocket,
+    FuelDepot,
 };
 
 enum class Themes : uint8_t {

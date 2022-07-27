@@ -14,9 +14,9 @@ void Game::explode(int16_t x, int16_t y, ExplosionSize explosionSize, ExplosionC
 
     bool isBlue = false;
 
-    const uint8_t sizeMax[] = { 3, 4, 12 };
-    const uint8_t deltaMax[] = { 4, 6, 8 };
-    const uint8_t ageMax[] = { 10, 7, 12 };
+    const uint8_t sizeMax[] = { 3, 6, 16 };
+    const uint8_t deltaMax[] = { 4, 8, 10 };
+    const uint8_t ageMax[] = { 10, 12, 14 };
     const uint8_t ageStart[] = { 2, 3, 5 };
     const uint8_t particlesToLaunch[] = { 20, 30, 75 };
     const uint8_t shockwaveRadius[] = { 0, 40, 55 };
