@@ -14,12 +14,12 @@ void Game::explode(int16_t x, int16_t y, ExplosionSize explosionSize, ExplosionC
 
     bool isBlue = false;
 
-    const uint8_t sizeMax[] = { 3, 6, 16 };
-    const uint8_t deltaMax[] = { 4, 8, 10 };
-    const uint8_t ageMax[] = { 10, 12, 14 };
-    const uint8_t ageStart[] = { 2, 3, 5 };
-    const uint8_t particlesToLaunch[] = { 20, 30, 75 };
-    const uint8_t shockwaveRadius[] = { 0, 40, 55 };
+    const uint8_t sizeMax[] = { 3, 6, 12, 16 };
+    const uint8_t deltaMax[] = { 4, 8, 8, 10 };
+    const uint8_t ageMax[] = { 10, 12, 12, 14 };
+    const uint8_t ageStart[] = { 2, 3, 4, 5 };
+    const uint8_t particlesToLaunch[] = { 20, 30, 45, 75 };
+    const uint8_t shockwaveRadius[] = { 0, 40, 45, 55 };
 
     for (uint8_t i = 0; i < particlesToLaunch[static_cast<uint8_t>(explosionSize)]; i++) {
 

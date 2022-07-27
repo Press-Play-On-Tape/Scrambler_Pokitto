@@ -165,7 +165,7 @@ void Game::playerActions() {
 
     if (PC::buttons.pressed(BTN_A)) {
 
-        uint8_t bulletIdx = bullets.getInactiveBullet();
+        uint8_t bulletIdx = bullets.getInactivePlayerBullet();
 
         if (bulletIdx != Constants::Bullet_None) {
 
@@ -179,7 +179,6 @@ void Game::playerActions() {
             #ifdef SOUNDS
                 playSoundEffect(SoundEffect::Laser);
             #endif
-
 
         }
 

@@ -90,3 +90,174 @@ bool Game::collide(Point point, Rect rect) {
        (point.getY() >= rect.y) && (point.getY() < rect.y + rect.height));
 
 }
+
+
+
+
+void Game::checkPlayerBulletCollision(Bullet &bullet) {
+
+    Rect bulletRect = bullet.getRect();
+
+
+    // Collide with scenery?
+
+    for (uint16_t x = bulletRect.x; x < bulletRect.x + bulletRect.width; x = x + 2) {
+
+        Point point;
+        point.setX(x);
+        point.setY(this->scenery_Top[x - this->distTravelled]);
+
+
+        // Collide with top ?
+
+        if (this->collide(point, bulletRect)) {
+
+            this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
+            bullet.setActive(false);
+            return;
+
+        }
+
+
+        // Collide with bottom ?
+
+        point.setY(this->scenery_Top[x - this->distTravelled] + this->scenery_Bot[x - this->distTravelled]);
+
+        if (this->collide(point, bulletRect)) {
+
+            this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
+            bullet.setActive(false);
+            return;
+
+        }
+
+    }
+
+
+    // Collide with enemy?
+
+    for (Enemy &enemy : this->enemies.enemies) {
+
+        if (enemy.getActive()) {
+
+            Rect enemyRect = enemy.getRect();
+
+            if (this->collide(enemyRect, bulletRect)) {
+
+                switch (enemy.getEnemyType()) {
+
+                    case EnemyType::Rocket:
+                        this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Medium, this->gameScreenVars.getColor());
+                        this->gameScreenVars.score = this->gameScreenVars.score + 20;
+                        break;
+
+                    case EnemyType::FuelDepot:
+                        this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Large, this->gameScreenVars.getColor());
+                        this->gameScreenVars.score = this->gameScreenVars.score + 100;
+                        break;
+
+                    case EnemyType::GroundPod:
+                        this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Medium, this->gameScreenVars.getColor());
+                        this->gameScreenVars.score = this->gameScreenVars.score + 75;
+                        break;
+
+                    case EnemyType::SurfaceAir:
+                        this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Medium, this->gameScreenVars.getColor());
+                        this->gameScreenVars.score = this->gameScreenVars.score + 100;
+                        break;
+
+                }
+
+                enemy.setActive(false);
+                bullet.setActive(false);
+                return;
+
+            }
+
+        }
+
+    }
+
+}
+
+
+void Game::checkEnemyBulletCollision(Bullet &bullet) {
+
+    Rect bulletRect = bullet.getRect();
+
+
+    // Collide with scenery?
+
+    for (uint16_t x = bulletRect.x; x < bulletRect.x + bulletRect.width; x = x + 2) {
+
+        Point point;
+        point.setX(x);
+        point.setY(this->scenery_Top[x - this->distTravelled]);
+
+
+        // Collide with top ?
+
+        if (this->collide(point, bulletRect)) {
+
+            this->explode(bullet.getX() + (Constants::Enemy_Bullet_Width / 2), bullet.getY() + (Constants::Enemy_Bullet_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
+            bullet.setActive(false);
+            return;
+
+        }
+
+
+        // Collide with bottom ?
+
+        point.setY(this->scenery_Top[x - this->distTravelled] + this->scenery_Bot[x - this->distTravelled]);
+
+        if (this->collide(point, bulletRect)) {
+
+            this->explode(bullet.getX() + (Constants::Enemy_Bullet_Width / 2), bullet.getY() + (Constants::Enemy_Bullet_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
+            bullet.setActive(false);
+            return;
+
+        }
+
+    }
+
+
+    // // Collide with enemy?
+
+    // for (Enemy &enemy : this->enemies.enemies) {
+
+    //     if (enemy.getActive()) {
+
+    //         Rect enemyRect = enemy.getRect();
+
+    //         if (this->collide(enemyRect, bulletRect)) {
+
+    //             switch (enemy.getEnemyType()) {
+
+    //                 case EnemyType::Rocket:
+    //                     this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Medium, this->gameScreenVars.getColor());
+    //                     this->gameScreenVars.score = this->gameScreenVars.score + 20;
+    //                     break;
+
+    //                 case EnemyType::FuelDepot:
+    //                     this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Large, this->gameScreenVars.getColor());
+    //                     this->gameScreenVars.score = this->gameScreenVars.score + 100;
+    //                     break;
+
+    //                 case EnemyType::GroundPod:
+    //                     this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Medium, this->gameScreenVars.getColor());
+    //                     this->gameScreenVars.score = this->gameScreenVars.score + 75;
+    //                     break;
+
+    //             }
+
+    //             enemy.setActive(false);
+    //             bullet.setActive(false);
+    //             return;
+
+    //         }
+
+    //     }
+
+    // }
+
+}

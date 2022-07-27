@@ -72,8 +72,12 @@ class Game {
 
         bool collide(Rect rect1, Rect rect2);
         bool collide(Point point, Rect rect);
-        void checkBulletCollision(Bullet &bullet);
         void playerActions();
+        void checkPlayerBulletCollision(Bullet &bullet);
+        void checkEnemyBulletCollision(Bullet &bullet);
+
+        void renderEnemies();
+        void renderHUD();
 
 
         // Music and sounds ..

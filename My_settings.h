@@ -30,7 +30,7 @@
 
 // Limit the framerate so the game doesn't run too fast
 // Optional. Default is 30.
-#define PROJ_FPS 30
+#define PROJ_FPS 45
 
 
 // Choose how to use Pokitto's "extra" 4kb of RAM.

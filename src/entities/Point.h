@@ -24,10 +24,12 @@ class Point {
 
         void decX()                             { this->x--;}
         void incX()                             { this->x++;}
+        void decX(uint8_t val)                  { this->x = this->x - val;}
         void incX(uint8_t val)                  { this->x = this->x + val;}
 
         void decY()                             { this->y--;}
         void incY()                             { this->y++;}
+        void decY(uint8_t val)                  { this->y = this->y - val;}
         void incY(uint8_t val)                  { this->y = this->y + val;}
 
 };

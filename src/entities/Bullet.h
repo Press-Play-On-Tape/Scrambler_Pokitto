@@ -5,7 +5,7 @@
 enum class BulletType : uint8_t {
     PlayerBullet,
     PlayerBomb,
-	BossBullet,
+	EnemyBullet,
 };
 
 class Bullet : public Point {
@@ -26,11 +26,13 @@ class Bullet : public Point {
         uint8_t getMuzzleIndex()                { return this->muzzleIndex; }
         uint8_t getXInertia()                   { return this->xInertia; }
         BulletType getBulletType()              { return this->bulletType; }
+        Direction getDirection()                { return this->direction; }
 
         void setHitCount(uint8_t val)           { this->hitCount = val; }
         void setMuzzleIndex(uint8_t val)        { this->muzzleIndex = val; }
         void setXInertia(uint8_t val)           { this->xInertia = val; this->xInertiaCounter = 0; }
         void setBulletType(BulletType val)      { this->bulletType = val; }
+        void setDirection(Direction val)        { this->direction= val; }
 
         void reset() {
 
@@ -69,6 +71,14 @@ class Bullet : public Point {
                     rect.height = Constants::Player_Bomb_Height;
                     return rect;
 
+                case BulletType::EnemyBullet:
+
+                    rect.x = this->getX();
+                    rect.y = this->getY();
+                    rect.width = Constants::Enemy_Bullet_Width + 2;
+                    rect.height = Constants::Enemy_Bullet_Height + 2;
+                    return rect;
+
             }
 
             return rect; // should never get here!
@@ -77,30 +87,60 @@ class Bullet : public Point {
 
         void move() {
             
-            this->xInertiaCounter ++;
+            switch (this->bulletType) {
 
-            switch (this->xInertiaCounter) {
+                case BulletType::PlayerBomb:
+                        
+                    this->xInertiaCounter ++;
 
-                case 1 ... 2:
-                    this->incX(5);
-                    this->incY(1);
+                    switch (this->xInertiaCounter) {
+
+                        case 1 ... 2:
+                            this->incX(5);
+                            this->incY(1);
+                            break;
+
+                        case 3 ... 4:
+                            this->incX(4);
+                            this->incY(2);
+                            break;
+
+                        case 5 ... 6:
+                            this->incX(4);
+                            this->incY(2);
+                            break;
+
+                        default:
+                            this->incX(3);
+                            this->incY(3);
+                            break;
+                            
+                    }
+
                     break;
 
-                case 3 ... 4:
-                    this->incX(4);
-                    this->incY(2);
+                case BulletType::EnemyBullet:
+
+                    switch (this->direction) {
+
+                        case Direction::Left:
+                            this->decX(3);
+                            this->decY(3);
+                            break;
+
+                        case Direction::Up:
+                            this->decY(3);
+                            break;
+
+                        case Direction::Right:
+                            this->incX(3);
+                            this->decY(3);
+                            break;
+                            
+                    }
+
                     break;
 
-                case 5 ... 6:
-                    this->incX(4);
-                    this->incY(2);
-                    break;
-
-                default:
-                    this->incX(3);
-                    this->incY(3);
-                    break;
-                    
             }
 
         }
