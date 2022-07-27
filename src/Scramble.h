@@ -29,32 +29,8 @@ class Game {
         Shockwaves shockwaves;
         Player player;
 
-
-
-
-        int8_t scenery_Top_Inc;
-        uint8_t scenery_Top_Counter;
-        int8_t scenery_Bottom_Inc;
-        uint8_t scenery_Bottom_Counter;
-        int16_t scenery_Top[220];
-        uint8_t scenery_Bot[220];
-        uint8_t scenery_Rand;
-
-        int16_t viewY = 980;
-        uint16_t distTravelled = 0;
-
         Enemies enemies;
         Bullets bullets;
-
-
-
-
-
-
-
-
-
-
 
     public:
 
@@ -72,10 +48,18 @@ class Game {
 
         bool collide(Rect rect1, Rect rect2);
         bool collide(Point point, Rect rect);
-        void playerActions();
         void checkPlayerBulletCollision(Bullet &bullet);
         void checkEnemyBulletCollision(Bullet &bullet);
+        void checkPlayerCollision();
+        void playerActions();
+        void movePlayerBullets();
+        void movePlayerBombs();
+        void moveEnemyBullets();
 
+        void renderScenery();
+        void renderPlayerBullets();
+        void renderPlayerBombs();
+        void renderEnemyBullets();
         void renderEnemies();
         void renderHUD();
 
@@ -92,7 +76,7 @@ class Game {
         uint16_t launchEnemy(EnemyType enemyType, uint16_t x, int16_t y);
         void createScenery(uint8_t x);
         void moveScenery(uint8_t x);
-        void resetScenery();
+        // void resetScenery();
         uint8_t getScenerySpace(uint8_t rockets, uint8_t fuelDepots);
 
 

@@ -105,7 +105,7 @@ void Game::checkPlayerBulletCollision(Bullet &bullet) {
 
         Point point;
         point.setX(x);
-        point.setY(this->scenery_Top[x - this->distTravelled]);
+        point.setY(this->gameScreenVars.scenery.top[x - this->gameScreenVars.distance]);
 
 
         // Collide with top ?
@@ -121,7 +121,7 @@ void Game::checkPlayerBulletCollision(Bullet &bullet) {
 
         // Collide with bottom ?
 
-        point.setY(this->scenery_Top[x - this->distTravelled] + this->scenery_Bot[x - this->distTravelled]);
+        point.setY(this->gameScreenVars.scenery.top[x - this->gameScreenVars.distance] + this->gameScreenVars.scenery.bot[x - this->gameScreenVars.distance]);
 
         if (this->collide(point, bulletRect)) {
 
@@ -192,7 +192,7 @@ void Game::checkEnemyBulletCollision(Bullet &bullet) {
 
         Point point;
         point.setX(x);
-        point.setY(this->scenery_Top[x - this->distTravelled]);
+        point.setY(this->gameScreenVars.scenery.top[x - this->gameScreenVars.distance]);
 
 
         // Collide with top ?
@@ -208,7 +208,7 @@ void Game::checkEnemyBulletCollision(Bullet &bullet) {
 
         // Collide with bottom ?
 
-        point.setY(this->scenery_Top[x - this->distTravelled] + this->scenery_Bot[x - this->distTravelled]);
+        point.setY(this->gameScreenVars.scenery.top[x - this->gameScreenVars.distance] + this->gameScreenVars.scenery.bot[x - this->gameScreenVars.distance]);
 
         if (this->collide(point, bulletRect)) {
 
@@ -259,5 +259,96 @@ void Game::checkEnemyBulletCollision(Bullet &bullet) {
     //     }
 
     // }
+
+}
+
+
+void Game::checkPlayerCollision() {
+
+    Rect playerRect = { this->player.getX() + 1, this->player.getY() + 1, Constants::Player_Width, Constants::Player_Height };
+
+    if (player.getActive()) {
+
+        for (uint16_t x = this->player.getX() - this->gameScreenVars.distance + 1; x < this->player.getX() - this->gameScreenVars.distance + Constants::Player_Width; x = x + 2) {
+
+            Point point;
+            point.setX(x + this->gameScreenVars.distance);
+            point.setY(this->gameScreenVars.scenery.top[x]);
+
+
+            // Top scenery ..
+
+            if (this->collide(point, playerRect)) {
+
+                this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
+                this->player.setActive(false);
+                this->player.setCountdown(1);
+                break;
+
+            }
+
+
+            // Bottom scenery ..
+
+            point.setY(this->gameScreenVars.scenery.top[x] + this->gameScreenVars.scenery.bot[x]);
+
+            if (this->collide(point, playerRect)) {
+
+                this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
+                this->player.setActive(false);
+                this->player.setCountdown(1);
+                break;
+
+            }
+
+        }
+
+    }
+
+
+    // Has the player collided with an enemy?
+
+    for (Enemy &enemy : this->enemies.enemies) {
+
+        if (enemy.getActive()) {
+
+            Rect enemyRect = enemy.getRect();
+
+            if (collide(enemyRect, playerRect)) {
+
+                this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
+                this->player.setActive(false);
+                enemy.setActive(false);
+                this->player.setCountdown(1);
+                break;
+
+            }
+
+        }
+
+    }
+
+
+    // Has the player collided with an enemy bullet?
+
+    for (Bullet &enemyBullet : this->bullets.enemyBullets) {
+
+        if (enemyBullet.getActive()) {
+
+            Rect enemyBulletRect = enemyBullet.getRect();
+
+            if (collide(enemyBulletRect, playerRect)) {
+
+                this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
+                this->player.setActive(false);
+                enemyBullet.setActive(false);
+                this->player.setCountdown(1);
+                break;
+
+            }
+
+        }
+
+    }
 
 }

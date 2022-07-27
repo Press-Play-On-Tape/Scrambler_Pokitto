@@ -15,7 +15,6 @@ void Game::game_Init() {
     this->gameState = GameState::Game;
     // this->playTheme(Themes::Main);
     // this->gamePlay.setCounter(0);
-    this->resetScenery();
     this->player.reset();
     this->enemies.reset();
     this->bullets.reset();
@@ -36,118 +35,12 @@ void Game::game() {
     this->playerActions();
 
 
+    // Move bullets ..
 
+    this->movePlayerBullets();
+    this->movePlayerBombs();
+    this->moveEnemyBullets();
 
-                // Process player bullets ..
-
-                for (Bullet &bullet : bullets.bullets) {
-                        
-                    if (bullet.getHitCount() > 0) {
-
-                        bullet.incHitCount();
-
-                    }
-
-                    if (bullet.getX() > 0 && bullet.getHitCount() == 0) {
-
-                        if (bullet.getMuzzleIndex() > 0) {
-
-                            bullet.decMuzzleIndex();
-                            bullet.setX(this->player.getX() + Constants::Player_Width);
-
-                        }
-                        else {
-
-                            bullet.setX(bullet.getX() + 6);
-
-                            if (bullet.getX() - this->distTravelled >= 220) {
-
-                                bullet.setActive(false);
-
-                            }
-
-                        }
-
-                        if (bullet.getActive()) checkPlayerBulletCollision(bullet);
-
-                    }
-
-                }
-
-
-
-                // Process player bombs ..
-
-                for (Bullet &bomb : bullets.bombs) {
-                        
-                    if (bomb.getHitCount() > 0) {
-
-                        bomb.incHitCount();
-
-                    }
-
-                    if (bomb.getX() > 0 && bomb.getHitCount() == 0) {
-
-                        if (bomb.getMuzzleIndex() > 0) {
-
-                            bomb.decMuzzleIndex();
-                            bomb.setX(this->player.getX() + (Constants::Player_Width / 2));
-
-                        }
-                        else {
-
-                            bomb.move();
-
-                            if (bomb.getY() - this->viewY >= 176) {
-
-                                bomb.setActive(false);
-
-                            }
-
-                        }
-
-                        if (bomb.getActive()) checkPlayerBulletCollision(bomb);
-
-                    }
-
-                }
-
-
-                // Process enemy bullets ..
-
-                for (Bullet &enemyBullet : bullets.enemyBullets) {
-                        
-                    if (enemyBullet.getHitCount() > 0) {
-
-                        enemyBullet.incHitCount();
-
-                    }
-
-                    if (enemyBullet.getX() > 0 && enemyBullet.getHitCount() == 0) {
-
-                        if (enemyBullet.getMuzzleIndex() > 0) {
-
-                            enemyBullet.decMuzzleIndex();
-                            // enemyBullet.setX(this->player.getX() + (Constants::Player_Width / 2));
-
-                        }
-                        else {
-
-                            enemyBullet.move();
-
-                            if (enemyBullet.getY() - this->viewY < -30 || enemyBullet.getY() - this->viewY > 220) {
-
-                                enemyBullet.setActive(false);
-
-                            }
-
-                        }
-
-                        if (enemyBullet.getActive()) checkEnemyBulletCollision(enemyBullet);
-
-                    }
-
-                }
 
     // Redirect surface to air missiles ..
 
@@ -172,7 +65,7 @@ void Game::game() {
             }
 
 
-            if (random(0, 64) == 0) {
+            if (random(0, 96) == 0) {
 
                 uint8_t bulletIdx = bullets.getInactiveEnemyBullet();
 
@@ -187,18 +80,18 @@ void Game::game() {
                     switch (enemy.getDirection()) {
 
                         case Direction::Left:
-                            bullet.setX(enemy.getX() - 2);
-                            bullet.setY(enemy.getY() + 2);
+                            bullet.setX(enemy.getX() - 1);
+                            bullet.setY(enemy.getY() + 1);
                             break;
 
                         case Direction::Up:
-                            bullet.setX(enemy.getX() - 2);
-                            bullet.setY(enemy.getY() + 2);
+                            bullet.setX(enemy.getX() - 1);
+                            bullet.setY(enemy.getY() + 1);
                             break;
 
                         case Direction::Right:
-                            bullet.setX(enemy.getX() + Constants::SurfaceAir_Width - 2);
-                            bullet.setY(enemy.getY() + 2);
+                            bullet.setX(enemy.getX() + Constants::SurfaceAir_Width - 1);
+                            bullet.setY(enemy.getY() + 1);
                             break;
 
                     }
@@ -276,7 +169,7 @@ void Game::game() {
 
                     Point point;
                     point.setX(x);
-                    point.setY(this->scenery_Top[x - this->distTravelled]);
+                    point.setY(this->gameScreenVars.scenery.top[x - this->gameScreenVars.distance]);
 
 
                     // Collide with top ?
@@ -298,145 +191,48 @@ void Game::game() {
     }
 
 
-
-
     // Has the player collided with the scenery ?
 
-//    Rect playerRect = { this->player.getX() - this->distTravelled + 1, this->player.getY() - this->viewY + 1, Constants::Player_Width, Constants::Player_Height };
-    Rect playerRect = { this->player.getX() + 1, this->player.getY() + 1, Constants::Player_Width, Constants::Player_Height };
+    this->checkPlayerCollision();
+    
 
-    if (player.getActive()) {
+    // Move scenery ..
 
-        for (uint16_t x = this->player.getX() - this->distTravelled + 1; x < this->player.getX() - this->distTravelled + Constants::Player_Width; x = x + 2) {
+    if (this->player.getMoveScenery()) {
 
-            Point point;
-            // point.setX(x);
-//            point.setY(this->scenery_Top[x] - this->viewY + 1);
-            point.setX(x + this->distTravelled);
-            point.setY(this->scenery_Top[x]);
+        this->moveScenery(2);
+        this->createScenery(218);
+        this->createScenery(219);
+        this->gameScreenVars.distance = this->gameScreenVars.distance + 2;
+        this->player.incX(2);
 
-            // PD::drawPixel(point.getX(), point.getY());
+        for (Enemy &enemy : this->enemies.enemies) {
 
+            if (enemy.getX() < this->gameScreenVars.distance - Constants::Enemy_Max_Width) {
 
-            if (this->collide(point, playerRect)) {
-
-                this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
-                this->player.setActive(false);
-                this->player.setCountdown(1);
-                break;
-
-            }
-
-            point.setY(this->scenery_Top[x] + this->scenery_Bot[x]);
-
-
-            if (this->collide(point, playerRect)) {
-
-                this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
-                this->player.setActive(false);
-                this->player.setCountdown(1);
-                break;
-
-            }
-
-        }
-
-    }
-
-
-    // Has the player collided with an enemy?
-
-    for (Enemy &enemy : this->enemies.enemies) {
-
-        if (enemy.getActive()) {
-
-            Rect enemyRect = enemy.getRect();
-
-            if (collide(enemyRect, playerRect)) {
-
-                this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
-                this->player.setActive(false);
                 enemy.setActive(false);
-                this->player.setCountdown(1);
-                break;
 
             }
+
+        }
+
+
+        if (PC::frameCount % Constants::Distance == 0) {
+
+            this->gameScreenVars.score++;
 
         }
 
     }
 
+    this->player.updateCounter();
 
 
-
-
-
-
-
-
-    //if (PC::buttons.pressed(BTN_A) || PC::buttons.repeat(BTN_A, 1)) {
-
-        if (this->player.getMoveScenery()) {
-
-            this->moveScenery(2);
-            this->createScenery(218);
-            this->createScenery(219);
-            this->distTravelled = this->distTravelled + 2;
-            this->player.incX(2);
-
-            for (Enemy &enemy : this->enemies.enemies) {
-
-                if (enemy.getX() < this->distTravelled - Constants::Enemy_Max_Width) {
-
-                    enemy.setActive(false);
-
-                }
-
-            }
-
-
-            if (PC::frameCount % Constants::Distance == 0) {
-
-                this->gameScreenVars.score++;
-
-            }
-
-        }
-
-        this->player.updateCounter();
-
-    //}
-
-
+    // ----------------------------------------------------------------------------------------------------
     // Render page ..
+    // ----------------------------------------------------------------------------------------------------
 
-    for (uint8_t i = 0; i < 220; i++) {
-
-
-        // Top 
-
-        if (this->scenery_Top[i] > this->viewY && (this->scenery_Top[i] <= this->viewY + Constants::Screen_Height)) {
-
-            PD::setColor(2);
-            PD::drawFastVLine(i, 0, this->scenery_Top[i] - this->viewY);
-            PD::setColor(3);
-            PD::drawFastVLine(i, this->scenery_Top[i] - this->viewY - 1, 1);
-
-        }
-
-
-        // Bottom
-
-        if (this->scenery_Top[i] + this->scenery_Bot[i] <= this->viewY + Constants::Screen_Height) {
-
-            PD::setColor(1);
-            PD::drawFastVLine(i, this->scenery_Top[i] + this->scenery_Bot[i] - this->viewY, Constants::Screen_Height * 3);
-            PD::setColor(3);
-            PD::drawFastVLine(i, this->scenery_Top[i] + this->scenery_Bot[i] - this->viewY, 1);
-
-        }
-
-    }
+    this->renderScenery();
 
 
     // Render enemies ..
@@ -446,125 +242,64 @@ void Game::game() {
 
 
     // Render player ..
-// ////printf("%i,%i\n", this->player.getX() - this->distTravelled, this->player.getY() - this->viewY);
+// ////printf("%i,%i\n", this->player.getX() - this->gameScreenVars.distance, this->player.getY() - this->gameScreenVars.viewY);
 
     if (this->player.getActive()) {
-        PD::drawBitmap(this->player.getX() - this->distTravelled, this->player.getY() - this->viewY, Images::PlayerShip);
+        PD::drawBitmap(this->player.getX() - this->gameScreenVars.distance, this->player.getY() - this->gameScreenVars.viewY, Images::PlayerShip);
     }
 
 
 
-                // Render player bullets ..
-                
-                for (Bullet &bullet : bullets.bullets) {
-                                            
-                    if (bullet.getActive()) {
-                            
-                        if (bullet.getMuzzleIndex() > 1) {
+    // Render bullets and bombs ..
 
-                            PD::drawBitmap(bullet.getX() - this->distTravelled, bullet.getY() - this->viewY, Images::Muzzle[3 - (bullet.getMuzzleIndex() / 2)]);
-
-                        }
-                        else {
-
-                            switch (bullet.getHitCount()) {
-
-                                case 0:
-                                    PD::drawBitmap(bullet.getX() - this->distTravelled, bullet.getY() - this->viewY, Images::Bullet);
-                                    break;
-
-                                default:
-
-                                    PD::drawBitmap(bullet.getX() - this->distTravelled, bullet.getY() - this->viewY - 5, Images::Hit[bullet.getHitCount() - 1]);
-                                    break;
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-
-                // Render player bombs ..
-                
-                for (Bullet &bomb : bullets.bombs) {
-                                            
-                    if (bomb.getActive()) {
-                            
-                        if (bomb.getMuzzleIndex() > 1) {
-
-                            PD::drawBitmap(bomb.getX() - this->distTravelled, bomb.getY() - this->viewY, Images::Muzzle[3 - (bomb.getMuzzleIndex() / 2)]);
-
-                        }
-                        else {
-
-                            switch (bomb.getHitCount()) {
-
-                                case 0:
-                                    PD::drawBitmap(bomb.getX() - this->distTravelled, bomb.getY() - this->viewY, Images::Bomb);
-                                    break;
-
-                                default:
-
-                                    PD::drawBitmap(bomb.getX() - this->distTravelled, bomb.getY() - this->viewY - 5, Images::Hit[bomb.getHitCount() - 1]);
-                                    break;
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-
-                // Render enemy bullets ..
-                
-                for (Bullet &bullet : bullets.enemyBullets) {
-                                            
-                    if (bullet.getActive()) {
-                            
-                        if (bullet.getMuzzleIndex() > 1) {
-
-                            PD::drawBitmap(bullet.getX() - this->distTravelled, bullet.getY() - this->viewY, Images::Muzzle[3 - (bullet.getMuzzleIndex() / 2)]);
-
-                        }
-                        else {
-
-                            switch (bullet.getHitCount()) {
-
-                                case 0:
-                                    PD::drawBitmap(bullet.getX() - this->distTravelled, bullet.getY() - this->viewY, Images::EnemyBullet);
-                                    break;
-
-                                default:
-                                    PD::drawBitmap(bullet.getX() - this->distTravelled, bullet.getY() - this->viewY - 5, Images::Hit[bullet.getHitCount() - 1]);
-                                    break;
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-
+    this->renderPlayerBullets();
+    this->renderPlayerBombs();
+    this->renderEnemyBullets();
+    
     // Render shockwaves and particles ..
 
-    this->renderShockwave(this->distTravelled, this->viewY);
-    this->renderParticles(this->distTravelled, this->viewY);
+    this->renderShockwave(this->gameScreenVars.distance, this->gameScreenVars.viewY);
+    this->renderParticles(this->gameScreenVars.distance, this->gameScreenVars.viewY);
 
 
     // Render HUD ..
 
     this->renderHUD();
 
-
 }
 
+
+void Game::renderScenery() {
+
+    for (uint8_t i = 0; i < 220; i++) {
+
+
+        // Top 
+
+        if (this->gameScreenVars.scenery.top[i] > this->gameScreenVars.viewY && (this->gameScreenVars.scenery.top[i] <= this->gameScreenVars.viewY + Constants::Screen_Height)) {
+
+            PD::setColor(2);
+            PD::drawFastVLine(i, 0, this->gameScreenVars.scenery.top[i] - this->gameScreenVars.viewY);
+            PD::setColor(3);
+            PD::drawFastVLine(i, this->gameScreenVars.scenery.top[i] - this->gameScreenVars.viewY - 1, 1);
+
+        }
+
+
+        // Bottom
+
+        if (this->gameScreenVars.scenery.top[i] + this->gameScreenVars.scenery.bot[i] <= this->gameScreenVars.viewY + Constants::Screen_Height) {
+
+            PD::setColor(1);
+            PD::drawFastVLine(i, this->gameScreenVars.scenery.top[i] + this->gameScreenVars.scenery.bot[i] - this->gameScreenVars.viewY, Constants::Screen_Height * 3);
+            PD::setColor(3);
+            PD::drawFastVLine(i, this->gameScreenVars.scenery.top[i] + this->gameScreenVars.scenery.bot[i] - this->gameScreenVars.viewY, 1);
+
+        }
+
+    }
+
+}
 
 void Game::renderHUD() {
 
@@ -598,26 +333,263 @@ void Game::renderEnemies() {
 
         if (enemy.getActive()) {
 
-            if (enemy.getX() >= this->distTravelled - Constants::Enemy_Max_Width && enemy.getX() < this->distTravelled + 220) {
+            if (enemy.getX() >= this->gameScreenVars.distance - Constants::Enemy_Max_Width && enemy.getX() < this->gameScreenVars.distance + 220) {
 
                 switch (enemy.getEnemyType()) {
 
                     case EnemyType::Rocket:
-                        PD::drawBitmap(enemy.getX() - this->distTravelled, enemy.getY() - this->viewY, Images::Rocket);
+                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::Rocket);
                         break;
 
                     case EnemyType::FuelDepot:
-                        PD::drawBitmap(enemy.getX() - this->distTravelled, enemy.getY() - this->viewY, Images::FuelDepot);
+                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::FuelDepot);
                         break;
 
                     case EnemyType::GroundPod:
-                        PD::drawBitmap(enemy.getX() - this->distTravelled, enemy.getY() - this->viewY, Images::GroundPod);
+                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::GroundPod);
                         break;
 
                     case EnemyType::SurfaceAir:
-                        PD::drawBitmap(enemy.getX() - this->distTravelled, enemy.getY() - this->viewY, Images::SurfaceToAir[static_cast<uint8_t>(enemy.getDirection())]);
+                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::SurfaceToAir[static_cast<uint8_t>(enemy.getDirection())]);
                         break;
                         
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+
+void Game::movePlayerBullets() {
+
+
+    // Process player bullets ..
+
+    for (Bullet &bullet : bullets.bullets) {
+            
+        if (bullet.getHitCount() > 0) {
+
+            bullet.incHitCount();
+
+        }
+
+        if (bullet.getX() > 0 && bullet.getHitCount() == 0) {
+
+            if (bullet.getMuzzleIndex() > 0) {
+
+                bullet.decMuzzleIndex();
+                bullet.setX(this->player.getX() + Constants::Player_Width);
+
+            }
+            else {
+
+                bullet.setX(bullet.getX() + 6);
+
+                if (bullet.getX() - this->gameScreenVars.distance >= 220) {
+
+                    bullet.setActive(false);
+
+                }
+
+            }
+
+            if (bullet.getActive()) checkPlayerBulletCollision(bullet);
+
+        }
+
+    }
+
+}
+
+
+void Game::movePlayerBombs() {
+
+
+    // Process player bombs ..
+
+    for (Bullet &bomb : bullets.bombs) {
+            
+        if (bomb.getHitCount() > 0) {
+
+            bomb.incHitCount();
+
+        }
+
+        if (bomb.getX() > 0 && bomb.getHitCount() == 0) {
+
+            if (bomb.getMuzzleIndex() > 0) {
+
+                bomb.decMuzzleIndex();
+                bomb.setX(this->player.getX() + (Constants::Player_Width / 2));
+
+            }
+            else {
+
+                bomb.move();
+
+                if (bomb.getY() - this->gameScreenVars.viewY >= 176) {
+
+                    bomb.setActive(false);
+
+                }
+
+            }
+
+            if (bomb.getActive()) checkPlayerBulletCollision(bomb);
+
+        }
+
+    }
+
+}
+
+void Game::moveEnemyBullets() {
+
+    // Process enemy bullets ..
+
+    for (Bullet &enemyBullet : bullets.enemyBullets) {
+            
+        if (enemyBullet.getHitCount() > 0) {
+
+            enemyBullet.incHitCount();
+
+        }
+
+        if (enemyBullet.getX() > 0 && enemyBullet.getHitCount() == 0) {
+
+            if (enemyBullet.getMuzzleIndex() > 0) {
+
+                enemyBullet.decMuzzleIndex();
+                // enemyBullet.setX(this->player.getX() + (Constants::Player_Width / 2));
+
+            }
+            else {
+
+                enemyBullet.move();
+
+                if (enemyBullet.getY() - this->gameScreenVars.viewY < -30 || enemyBullet.getY() - this->gameScreenVars.viewY > 220) {
+
+                    enemyBullet.setActive(false);
+
+                }
+
+            }
+
+            if (enemyBullet.getActive()) checkEnemyBulletCollision(enemyBullet);
+
+        }
+
+    }
+
+}
+
+
+void Game::renderPlayerBullets() {
+
+
+    // Render player bullets ..
+    
+    for (Bullet &bullet : bullets.bullets) {
+                                
+        if (bullet.getActive()) {
+                
+            if (bullet.getMuzzleIndex() > 1) {
+
+                PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY, Images::Muzzle[3 - (bullet.getMuzzleIndex() / 2)]);
+
+            }
+            else {
+
+                switch (bullet.getHitCount()) {
+
+                    case 0:
+                        PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY, Images::Bullet);
+                        break;
+
+                    default:
+
+                        PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY - 5, Images::Hit[bullet.getHitCount() - 1]);
+                        break;
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+
+void Game::renderPlayerBombs() {
+
+
+    // Render player bombs ..
+    
+    for (Bullet &bomb : bullets.bombs) {
+                                
+        if (bomb.getActive()) {
+                
+            if (bomb.getMuzzleIndex() > 1) {
+
+                PD::drawBitmap(bomb.getX() - this->gameScreenVars.distance, bomb.getY() - this->gameScreenVars.viewY, Images::Muzzle[3 - (bomb.getMuzzleIndex() / 2)]);
+
+            }
+            else {
+
+                switch (bomb.getHitCount()) {
+
+                    case 0:
+                        PD::drawBitmap(bomb.getX() - this->gameScreenVars.distance, bomb.getY() - this->gameScreenVars.viewY, Images::Bomb);
+                        break;
+
+                    default:
+
+                        PD::drawBitmap(bomb.getX() - this->gameScreenVars.distance, bomb.getY() - this->gameScreenVars.viewY - 5, Images::Hit[bomb.getHitCount() - 1]);
+                        break;
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+
+void Game::renderEnemyBullets() {
+
+
+    // Render enemy bullets ..
+    
+    for (Bullet &bullet : bullets.enemyBullets) {
+                                
+        if (bullet.getActive()) {
+                
+            if (bullet.getMuzzleIndex() > 1) {
+
+                PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance - 2, bullet.getY() - this->gameScreenVars.viewY - 2, Images::Muzzle[3 - (bullet.getMuzzleIndex() / 2)]);
+
+            }
+            else {
+
+                switch (bullet.getHitCount()) {
+
+                    case 0:
+                        PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY, Images::EnemyBullet);
+                        break;
+
+                    default:
+                        PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY - 5, Images::Hit[bullet.getHitCount() - 1]);
+                        break;
 
                 }
 

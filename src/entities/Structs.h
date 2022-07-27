@@ -3,6 +3,34 @@
 #include "../utils/Enums.h"
 #include "../utils/Utils.h"
 
+
+struct Scenery {
+
+    int8_t top_Inc;
+    uint8_t top_Counter;
+    int8_t bot_Inc;
+    uint8_t bot_Counter;
+    int16_t top[220];
+    uint8_t bot[220];
+    uint8_t rand;
+
+    void reset() {
+
+        for (uint8_t i = 0; i < 220; i++) {
+            this->top[i] = 880;
+            this->bot[i] = 240;
+        }
+
+        this->top_Counter = 0;
+        this->bot_Counter = 0;
+        this->top_Inc = 0;
+        this->bot_Inc = 0;
+
+    }
+
+};
+
+
 struct SplashScreenVariables {
 
     uint8_t counter = 0;
@@ -11,20 +39,15 @@ struct SplashScreenVariables {
 };
 
 
-
 struct GameScreenVars {
 
-    int8_t xOffset = 0;
-    int8_t yOffset = 0;
-    uint8_t offsetCount = 0;
-    uint8_t scoreIndex = 0;
     uint8_t clearScores = 0;
-    uint8_t healthCounter = 0;
-    uint8_t highScoreCounter = 0;
     uint16_t score = 0;
+    int16_t viewY = 980;
     uint16_t distance = 0;
 
     ExplosionColor explosionColor = ExplosionColor::Blue;
+    Scenery scenery;
 
     ExplosionColor getColor() {
 
@@ -44,30 +67,13 @@ struct GameScreenVars {
 
     }
 
-    void decHealthCounter() {
-
-        this->healthCounter--;
-
-    }
-
-    void resetHealthCounter() {
-
-        this->healthCounter = 15 + random(25);
-
-    }
-
     void reset() {
 
-        this->xOffset = 0;
-        this->yOffset = 0;
-        this->offsetCount = 0;
-        this->scoreIndex = 0;
         this->clearScores = 0;
         this->score = 0;
+        this->viewY = 980;
         this->distance = 0;
-        this->highScoreCounter = 0;
-
-        this->resetHealthCounter();
+        this->scenery.reset();
 
     }
 

@@ -16,8 +16,8 @@ void Game::playerActions() {
 
                 this->player.decY(1, PC::frameCount, Constants::Player_Inertia);
 
-                if (this->player.getY() - this->viewY < 70) {
-                    this->viewY = this->viewY - 1;
+                if (this->player.getY() - this->gameScreenVars.viewY < 70) {
+                    this->gameScreenVars.viewY = this->gameScreenVars.viewY - 1;
                 }
 
             }
@@ -26,8 +26,8 @@ void Game::playerActions() {
 
                 this->player.incY(1, PC::frameCount, Constants::Player_Inertia);
 
-                if (this->player.getY() - this->viewY > 176 - 90) {
-                    this->viewY = this->viewY + 1;
+                if (this->player.getY() - this->gameScreenVars.viewY > 176 - 90) {
+                    this->gameScreenVars.viewY = this->gameScreenVars.viewY + 1;
                 }
 
             }
@@ -42,8 +42,8 @@ void Game::playerActions() {
 
                     this->player.decY(2, PC::frameCount);
 
-                    if (this->player.getY() - this->viewY < 70) {
-                        this->viewY = this->viewY - 2;
+                    if (this->player.getY() - this->gameScreenVars.viewY < 70) {
+                        this->gameScreenVars.viewY = this->gameScreenVars.viewY - 2;
                     }
 
                 }
@@ -51,8 +51,8 @@ void Game::playerActions() {
 
                     this->player.decY(1, PC::frameCount);
 
-                    if (this->player.getY() - this->viewY < 70) {
-                        this->viewY = this->viewY - 1;
+                    if (this->player.getY() - this->gameScreenVars.viewY < 70) {
+                        this->gameScreenVars.viewY = this->gameScreenVars.viewY - 1;
                     }
 
                 }
@@ -65,8 +65,8 @@ void Game::playerActions() {
                 
                 this->player.incY(1, PC::frameCount, Constants::Player_Inertia);
 
-                if (this->player.getY() - this->viewY > 176 - 90) {
-                    this->viewY = this->viewY + 1;
+                if (this->player.getY() - this->gameScreenVars.viewY > 176 - 90) {
+                    this->gameScreenVars.viewY = this->gameScreenVars.viewY + 1;
                 }
 
             }
@@ -79,8 +79,8 @@ void Game::playerActions() {
 
                     this->player.decY(1, PC::frameCount, this->player.getYDelay() * 2, true);
 
-                    if (this->player.getY() - this->viewY < 70) {
-                        this->viewY = this->viewY - 1;
+                    if (this->player.getY() - this->gameScreenVars.viewY < 70) {
+                        this->gameScreenVars.viewY = this->gameScreenVars.viewY - 1;
                     }
 
                 }
@@ -95,8 +95,8 @@ void Game::playerActions() {
 
                 this->player.decY(1, PC::frameCount, Constants::Player_Inertia);
 
-                if (this->player.getY() - this->viewY < 70) {
-                    this->viewY = this->viewY - 1;
+                if (this->player.getY() - this->gameScreenVars.viewY < 70) {
+                    this->gameScreenVars.viewY = this->gameScreenVars.viewY - 1;
                 }
 
             }
@@ -107,8 +107,8 @@ void Game::playerActions() {
 
                     this->player.incY(2, PC::frameCount);
 
-                    if (this->player.getY() - this->viewY > 176 - 90) {
-                        this->viewY = this->viewY + 2;
+                    if (this->player.getY() - this->gameScreenVars.viewY > 176 - 90) {
+                        this->gameScreenVars.viewY = this->gameScreenVars.viewY + 2;
                     }
 
                 }
@@ -116,8 +116,8 @@ void Game::playerActions() {
 
                     this->player.incY(1, PC::frameCount);
 
-                    if (this->player.getY() - this->viewY > 176 - 90) {
-                        this->viewY = this->viewY + 1;
+                    if (this->player.getY() - this->gameScreenVars.viewY > 176 - 90) {
+                        this->gameScreenVars.viewY = this->gameScreenVars.viewY + 1;
                     }
 
                 }
@@ -134,8 +134,8 @@ void Game::playerActions() {
 
                     this->player.incY(1, PC::frameCount, this->player.getYDelay() * 2, true);
 
-                    if (this->player.getY() - this->viewY > 176 - 90) {
-                        this->viewY = this->viewY + 1;
+                    if (this->player.getY() - this->gameScreenVars.viewY > 176 - 90) {
+                        this->gameScreenVars.viewY = this->gameScreenVars.viewY + 1;
                     }
 
                 }
@@ -146,11 +146,11 @@ void Game::playerActions() {
 
     }
 
-    if (PC::buttons.pressed(BTN_LEFT) || PC::buttons.repeat(BTN_LEFT, 1) && this->player.getX() > this->distTravelled) {
+    if (PC::buttons.pressed(BTN_LEFT) || PC::buttons.repeat(BTN_LEFT, 1) && this->player.getX() > this->gameScreenVars.distance) {
         this->player.setX(this->player.getX() - 1);
     }
 
-    if (PC::buttons.pressed(BTN_RIGHT) || PC::buttons.repeat(BTN_RIGHT, 1) && this->player.getX() < this->distTravelled + 220 - Constants::Player_Width) {
+    if (PC::buttons.pressed(BTN_RIGHT) || PC::buttons.repeat(BTN_RIGHT, 1) && this->player.getX() < this->gameScreenVars.distance + 220 - Constants::Player_Width) {
         this->player.setX(this->player.getX() + 1);
     }
 
