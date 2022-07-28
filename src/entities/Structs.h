@@ -21,8 +21,8 @@ struct Scenery {
             this->bot[i] = 240;
         }
 
-        this->top_Counter = 0;
-        this->bot_Counter = 0;
+        this->top_Counter = 192;
+        this->bot_Counter = 192;
         this->top_Inc = 0;
         this->bot_Inc = 0;
 
@@ -34,7 +34,7 @@ struct Scenery {
 struct SplashScreenVariables {
 
     uint8_t counter = 0;
-    uint8_t buttonCounter = 0;
+    uint8_t buttonCounter = 20;
 
 };
 
@@ -45,6 +45,7 @@ struct GameScreenVars {
     uint16_t score = 0;
     int16_t viewY = 980;
     uint16_t distance = 0;
+    uint8_t countdown = 0;
 
     ExplosionColor explosionColor = ExplosionColor::Blue;
     Scenery scenery;
@@ -73,6 +74,7 @@ struct GameScreenVars {
         this->score = 0;
         this->viewY = 980;
         this->distance = 0;
+        this->countdown = 144;
         this->scenery.reset();
 
     }

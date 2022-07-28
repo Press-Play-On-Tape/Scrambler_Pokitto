@@ -33,6 +33,11 @@ uint16_t Game::launchEnemy(EnemyType enemyType, uint16_t x, int16_t y) {
             nextX = nextX + Constants::SurfaceAir_Width;
             break;
 
+        case EnemyType::City_00 ... EnemyType::City_02:
+            enemy.setY(y - Constants::City_Height);
+            nextX = nextX + Constants::City_Width;
+            break;
+
     }
 
     return nextX;
@@ -191,6 +196,9 @@ void Game::createScenery(uint8_t x) {
                     switch (randomEnemy) {
 
                         case Constants::LaunchEnemy_OneRocket_Start ... Constants::LaunchEnemy_OneRocket_End:
+                        case Constants::LaunchEnemy_City_00_Start ... Constants::LaunchEnemy_City_00_End:
+                        case Constants::LaunchEnemy_City_01_Start ... Constants::LaunchEnemy_City_01_End:
+                        case Constants::LaunchEnemy_City_02_Start ... Constants::LaunchEnemy_City_02_End:
                             if (activeEnemies == 0) {
                                 randomEnemy = Constants::LaunchEnemy_Start;
                             }
@@ -289,10 +297,34 @@ void Game::createScenery(uint8_t x) {
 
                     switch (randomEnemy) {
 
+                        case Constants::LaunchEnemy_City_00_Start ... Constants::LaunchEnemy_City_00_End:
+
+                            this->gameScreenVars.scenery.bot_Inc = 0;       
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(0, 0, 0, 0, 1);
+                            x = this->launchEnemy(EnemyType::City_00, x, enemyLaunch);
+
+                            break;
+
+                        case Constants::LaunchEnemy_City_01_Start ... Constants::LaunchEnemy_City_01_End:
+
+                            this->gameScreenVars.scenery.bot_Inc = 0;       
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(0, 0, 0, 0, 1);
+                            x = this->launchEnemy(EnemyType::City_01, x, enemyLaunch);
+
+                            break;
+
+                        case Constants::LaunchEnemy_City_02_Start ... Constants::LaunchEnemy_City_02_End:
+
+                            this->gameScreenVars.scenery.bot_Inc = 0;       
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(0, 0, 0, 0, 1);
+                            x = this->launchEnemy(EnemyType::City_02, x, enemyLaunch);
+
+                            break;
+
                         case Constants::LaunchEnemy_OneRocket_Start ... Constants::LaunchEnemy_OneRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 0);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 0, 0, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
 
                             break;
@@ -300,7 +332,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_TwoRocket_Start ... Constants::LaunchEnemy_TwoRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 0, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
 
@@ -309,7 +341,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_ThreeRocket_Start ... Constants::LaunchEnemy_ThreeRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(3, 0);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(3, 0, 0, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
@@ -319,7 +351,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_FourRocket_Start ... Constants::LaunchEnemy_FourRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(4, 0);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(4, 0, 0, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
@@ -327,10 +359,13 @@ void Game::createScenery(uint8_t x) {
 
                             break;
 
+
+                        // Fuel Depots ..
+
                         case Constants::LaunchEnemy_OneRocket_FuelDepot_Start ... Constants::LaunchEnemy_OneRocket_FuelDepot_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 1, 0, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::FuelDepot, x, enemyLaunch);
 
@@ -339,7 +374,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_TwoRocket_FuelDepot_Start ... Constants::LaunchEnemy_TwoRocket_FuelDepot_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1, 0, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::FuelDepot, x, enemyLaunch);
@@ -349,7 +384,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_FuelDepot_OneRocket_Start ... Constants::LaunchEnemy_FuelDepot_OneRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 1, 0, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::FuelDepot, x, enemyLaunch );
 
@@ -358,7 +393,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_FuelDepot_TwoRocket_Start ... Constants::LaunchEnemy_FuelDepot_TwoRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1, 0, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::FuelDepot, x, enemyLaunch );
@@ -368,7 +403,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_OneRocket_FuelDepot_OneRocket_Start ... Constants::LaunchEnemy_OneRocket_FuelDepot_OneRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1, 0, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::FuelDepot, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
@@ -377,11 +412,12 @@ void Game::createScenery(uint8_t x) {
 
 
 
+                        // Ground Pods ..
 
                         case Constants::LaunchEnemy_OneRocket_GroundPod_Start ... Constants::LaunchEnemy_OneRocket_GroundPod_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 0, 1, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::GroundPod, x, enemyLaunch);
 
@@ -390,7 +426,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_TwoRocket_GroundPod_Start ... Constants::LaunchEnemy_TwoRocket_GroundPod_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 1, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::GroundPod, x, enemyLaunch);
@@ -400,7 +436,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_GroundPod_OneRocket_Start ... Constants::LaunchEnemy_GroundPod_OneRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 0, 1, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::GroundPod, x, enemyLaunch );
 
@@ -409,7 +445,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_GroundPod_TwoRocket_Start ... Constants::LaunchEnemy_GroundPod_TwoRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 1, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::GroundPod, x, enemyLaunch );
@@ -419,7 +455,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_OneRocket_GroundPod_OneRocket_Start ... Constants::LaunchEnemy_OneRocket_GroundPod_OneRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 1, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::GroundPod, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
@@ -432,7 +468,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_OneRocket_SurfaceAir_Start ... Constants::LaunchEnemy_OneRocket_SurfaceAir_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 0, 0, 1, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::SurfaceAir, x, enemyLaunch);
 
@@ -441,7 +477,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_TwoRocket_SurfaceAir_Start ... Constants::LaunchEnemy_TwoRocket_SurfaceAir_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 0, 1, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::SurfaceAir, x, enemyLaunch);
@@ -451,7 +487,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_SurfaceAir_OneRocket_Start ... Constants::LaunchEnemy_SurfaceAir_OneRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 0, 0, 1, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::SurfaceAir, x, enemyLaunch );
 
@@ -460,7 +496,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_SurfaceAir_TwoRocket_Start ... Constants::LaunchEnemy_SurfaceAir_TwoRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 0, 1, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::SurfaceAir, x, enemyLaunch );
@@ -470,7 +506,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_OneRocket_SurfaceAir_OneRocket_Start ... Constants::LaunchEnemy_OneRocket_SurfaceAir_OneRocket_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1);
+                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 0, 1, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::SurfaceAir, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
@@ -529,9 +565,14 @@ void Game::createScenery(uint8_t x) {
 
 }
 
-uint8_t Game::getScenerySpace(uint8_t rockets, uint8_t fuelDepots) {
+uint8_t Game::getScenerySpace(uint8_t rockets, uint8_t fuelDepots, uint8_t groundPods, uint8_t surfaceAir, uint8_t city) {
 
-    return (rockets * Constants::Rocket_Width) + (fuelDepots * Constants::FuelDepot_Width) + ((rockets + fuelDepots + 1) * Constants::Enemy_Space);
+    return (rockets * Constants::Rocket_Width) + 
+           (fuelDepots * Constants::FuelDepot_Width) + 
+           (groundPods * Constants::GroundPod_Width) + 
+           (surfaceAir * Constants::SurfaceAir_Width) + 
+           (city * Constants::City_Width) + 
+           ((rockets + fuelDepots + groundPods + surfaceAir + city + 1) * Constants::Enemy_Space);
     
 }
 

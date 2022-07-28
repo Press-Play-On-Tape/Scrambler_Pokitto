@@ -164,6 +164,11 @@ void Game::checkPlayerBulletCollision(Bullet &bullet) {
                         this->gameScreenVars.score = this->gameScreenVars.score + 100;
                         break;
 
+                    case EnemyType::Mine:
+                        this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Medium, this->gameScreenVars.getColor());
+                        this->gameScreenVars.score = this->gameScreenVars.score + 25;
+                        break;
+
                 }
 
                 enemy.setActive(false);
@@ -241,6 +246,7 @@ void Game::checkPlayerCollision() {
                 this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
                 this->player.setActive(false);
                 this->player.setCountdown(1);
+                this->player.decLives();
                 break;
 
             }
@@ -255,6 +261,7 @@ void Game::checkPlayerCollision() {
                 this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
                 this->player.setActive(false);
                 this->player.setCountdown(1);
+                this->player.decLives();
                 break;
 
             }
@@ -275,8 +282,9 @@ void Game::checkPlayerCollision() {
 
                     this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
                     this->player.setActive(false);
-                    enemy.setActive(false);
                     this->player.setCountdown(1);
+                    this->player.decLives();
+                    enemy.setActive(false);
                     break;
 
                 }
@@ -298,8 +306,9 @@ void Game::checkPlayerCollision() {
 
                     this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
                     this->player.setActive(false);
-                    enemyBullet.setActive(false);
+                    this->player.decLives();
                     this->player.setCountdown(1);
+                    enemyBullet.setActive(false);
                     break;
 
                 }

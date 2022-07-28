@@ -2,6 +2,7 @@
 #include <LibAudio>
 #include "src/utils/GameCookie.h"
 #include "src/utils/Enums.h"
+#include "src/utils/PicoPalExt.cpp"
 #include "src/Scramble.h"
 
 using PC = Pokitto::Core;
@@ -18,7 +19,7 @@ int main() {
     cookie.begin("Scramble", sizeof(cookie), (char*)&cookie);
 
     PC::begin();
-    PD::loadRGBPalette(palettePico);  
+    PD::loadRGBPalette(palettePicoExt);  
     PD::persistence = true;
     PD::setColor(5);
     PD::setInvisibleColor(14);

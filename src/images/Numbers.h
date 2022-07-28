@@ -2,6 +2,9 @@
 
 namespace Images {
 
+    #include "numbers/Fuel.h"
+    #include "numbers/Live.h"
+    #include "numbers/Live_Grey.h"
     #include "numbers/Number_00.h"
     #include "numbers/Number_01.h"
     #include "numbers/Number_02.h"
@@ -24,6 +27,11 @@ namespace Images {
         Number_07,
         Number_08,
         Number_09,
+    };
+
+    const uint8_t * const Lives[] = { 
+        Live_Grey,
+        Live,
     };
 
 };

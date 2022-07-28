@@ -41,15 +41,32 @@ void Game::renderScenery() {
 void Game::renderHUD() {
 
     PD::setColor(0);
-    PD::fillRect(180, 0, 40, 12);
+    PD::fillRect(98, 0, 121, 9);
     PD::setColor(7);
     PD::setCursor(181, 2);
+
+    PD::drawBitmap(99, 1, Images::Lives[this->player.getLives() > 0]);
+    PD::drawBitmap(107, 1, Images::Lives[this->player.getLives() > 1]);
+    PD::drawBitmap(115, 1, Images::Lives[this->player.getLives() > 2]);
+
+    PD::drawBitmap(125, 1, Images::Fuel);
+    PD::setColor(4);
+
+    const uint8_t colors[] = { 8, 8, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
+
+    for (uint8_t i = 0; i < 45; i = i + 3) {
+
+        PD::setColor(colors[i / 3]);
+        PD::fillRect(135 + i, 1, 2, 7);
+
+    }
+
 
     {
         uint8_t digits[6] = {};
         extractDigits(digits, this->gameScreenVars.score);
 
-        uint8_t location = 212;
+        uint8_t location = 213;
 
         for (uint8_t j = 0; j < 6; ++j, location -= 6) {
 
@@ -88,6 +105,22 @@ void Game::renderEnemies() {
 
                     case EnemyType::SurfaceAir:
                         PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::SurfaceToAir[static_cast<uint8_t>(enemy.getDirection())]);
+                        break;
+
+                    case EnemyType::Mine:
+                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::Mine);
+                        break;
+
+                    case EnemyType::City_00:
+                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::City_00);
+                        break;
+
+                    case EnemyType::City_01:
+                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::City_01);
+                        break;
+
+                    case EnemyType::City_02:
+                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::City_02);
                         break;
                         
 

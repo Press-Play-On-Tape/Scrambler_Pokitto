@@ -7,8 +7,10 @@ class Player : public Point {
 
     private:
 
-        uint8_t health = 0;
+        uint8_t lives = 0;
+        uint8_t fuel = 0;
         uint8_t countdown = 0;
+
 
         // Inertia ..
 
@@ -19,13 +21,15 @@ class Player : public Point {
 
     public:
 
-        uint8_t getHealth()                     { return this->health; }
+        uint8_t getFuel()                       { return this->fuel; }
+        uint8_t getLives()                      { return this->lives; }
         uint8_t getCountdown()                  { return this->countdown; }
         uint8_t getYDelay()                     { return this->yDelay; }
         uint16_t getYFrameCount()               { return this->yFrameCount; }
         Direction getYDirection()               { return this->yDirection; }
 
-        void setHealth(uint8_t val)             { this->health = val; }
+        void setFuel(uint8_t val)               { this->fuel = val; }
+        void setLives(uint8_t val)              { this->lives = val; }
         void setCountdown(uint8_t val)          { this->countdown = val; }
         void setYDelay(uint8_t val)             { this->yDelay = val; }
         void setYFrameCount(uint16_t val)       { this->yFrameCount = val; }
@@ -33,6 +37,12 @@ class Player : public Point {
 
     public:
 
+        void decLives() {
+
+            this->lives--;
+
+        }
+        
         void incX(uint8_t inc) {
 
             this->setX(this->getX() + inc);
@@ -124,7 +134,7 @@ class Player : public Point {
 
         void updateCounter() {
 
-            if (this->countdown >= 1 && this->countdown < 113) {
+            if (this->countdown >= 1 && this->countdown < Constants::GrindToHalt) {
 
                 this->countdown++;
 
@@ -132,12 +142,14 @@ class Player : public Point {
 
         }
 
-        void reset() {
+        void reset(bool resetLives) {
 
             this->setActive(true);
             this->countdown = 0;
             this->setX(40);
             this->setY(1030);
+            this->fuel = 150;
+            if (resetLives) this->lives = 3;
             
         }
 

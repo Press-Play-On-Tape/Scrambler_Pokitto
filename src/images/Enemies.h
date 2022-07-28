@@ -9,6 +9,10 @@ namespace Images {
     #include "enemy/SurfaceToAir_00.h"
     #include "enemy/SurfaceToAir_01.h"
     #include "enemy/SurfaceToAir_02.h"
+    #include "enemy/Mine.h"
+    #include "enemy/City_00.h"
+    #include "enemy/City_01.h"
+    #include "enemy/City_02.h"
 
     const uint8_t * const SurfaceToAir[] = { 
         SurfaceToAir_00,

@@ -13,6 +13,11 @@ class Enemy : public Point {
         Direction direction = Direction::Left;
         EnemyType enemyType = EnemyType::Rocket;
 
+        Scenery *scenery;
+        uint8_t counter = 0;
+        int8_t incY = 0;
+
+
 
     public:
 
@@ -26,12 +31,15 @@ class Enemy : public Point {
         void setDirection(Direction val)        { this->direction = val; }
         void setEnemyType(EnemyType val)        { this->enemyType = val; }
 
+        void setScenery(Scenery *val)           { this->scenery = val; }
+
 
     public:
 
         void setActive(bool val) {
 
             if (!val) {
+                this->counter = 0;
                 this->inFlight = false;
                 this->direction = Direction::Left;
             }
@@ -45,6 +53,44 @@ class Enemy : public Point {
             this->setActive(false);
             this->inFlight = false;
             
+        }
+
+        void move(uint16_t distance) {
+
+            switch (this->enemyType) {
+
+                case EnemyType::Mine:
+
+                    switch (this->getX() - distance) {
+
+                        case -999 ... Constants::Mine_Path_Count:
+                            this->decX();
+                            break;
+
+                        case Constants::Mine_Path_Count + 1 ... 220:
+                            {
+                                if (this->counter == 0) {
+
+                                    int16_t yTarget = this->scenery->top[this->getX() - distance - Constants::Mine_Path_Count] + (this->scenery->bot[this->getX() - distance - Constants::Mine_Path_Count] / 2);
+                                    incY = (yTarget - this->getY()) / Constants::Mine_Path_Count;
+
+                                    this->counter = Constants::Mine_Path_Count;
+
+                                }
+
+                                this->decX();
+                                this->setY(this->getY() + this->incY);
+                                this->counter--;
+
+                            }
+                            break;
+
+                    }
+
+                    break;
+
+            }
+
         }
 
         Rect getRect() {
@@ -101,6 +147,13 @@ class Enemy : public Point {
 
                     }
 
+                    return rect;
+
+                case EnemyType::Mine:
+                    rect.x = this->getX() + 1;
+                    rect.y = this->getY() + 1;
+                    rect.width = Constants::Mine_Width;
+                    rect.height = Constants::Mine_Height;
                     return rect;
 
                 default:

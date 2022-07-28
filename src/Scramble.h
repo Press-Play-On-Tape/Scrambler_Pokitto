@@ -32,6 +32,8 @@ class Game {
         Enemies enemies;
         Bullets bullets;
 
+        uint8_t cursor;
+
     public:
 
         void setup(GameCookie *cookie);
@@ -44,7 +46,8 @@ class Game {
         void title();
         void game_Init();
         void game();
-
+        void highScore_Init();
+        void highScore();
 
         bool collide(Rect rect1, Rect rect2);
         bool collide(Point point, Rect rect);
@@ -79,7 +82,7 @@ class Game {
         void createScenery(uint8_t x);
         void moveScenery(uint8_t x);
         // void resetScenery();
-        uint8_t getScenerySpace(uint8_t rockets, uint8_t fuelDepots);
+        uint8_t getScenerySpace(uint8_t rockets, uint8_t fuelDepots, uint8_t groundPods, uint8_t surfaceAir, uint8_t city);
 
 
         // Explosions ..

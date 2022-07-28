@@ -35,8 +35,17 @@ void Game::loop() {
             [[fallthrough]]
 
         case GameState::Game:
+        case GameState::GameOver:
             this->game();
             break;
+
+        case GameState::HighScore_Init:
+            this->highScore_Init();
+            [[fallthrough]]
+
+        case GameState::HighScore:
+            this->highScore();
+            break;            
 
     }
 

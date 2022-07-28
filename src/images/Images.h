@@ -7,3 +7,5 @@
 #include "Puffs.h"
 #include "Title.h"
 #include "Numbers.h"
+#include "Banners.h"
+#include "HighScore.h"
