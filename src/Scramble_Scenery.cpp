@@ -2,7 +2,7 @@
 
 uint16_t Game::launchEnemy(EnemyType enemyType, uint16_t x, int16_t y) {
 
-    uint16_t nextX = x + Constants::Rocket_Space;
+    uint16_t nextX = x + Constants::Enemy_Space;
     uint8_t idx = this->enemies.getInactiveEnemy();
     Enemy &enemy = this->enemies.enemies[idx];
 
@@ -285,7 +285,7 @@ void Game::createScenery(uint8_t x) {
 
                     }
 
-                    uint16_t x = this->gameScreenVars.distance + 220 + Constants::Rocket_Space;
+                    uint16_t x = this->gameScreenVars.distance + 220 + Constants::Enemy_Space;
 
                     switch (randomEnemy) {
 
@@ -531,7 +531,7 @@ void Game::createScenery(uint8_t x) {
 
 uint8_t Game::getScenerySpace(uint8_t rockets, uint8_t fuelDepots) {
 
-    return (rockets * Constants::Rocket_Width) + (fuelDepots * Constants::FuelDepot_Width) + ((rockets + fuelDepots + 1) * Constants::Rocket_Space);
+    return (rockets * Constants::Rocket_Width) + (fuelDepots * Constants::FuelDepot_Width) + ((rockets + fuelDepots + 1) * Constants::Enemy_Space);
     
 }
 

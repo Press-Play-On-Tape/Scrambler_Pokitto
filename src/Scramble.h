@@ -52,6 +52,8 @@ class Game {
         void checkEnemyBulletCollision(Bullet &bullet);
         void checkPlayerCollision();
         void playerActions();
+        void redirectSurfaceToAir();
+        void launchRockets();
         void movePlayerBullets();
         void movePlayerBombs();
         void moveEnemyBullets();

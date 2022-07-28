@@ -31,8 +31,8 @@ namespace Constants {
     constexpr uint8_t Enemy_Count = 10;
     constexpr uint8_t Enemy_None = 255;    
 
+    constexpr uint8_t Enemy_Space = 3;
     constexpr uint8_t Rocket_Width = 9;
-    constexpr uint8_t Rocket_Space = 3;
     constexpr uint8_t Rocket_Height = 20;
 
     constexpr uint8_t FuelDepot_Width = 25;
@@ -61,57 +61,58 @@ namespace Constants {
 
     // Enemy limits ..
 
-    constexpr uint8_t LaunchEnemy_Start = 0;
-    constexpr uint8_t LaunchEnemy_OneRocket_Start = LaunchEnemy_Start + 1;
-    constexpr uint8_t LaunchEnemy_OneRocket_End = LaunchEnemy_OneRocket_Start + 8;
-    constexpr uint8_t LaunchEnemy_TwoRocket_Start = LaunchEnemy_OneRocket_End + 1;
-    constexpr uint8_t LaunchEnemy_TwoRocket_End = LaunchEnemy_TwoRocket_Start + 2;
-    constexpr uint8_t LaunchEnemy_ThreeRocket_Start = LaunchEnemy_TwoRocket_End + 1;
-    constexpr uint8_t LaunchEnemy_ThreeRocket_End = LaunchEnemy_ThreeRocket_Start + 0;
-    constexpr uint8_t LaunchEnemy_FourRocket_Start = LaunchEnemy_ThreeRocket_End + 1;
-    constexpr uint8_t LaunchEnemy_FourRocket_End = LaunchEnemy_FourRocket_Start + 0;
+    constexpr uint16_t LaunchEnemy_Start = 0;
+    constexpr uint16_t LaunchEnemy_Nothing = LaunchEnemy_Start + 1600;
 
-    constexpr uint8_t LaunchEnemy_OneRocket_FuelDepot_Start = LaunchEnemy_FourRocket_End + 1;
-    constexpr uint8_t LaunchEnemy_OneRocket_FuelDepot_End = LaunchEnemy_OneRocket_FuelDepot_Start + 1;
-    constexpr uint8_t LaunchEnemy_TwoRocket_FuelDepot_Start = LaunchEnemy_OneRocket_FuelDepot_End + 1;
-    constexpr uint8_t LaunchEnemy_TwoRocket_FuelDepot_End = LaunchEnemy_TwoRocket_FuelDepot_Start + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_Start = LaunchEnemy_Nothing + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_End = LaunchEnemy_OneRocket_Start + 12;
+    constexpr uint16_t LaunchEnemy_TwoRocket_Start = LaunchEnemy_OneRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_TwoRocket_End = LaunchEnemy_TwoRocket_Start + 6;
+    constexpr uint16_t LaunchEnemy_ThreeRocket_Start = LaunchEnemy_TwoRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_ThreeRocket_End = LaunchEnemy_ThreeRocket_Start + 0;
+    constexpr uint16_t LaunchEnemy_FourRocket_Start = LaunchEnemy_ThreeRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_FourRocket_End = LaunchEnemy_FourRocket_Start + 0;
 
-    constexpr uint8_t LaunchEnemy_FuelDepot_OneRocket_Start = LaunchEnemy_TwoRocket_FuelDepot_End + 1;
-    constexpr uint8_t LaunchEnemy_FuelDepot_OneRocket_End = LaunchEnemy_FuelDepot_OneRocket_Start + 1;
-    constexpr uint8_t LaunchEnemy_FuelDepot_TwoRocket_Start = LaunchEnemy_FuelDepot_OneRocket_End + 1;
-    constexpr uint8_t LaunchEnemy_FuelDepot_TwoRocket_End = LaunchEnemy_FuelDepot_TwoRocket_Start + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_FuelDepot_Start = LaunchEnemy_FourRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_FuelDepot_End = LaunchEnemy_OneRocket_FuelDepot_Start + 2;
+    constexpr uint16_t LaunchEnemy_TwoRocket_FuelDepot_Start = LaunchEnemy_OneRocket_FuelDepot_End + 1;
+    constexpr uint16_t LaunchEnemy_TwoRocket_FuelDepot_End = LaunchEnemy_TwoRocket_FuelDepot_Start + 1;
 
-    constexpr uint8_t LaunchEnemy_OneRocket_FuelDepot_OneRocket_Start = LaunchEnemy_FuelDepot_TwoRocket_End + 1;
-    constexpr uint8_t LaunchEnemy_OneRocket_FuelDepot_OneRocket_End = LaunchEnemy_OneRocket_FuelDepot_OneRocket_Start + 1;
+    constexpr uint16_t LaunchEnemy_FuelDepot_OneRocket_Start = LaunchEnemy_TwoRocket_FuelDepot_End + 1;
+    constexpr uint16_t LaunchEnemy_FuelDepot_OneRocket_End = LaunchEnemy_FuelDepot_OneRocket_Start + 2;
+    constexpr uint16_t LaunchEnemy_FuelDepot_TwoRocket_Start = LaunchEnemy_FuelDepot_OneRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_FuelDepot_TwoRocket_End = LaunchEnemy_FuelDepot_TwoRocket_Start + 1;
 
-    constexpr uint8_t LaunchEnemy_OneRocket_GroundPod_Start = LaunchEnemy_OneRocket_FuelDepot_OneRocket_End + 1;
-    constexpr uint8_t LaunchEnemy_OneRocket_GroundPod_End = LaunchEnemy_OneRocket_GroundPod_Start + 1;
-    constexpr uint8_t LaunchEnemy_TwoRocket_GroundPod_Start = LaunchEnemy_OneRocket_GroundPod_End + 1;
-    constexpr uint8_t LaunchEnemy_TwoRocket_GroundPod_End = LaunchEnemy_TwoRocket_GroundPod_Start + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_FuelDepot_OneRocket_Start = LaunchEnemy_FuelDepot_TwoRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_FuelDepot_OneRocket_End = LaunchEnemy_OneRocket_FuelDepot_OneRocket_Start + 1;
 
-    constexpr uint8_t LaunchEnemy_GroundPod_OneRocket_Start = LaunchEnemy_TwoRocket_GroundPod_End + 1;
-    constexpr uint8_t LaunchEnemy_GroundPod_OneRocket_End = LaunchEnemy_GroundPod_OneRocket_Start + 1;
-    constexpr uint8_t LaunchEnemy_GroundPod_TwoRocket_Start = LaunchEnemy_GroundPod_OneRocket_End + 1;
-    constexpr uint8_t LaunchEnemy_GroundPod_TwoRocket_End = LaunchEnemy_GroundPod_TwoRocket_Start + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_GroundPod_Start = LaunchEnemy_OneRocket_FuelDepot_OneRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_GroundPod_End = LaunchEnemy_OneRocket_GroundPod_Start + 1;
+    constexpr uint16_t LaunchEnemy_TwoRocket_GroundPod_Start = LaunchEnemy_OneRocket_GroundPod_End + 1;
+    constexpr uint16_t LaunchEnemy_TwoRocket_GroundPod_End = LaunchEnemy_TwoRocket_GroundPod_Start + 1;
 
-    constexpr uint8_t LaunchEnemy_OneRocket_GroundPod_OneRocket_Start = LaunchEnemy_GroundPod_TwoRocket_End + 1;
-    constexpr uint8_t LaunchEnemy_OneRocket_GroundPod_OneRocket_End = LaunchEnemy_OneRocket_GroundPod_OneRocket_Start + 1;
+    constexpr uint16_t LaunchEnemy_GroundPod_OneRocket_Start = LaunchEnemy_TwoRocket_GroundPod_End + 1;
+    constexpr uint16_t LaunchEnemy_GroundPod_OneRocket_End = LaunchEnemy_GroundPod_OneRocket_Start + 1;
+    constexpr uint16_t LaunchEnemy_GroundPod_TwoRocket_Start = LaunchEnemy_GroundPod_OneRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_GroundPod_TwoRocket_End = LaunchEnemy_GroundPod_TwoRocket_Start + 1;
 
-    constexpr uint8_t LaunchEnemy_OneRocket_SurfaceAir_Start = LaunchEnemy_OneRocket_GroundPod_OneRocket_End + 1;
-    constexpr uint8_t LaunchEnemy_OneRocket_SurfaceAir_End = LaunchEnemy_OneRocket_SurfaceAir_Start + 1;
-    constexpr uint8_t LaunchEnemy_TwoRocket_SurfaceAir_Start = LaunchEnemy_OneRocket_SurfaceAir_End + 1;
-    constexpr uint8_t LaunchEnemy_TwoRocket_SurfaceAir_End = LaunchEnemy_TwoRocket_SurfaceAir_Start + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_GroundPod_OneRocket_Start = LaunchEnemy_GroundPod_TwoRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_GroundPod_OneRocket_End = LaunchEnemy_OneRocket_GroundPod_OneRocket_Start + 1;
 
-    constexpr uint8_t LaunchEnemy_SurfaceAir_OneRocket_Start = LaunchEnemy_TwoRocket_SurfaceAir_End + 1;
-    constexpr uint8_t LaunchEnemy_SurfaceAir_OneRocket_End = LaunchEnemy_SurfaceAir_OneRocket_Start + 1;
-    constexpr uint8_t LaunchEnemy_SurfaceAir_TwoRocket_Start = LaunchEnemy_SurfaceAir_OneRocket_End + 1;
-    constexpr uint8_t LaunchEnemy_SurfaceAir_TwoRocket_End = LaunchEnemy_SurfaceAir_TwoRocket_Start + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_SurfaceAir_Start = LaunchEnemy_OneRocket_GroundPod_OneRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_SurfaceAir_End = LaunchEnemy_OneRocket_SurfaceAir_Start + 1;
+    constexpr uint16_t LaunchEnemy_TwoRocket_SurfaceAir_Start = LaunchEnemy_OneRocket_SurfaceAir_End + 1;
+    constexpr uint16_t LaunchEnemy_TwoRocket_SurfaceAir_End = LaunchEnemy_TwoRocket_SurfaceAir_Start + 1;
 
-    constexpr uint8_t LaunchEnemy_OneRocket_SurfaceAir_OneRocket_Start = LaunchEnemy_SurfaceAir_TwoRocket_End + 1;
-    constexpr uint8_t LaunchEnemy_OneRocket_SurfaceAir_OneRocket_End = LaunchEnemy_OneRocket_SurfaceAir_OneRocket_Start + 1;
+    constexpr uint16_t LaunchEnemy_SurfaceAir_OneRocket_Start = LaunchEnemy_TwoRocket_SurfaceAir_End + 1;
+    constexpr uint16_t LaunchEnemy_SurfaceAir_OneRocket_End = LaunchEnemy_SurfaceAir_OneRocket_Start + 1;
+    constexpr uint16_t LaunchEnemy_SurfaceAir_TwoRocket_Start = LaunchEnemy_SurfaceAir_OneRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_SurfaceAir_TwoRocket_End = LaunchEnemy_SurfaceAir_TwoRocket_Start + 1;
 
-    constexpr uint16_t LaunchEnemy_Nothing = LaunchEnemy_OneRocket_SurfaceAir_OneRocket_End + 1;
-    constexpr uint16_t LaunchEnemy_Max = LaunchEnemy_Nothing + 600;
+    constexpr uint16_t LaunchEnemy_OneRocket_SurfaceAir_OneRocket_Start = LaunchEnemy_SurfaceAir_TwoRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_SurfaceAir_OneRocket_End = LaunchEnemy_OneRocket_SurfaceAir_OneRocket_Start + 1;
+
+    constexpr uint16_t LaunchEnemy_Max = LaunchEnemy_OneRocket_SurfaceAir_OneRocket_End;
 
 }
 

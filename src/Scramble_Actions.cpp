@@ -154,11 +154,6 @@ void Game::playerActions() {
         this->player.setX(this->player.getX() + 1);
     }
 
-    if (PC::buttons.pressed(BTN_C)) {
-
-        gameState = GameState::Game_Init;
-
-    }
 
 
     // Player shoots bullet ..

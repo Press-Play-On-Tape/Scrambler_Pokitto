@@ -32,166 +32,37 @@ void Game::game() {
 
     // Process player actions ..
 
-    this->playerActions();
+    if (player.getActive()) {
+
+        this->playerActions();
+
+    }
+    else {
+
+        if (PC::buttons.pressed(BTN_C)) {
+
+            gameState = GameState::Game_Init;
+
+        }
+
+    }
 
 
-    // Move bullets ..
+    // Move bullets and check for collisions ..
 
     this->movePlayerBullets();
     this->movePlayerBombs();
     this->moveEnemyBullets();
 
 
-    // Redirect surface to air missiles ..
+    // Update S2A and rockets ..
 
-    for (Enemy &enemy : this->enemies.enemies) {
-
-        if (enemy.getActive() && enemy.getEnemyType() == EnemyType::SurfaceAir) {
-
-            switch (enemy.getX() - this->player.getX()) {
-
-                case -999 ... 30:
-                    enemy.setDirection(Direction::Right);
-                    break;
-
-                case 31 ... 60:
-                    enemy.setDirection(Direction::Up);
-                    break;
-
-                default:
-                    enemy.setDirection(Direction::Left);
-                    break;
-
-            }
-
-
-            if (random(0, 96) == 0) {
-
-                uint8_t bulletIdx = bullets.getInactiveEnemyBullet();
-
-                if (bulletIdx != Constants::Bullet_None) {
-
-                    Bullet &bullet = bullets.enemyBullets[bulletIdx];
-                    bullet.setActive(true);
-                    bullet.setBulletType(BulletType::EnemyBullet);
-                    bullet.setMuzzleIndex(8);
-                    bullet.setDirection(enemy.getDirection());
-
-                    switch (enemy.getDirection()) {
-
-                        case Direction::Left:
-                            bullet.setX(enemy.getX() - 1);
-                            bullet.setY(enemy.getY() + 1);
-                            break;
-
-                        case Direction::Up:
-                            bullet.setX(enemy.getX() - 1);
-                            bullet.setY(enemy.getY() + 1);
-                            break;
-
-                        case Direction::Right:
-                            bullet.setX(enemy.getX() + Constants::SurfaceAir_Width - 1);
-                            bullet.setY(enemy.getY() + 1);
-                            break;
-
-                    }
-
-                    #ifdef SOUNDS
-                        playSoundEffect(SoundEffect::Laser);
-                    #endif
-
-                }
-
-            }
-
-        }
-
-    }
+    this->redirectSurfaceToAir();
+    this->launchRockets();
 
 
 
-    // Launch rockets?
-
-    for (Enemy &enemy : this->enemies.enemies) {
-
-        if (enemy.getActive() && enemy.getEnemyType() == EnemyType::Rocket) {
-
-            if (!enemy.getInFlight()) {
-
-                enemy.setSpeed(random(2, 5));
-                    
-                switch (enemy.getX() - this->player.getX()) {
-
-                    case -999 ... 30:
-                        enemy.setInFlight(true);
-                        break;
-
-                    case 31 ... 40:
-                        enemy.setInFlight(random(0, 16) == 0);
-                        break;
-
-                    case 41 ... 50:
-                        enemy.setInFlight(random(0, 32) == 0);
-                        break;
-
-                    case 51 ... 60:
-                        enemy.setInFlight(random(0, 96) == 0);
-                        break;
-
-                    case 61 ... 100:
-                        enemy.setInFlight(random(0, 256) == 0);
-                        break;
-
-                    case 101 ... 150:
-                        enemy.setInFlight(random(0, 512) == 0);
-                        break;
-
-                    case 151 ... 210:
-                        enemy.setInFlight(random(0, 1024) == 0);
-                        break;
-
-                }
-
-            }
-            else {
-
-
-                // Move the rocket accoring to the random speed ..
-
-                enemy.setY(enemy.getY() - enemy.getSpeed());
-
-
-                // Has the rocket hit the ceiling?
-
-                Rect enemyRect = enemy.getRect();
-
-                for (uint16_t x = enemyRect.x; x < enemyRect.x + enemyRect.width; x = x + 2) {
-
-                    Point point;
-                    point.setX(x);
-                    point.setY(this->gameScreenVars.scenery.top[x - this->gameScreenVars.distance]);
-
-
-                    // Collide with top ?
-
-                    if (this->collide(point, enemyRect)) {
-
-                        this->explode(enemy.getX() + (Constants::Player_Bullet_Width / 2), enemy.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
-                        enemy.setActive(false);
-                        return;
-
-                    }
-
-                }
-
-            }
-            
-        }
-
-    }
-
-
-    // Has the player collided with the scenery ?
+    // Has the player collided with anything ?
 
     this->checkPlayerCollision();
     
@@ -233,10 +104,6 @@ void Game::game() {
     // ----------------------------------------------------------------------------------------------------
 
     this->renderScenery();
-
-
-    // Render enemies ..
-
     this->renderEnemies();
 
 
@@ -255,7 +122,8 @@ void Game::game() {
     this->renderPlayerBullets();
     this->renderPlayerBombs();
     this->renderEnemyBullets();
-    
+
+
     // Render shockwaves and particles ..
 
     this->renderShockwave(this->gameScreenVars.distance, this->gameScreenVars.viewY);
@@ -265,102 +133,6 @@ void Game::game() {
     // Render HUD ..
 
     this->renderHUD();
-
-}
-
-
-void Game::renderScenery() {
-
-    for (uint8_t i = 0; i < 220; i++) {
-
-
-        // Top 
-
-        if (this->gameScreenVars.scenery.top[i] > this->gameScreenVars.viewY && (this->gameScreenVars.scenery.top[i] <= this->gameScreenVars.viewY + Constants::Screen_Height)) {
-
-            PD::setColor(2);
-            PD::drawFastVLine(i, 0, this->gameScreenVars.scenery.top[i] - this->gameScreenVars.viewY);
-            PD::setColor(3);
-            PD::drawFastVLine(i, this->gameScreenVars.scenery.top[i] - this->gameScreenVars.viewY - 1, 1);
-
-        }
-
-
-        // Bottom
-
-        if (this->gameScreenVars.scenery.top[i] + this->gameScreenVars.scenery.bot[i] <= this->gameScreenVars.viewY + Constants::Screen_Height) {
-
-            PD::setColor(1);
-            PD::drawFastVLine(i, this->gameScreenVars.scenery.top[i] + this->gameScreenVars.scenery.bot[i] - this->gameScreenVars.viewY, Constants::Screen_Height * 3);
-            PD::setColor(3);
-            PD::drawFastVLine(i, this->gameScreenVars.scenery.top[i] + this->gameScreenVars.scenery.bot[i] - this->gameScreenVars.viewY, 1);
-
-        }
-
-    }
-
-}
-
-void Game::renderHUD() {
-
-    PD::setColor(0);
-    PD::fillRect(180, 0, 40, 12);
-    PD::setColor(7);
-    PD::setCursor(181, 2);
-
-    {
-        uint8_t digits[6] = {};
-        extractDigits(digits, this->gameScreenVars.score);
-
-        uint8_t location = 212;
-
-        for (uint8_t j = 0; j < 6; ++j, location -= 6) {
-
-            PD::drawBitmap(location, 1, Images::Numbers[digits[j]]);
-
-        }
-
-    }
-
-}
-
-
-void Game::renderEnemies() {
-
-    for (uint8_t i = 0; i < Constants::Enemy_Count; i++) {
-
-        Enemy &enemy = this->enemies.enemies[i];
-
-        if (enemy.getActive()) {
-
-            if (enemy.getX() >= this->gameScreenVars.distance - Constants::Enemy_Max_Width && enemy.getX() < this->gameScreenVars.distance + 220) {
-
-                switch (enemy.getEnemyType()) {
-
-                    case EnemyType::Rocket:
-                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::Rocket);
-                        break;
-
-                    case EnemyType::FuelDepot:
-                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::FuelDepot);
-                        break;
-
-                    case EnemyType::GroundPod:
-                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::GroundPod);
-                        break;
-
-                    case EnemyType::SurfaceAir:
-                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::SurfaceToAir[static_cast<uint8_t>(enemy.getDirection())]);
-                        break;
-                        
-
-                }
-
-            }
-
-        }
-
-    }
 
 }
 
@@ -489,32 +261,66 @@ void Game::moveEnemyBullets() {
 }
 
 
-void Game::renderPlayerBullets() {
+void Game::redirectSurfaceToAir() {
 
 
-    // Render player bullets ..
-    
-    for (Bullet &bullet : bullets.bullets) {
-                                
-        if (bullet.getActive()) {
-                
-            if (bullet.getMuzzleIndex() > 1) {
+    // Redirect surface to air missiles ..
 
-                PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY, Images::Muzzle[3 - (bullet.getMuzzleIndex() / 2)]);
+    for (Enemy &enemy : this->enemies.enemies) {
+
+        if (enemy.getActive() && enemy.getEnemyType() == EnemyType::SurfaceAir) {
+
+            switch (enemy.getX() - this->player.getX()) {
+
+                case -999 ... 30:
+                    enemy.setDirection(Direction::Right);
+                    break;
+
+                case 31 ... 60:
+                    enemy.setDirection(Direction::Up);
+                    break;
+
+                default:
+                    enemy.setDirection(Direction::Left);
+                    break;
 
             }
-            else {
 
-                switch (bullet.getHitCount()) {
 
-                    case 0:
-                        PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY, Images::Bullet);
-                        break;
+            if (random(0, 96) == 0) {
 
-                    default:
+                uint8_t bulletIdx = this->bullets.getInactiveEnemyBullet();
 
-                        PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY - 5, Images::Hit[bullet.getHitCount() - 1]);
-                        break;
+                if (bulletIdx != Constants::Bullet_None) {
+
+                    Bullet &bullet = this->bullets.enemyBullets[bulletIdx];
+                    bullet.setActive(true);
+                    bullet.setBulletType(BulletType::EnemyBullet);
+                    bullet.setMuzzleIndex(8);
+                    bullet.setDirection(enemy.getDirection());
+
+                    switch (enemy.getDirection()) {
+
+                        case Direction::Left:
+                            bullet.setX(enemy.getX() - 1);
+                            bullet.setY(enemy.getY() + 1);
+                            break;
+
+                        case Direction::Up:
+                            bullet.setX(enemy.getX() + (Constants::SurfaceAir_Width / 2) - 1);
+                            bullet.setY(enemy.getY() - 2);
+                            break;
+
+                        case Direction::Right:
+                            bullet.setX(enemy.getX() + Constants::SurfaceAir_Width - 1);
+                            bullet.setY(enemy.getY() + 1);
+                            break;
+
+                    }
+
+                    #ifdef SOUNDS
+                        playSoundEffect(SoundEffect::Laser);
+                    #endif
 
                 }
 
@@ -527,74 +333,85 @@ void Game::renderPlayerBullets() {
 }
 
 
-void Game::renderPlayerBombs() {
+void Game::launchRockets() {
 
 
-    // Render player bombs ..
-    
-    for (Bullet &bomb : bullets.bombs) {
-                                
-        if (bomb.getActive()) {
-                
-            if (bomb.getMuzzleIndex() > 1) {
+    // Launch rockets?
 
-                PD::drawBitmap(bomb.getX() - this->gameScreenVars.distance, bomb.getY() - this->gameScreenVars.viewY, Images::Muzzle[3 - (bomb.getMuzzleIndex() / 2)]);
+    for (Enemy &enemy : this->enemies.enemies) {
 
-            }
-            else {
+        if (enemy.getActive() && enemy.getEnemyType() == EnemyType::Rocket) {
 
-                switch (bomb.getHitCount()) {
+            if (!enemy.getInFlight()) {
 
-                    case 0:
-                        PD::drawBitmap(bomb.getX() - this->gameScreenVars.distance, bomb.getY() - this->gameScreenVars.viewY, Images::Bomb);
+                enemy.setSpeed(random(2, 5));
+                    
+                switch (enemy.getX() - this->player.getX()) {
+
+                    case -999 ... 30:
+                        enemy.setInFlight(true);
                         break;
 
-                    default:
-
-                        PD::drawBitmap(bomb.getX() - this->gameScreenVars.distance, bomb.getY() - this->gameScreenVars.viewY - 5, Images::Hit[bomb.getHitCount() - 1]);
+                    case 31 ... 40:
+                        enemy.setInFlight(random(0, 16) == 0);
                         break;
 
-                }
-
-            }
-
-        }
-
-    }
-
-}
-
-
-void Game::renderEnemyBullets() {
-
-
-    // Render enemy bullets ..
-    
-    for (Bullet &bullet : bullets.enemyBullets) {
-                                
-        if (bullet.getActive()) {
-                
-            if (bullet.getMuzzleIndex() > 1) {
-
-                PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance - 2, bullet.getY() - this->gameScreenVars.viewY - 2, Images::Muzzle[3 - (bullet.getMuzzleIndex() / 2)]);
-
-            }
-            else {
-
-                switch (bullet.getHitCount()) {
-
-                    case 0:
-                        PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY, Images::EnemyBullet);
+                    case 41 ... 50:
+                        enemy.setInFlight(random(0, 32) == 0);
                         break;
 
-                    default:
-                        PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY - 5, Images::Hit[bullet.getHitCount() - 1]);
+                    case 51 ... 60:
+                        enemy.setInFlight(random(0, 96) == 0);
+                        break;
+
+                    case 61 ... 100:
+                        enemy.setInFlight(random(0, 256) == 0);
+                        break;
+
+                    case 101 ... 150:
+                        enemy.setInFlight(random(0, 512) == 0);
+                        break;
+
+                    case 151 ... 210:
+                        enemy.setInFlight(random(0, 1024) == 0);
                         break;
 
                 }
 
             }
+            else {
 
+
+                // Move the rocket accoring to the random speed ..
+
+                enemy.setY(enemy.getY() - enemy.getSpeed());
+
+
+                // Has the rocket hit the ceiling?
+
+                Rect enemyRect = enemy.getRect();
+
+                for (uint16_t x = enemyRect.x; x < enemyRect.x + enemyRect.width; x = x + 2) {
+
+                    Point point;
+                    point.setX(x);
+                    point.setY(this->gameScreenVars.scenery.top[x - this->gameScreenVars.distance]);
+
+
+                    // Collide with top ?
+
+                    if (this->collide(point, enemyRect)) {
+
+                        this->explode(enemy.getX() + (Constants::Player_Bullet_Width / 2), enemy.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
+                        enemy.setActive(false);
+                        return;
+
+                    }
+
+                }
+
+            }
+            
         }
 
     }
