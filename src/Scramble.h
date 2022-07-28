@@ -57,6 +57,7 @@ class Game {
         void playerActions();
         void redirectSurfaceToAir();
         void launchRockets();
+        void launchMines();
         void movePlayerBullets();
         void movePlayerBombs();
         void moveEnemyBullets();

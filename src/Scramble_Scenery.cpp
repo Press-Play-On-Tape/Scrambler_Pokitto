@@ -95,42 +95,6 @@ void Game::createScenery(uint8_t x) {
 
             }
         
-        
-
-/*
-            if (this->gameScreenVars.scenery.bot_Counter <= 4) {
-
-                this->gameScreenVars.scenery.top_Inc = (random(0, 5) - 2);     // Go any direction ..
-
-                if (this->gameScreenVars.scenery.top_Inc == 0) {
-
-                    this->gameScreenVars.scenery.top_Counter = random(1, 3);
-
-                }
-                else {
-                    
-                    this->gameScreenVars.scenery.top_Counter = random(2, 5);
-
-                }
-
-            }
-            else {
-
-                this->gameScreenVars.scenery.top_Inc = random(0, 3) / 2;     // Go flat or down ..   
-
-                if (this->gameScreenVars.scenery.top_Inc == 0) {
-
-                    this->gameScreenVars.scenery.top_Counter = random(1, 3);
-
-                }
-                else {
-                    
-                    this->gameScreenVars.scenery.top_Counter = random(2, 5);
-
-                }
-
-            }
-*/
         }
         else {
 
@@ -190,8 +154,37 @@ void Game::createScenery(uint8_t x) {
             case Constants::Scenery_DistanceBetween_Normal_Start ... Constants::Scenery_DistanceBetween_Normal_End:
                 {
 
+                    // Calculate min and max ranges ..
+
+                    uint16_t minRange = Constants::LaunchEnemy_Start;
+                    uint16_t maxRange = Constants::LaunchEnemy_Start;
+                    minRange = minRange + (this->gameScreenVars.score / 192 < Constants::LaunchEnemy_Gap / 2 ? this->gameScreenVars.score / 192 : Constants::LaunchEnemy_Gap / 2);
+
+                    switch (this->gameScreenVars.score) {
+
+                        case 0 ... 150:
+                            minRange = Constants::LaunchEnemy_Gap / 4;
+                            maxRange = Constants::LaunchEnemy_FourRocket_End;
+                            break;
+
+                        case 151 ... 500:
+                            minRange = Constants::LaunchEnemy_Gap / 4;
+                            maxRange = Constants::LaunchEnemy_OneRocket_FuelDepot_OneRocket_End;
+                            break;
+
+                        case 501 ... 800:
+                            maxRange = Constants::LaunchEnemy_OneRocket_GroundPod_OneRocket_End;
+                            break;
+
+                        default:
+                            maxRange = Constants::LaunchEnemy_OneRocket_SurfaceAir_OneRocket_End;
+                            break;
+
+                    }
+
+                    
                     uint8_t activeEnemies = this->enemies.getInactiveEnemyCount();
-                    uint16_t randomEnemy = random(0, Constants::LaunchEnemy_Max + 1);
+                    uint16_t randomEnemy = random(minRange, maxRange + 1);
 
                     switch (randomEnemy) {
 

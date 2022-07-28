@@ -31,6 +31,13 @@ void Game::title() {
 
     }         
 
+    if (PC::buttons.pressed(BTN_B)) { 
+
+        uint32_t index = cookie->setLastScore(0);
+        this->gameState = GameState::HighScore_Init;
+
+    }         
+
     if (PC::buttons.pressed(BTN_UP)) {
 
         this->cookie->sfx--;

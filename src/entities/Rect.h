@@ -4,7 +4,7 @@ class Rect {
 
     public:
 
-        int16_t x;      
+        int32_t x;      
         int16_t y;      
         uint8_t width;  
         uint8_t height; 

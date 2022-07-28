@@ -6,6 +6,7 @@
 struct Part {
 
     private:
+    
         float x = 0;
         float y = 0;
         float deltaX = 0;

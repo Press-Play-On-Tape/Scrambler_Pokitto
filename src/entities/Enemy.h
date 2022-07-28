@@ -18,7 +18,6 @@ class Enemy : public Point {
         int8_t incY = 0;
 
 
-
     public:
 
         bool getInFlight()                      { return this->inFlight; }
@@ -51,12 +50,15 @@ class Enemy : public Point {
         void reset() {
 
             this->setActive(false);
+            this->setX(-1);
             this->inFlight = false;
             
         }
 
         void move(uint16_t distance) {
 
+            if (!this->getActive()) return;
+            
             switch (this->enemyType) {
 
                 case EnemyType::Mine:

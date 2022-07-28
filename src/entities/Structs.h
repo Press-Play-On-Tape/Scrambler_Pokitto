@@ -42,9 +42,9 @@ struct SplashScreenVariables {
 struct GameScreenVars {
 
     uint8_t clearScores = 0;
-    uint16_t score = 0;
+    uint32_t score = 0;
     int16_t viewY = 980;
-    uint16_t distance = 0;
+    uint32_t distance = 0;
     uint8_t countdown = 0;
 
     ExplosionColor explosionColor = ExplosionColor::Blue;
@@ -68,14 +68,19 @@ struct GameScreenVars {
 
     }
 
-    void reset() {
+    void reset(bool startOfGame) {
 
         this->clearScores = 0;
-        this->score = 0;
         this->viewY = 980;
         this->distance = 0;
-        this->countdown = 144;
+        this->countdown = (32 * 4) - 1;
         this->scenery.reset();
+
+        if (!startOfGame) {
+    
+            this->score = 0;
+
+        }
 
     }
 
