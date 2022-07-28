@@ -2,12 +2,15 @@
 
 #define _DEBUG
 #define _SOUNDS
-#define COOKIE_INITIALISED 12
+#define COOKIE_INITIALISED 16
 
 namespace Constants {
 
+    constexpr uint8_t No_Score = 255;
+
     constexpr uint8_t Screen_Height = 188;
     constexpr uint8_t Distance = 64;
+    constexpr uint8_t GrindToHalt = 113;
 
     constexpr uint8_t Player_Width = 20;
     constexpr uint8_t Player_Height = 13;
@@ -27,7 +30,7 @@ namespace Constants {
     constexpr uint8_t Enemy_Bullet_Count = 4;
     constexpr uint8_t Enemy_Bullet_Width = 2;
     constexpr uint8_t Enemy_Bullet_Height = 2;
-    constexpr uint8_t Enemy_Max_Width = 40;
+    constexpr uint8_t Enemy_Max_Width = 50;
     constexpr uint8_t Enemy_Count = 10;
     constexpr uint8_t Enemy_None = 255;    
 
@@ -43,6 +46,13 @@ namespace Constants {
 
     constexpr uint8_t SurfaceAir_Width = 24;
     constexpr uint8_t SurfaceAir_Height = 18;
+
+    constexpr uint8_t Mine_Width = 15;
+    constexpr uint8_t Mine_Height = 15;
+    constexpr uint8_t Mine_Path_Count = 10;
+
+    constexpr uint8_t City_Width = 50;
+    constexpr uint8_t City_Height = 21;
 
     constexpr uint8_t Particle_Count = 75;
     constexpr uint8_t Particle_None = 255;
@@ -61,15 +71,23 @@ namespace Constants {
 
     // Enemy limits ..
 
+    constexpr uint16_t LaunchEnemy_Gap = 2400;
     constexpr uint16_t LaunchEnemy_Start = 0;
-    constexpr uint16_t LaunchEnemy_Nothing = LaunchEnemy_Start + 1600;
+    constexpr uint16_t LaunchEnemy_Nothing = LaunchEnemy_Start + LaunchEnemy_Gap;
 
-    constexpr uint16_t LaunchEnemy_OneRocket_Start = LaunchEnemy_Nothing + 1;
-    constexpr uint16_t LaunchEnemy_OneRocket_End = LaunchEnemy_OneRocket_Start + 12;
+    constexpr uint16_t LaunchEnemy_City_00_Start = LaunchEnemy_Nothing + 1;
+    constexpr uint16_t LaunchEnemy_City_00_End = LaunchEnemy_City_00_Start + 4;
+    constexpr uint16_t LaunchEnemy_City_01_Start = LaunchEnemy_City_00_End + 1;
+    constexpr uint16_t LaunchEnemy_City_01_End = LaunchEnemy_City_01_Start + 4;
+    constexpr uint16_t LaunchEnemy_City_02_Start = LaunchEnemy_City_01_End + 1;
+    constexpr uint16_t LaunchEnemy_City_02_End = LaunchEnemy_City_02_Start + 4;
+
+    constexpr uint16_t LaunchEnemy_OneRocket_Start = LaunchEnemy_City_02_End + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_End = LaunchEnemy_OneRocket_Start + 24;
     constexpr uint16_t LaunchEnemy_TwoRocket_Start = LaunchEnemy_OneRocket_End + 1;
-    constexpr uint16_t LaunchEnemy_TwoRocket_End = LaunchEnemy_TwoRocket_Start + 6;
+    constexpr uint16_t LaunchEnemy_TwoRocket_End = LaunchEnemy_TwoRocket_Start + 12;
     constexpr uint16_t LaunchEnemy_ThreeRocket_Start = LaunchEnemy_TwoRocket_End + 1;
-    constexpr uint16_t LaunchEnemy_ThreeRocket_End = LaunchEnemy_ThreeRocket_Start + 0;
+    constexpr uint16_t LaunchEnemy_ThreeRocket_End = LaunchEnemy_ThreeRocket_Start + 1;
     constexpr uint16_t LaunchEnemy_FourRocket_Start = LaunchEnemy_ThreeRocket_End + 1;
     constexpr uint16_t LaunchEnemy_FourRocket_End = LaunchEnemy_FourRocket_Start + 0;
 
@@ -123,6 +141,9 @@ enum class GameState : uint8_t {
     Title,
     Game_Init,
     Game,
+    GameOver,
+    HighScore_Init,
+    HighScore,
 };
 
 enum class EnemyType : uint8_t {
@@ -130,6 +151,10 @@ enum class EnemyType : uint8_t {
     FuelDepot,
     GroundPod,
     SurfaceAir,
+    Mine,
+    City_00,
+    City_01,
+    City_02,
 };
 
 enum class Themes : uint8_t {

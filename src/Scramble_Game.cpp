@@ -15,10 +15,10 @@ void Game::game_Init() {
     this->gameState = GameState::Game;
     // this->playTheme(Themes::Main);
     // this->gamePlay.setCounter(0);
-    this->player.reset();
+    this->player.reset(true);
     this->enemies.reset();
     this->bullets.reset();
-    this->gameScreenVars.reset();
+    this->gameScreenVars.reset(true);
 
 }   
 
@@ -37,15 +37,6 @@ void Game::game() {
         this->playerActions();
 
     }
-    else {
-
-        if (PC::buttons.pressed(BTN_C)) {
-
-            gameState = GameState::Game_Init;
-
-        }
-
-    }
 
 
     // Move bullets and check for collisions ..
@@ -55,10 +46,11 @@ void Game::game() {
     this->moveEnemyBullets();
 
 
-    // Update S2A and rockets ..
+    // Update Surface to Air missiles and Rockets ..
 
     this->redirectSurfaceToAir();
     this->launchRockets();
+    this->launchMines();
 
 
 
@@ -79,9 +71,21 @@ void Game::game() {
 
         for (Enemy &enemy : this->enemies.enemies) {
 
-            if (enemy.getX() < this->gameScreenVars.distance - Constants::Enemy_Max_Width) {
+            if (enemy.getActive()) {
 
-                enemy.setActive(false);
+                switch (enemy.getEnemyType()) {
+
+                    case EnemyType::Mine:
+                        enemy.move(this->gameScreenVars.distance);
+                        break;
+
+                }
+
+                if (enemy.getX() < this->gameScreenVars.distance - Constants::Enemy_Max_Width) {
+
+                    enemy.setActive(false);
+
+                }
 
             }
 
@@ -91,6 +95,38 @@ void Game::game() {
         if (PC::frameCount % Constants::Distance == 0) {
 
             this->gameScreenVars.score++;
+
+        }
+
+    }
+
+
+    // End of life or end of game?
+
+    if (!this->player.getActive()) {
+
+        if (this->player.getCountdown() == Constants::GrindToHalt) {
+
+            if (this->player.getLives() > 0) {
+
+                this->player.reset(false);
+                this->enemies.reset();
+                this->bullets.reset();
+                this->gameScreenVars.reset(false);
+
+            }
+            else {
+
+                this->gameState = GameState::GameOver;
+
+                if (PC::buttons.pressed(BTN_A)) {
+
+                    this->gameState = GameState::HighScore_Init;
+                    uint32_t index = cookie->setLastScore(this->gameScreenVars.score);
+                    
+                }
+
+            }
 
         }
 
@@ -107,14 +143,11 @@ void Game::game() {
     this->renderEnemies();
 
 
-
     // Render player ..
-// ////printf("%i,%i\n", this->player.getX() - this->gameScreenVars.distance, this->player.getY() - this->gameScreenVars.viewY);
 
     if (this->player.getActive()) {
         PD::drawBitmap(this->player.getX() - this->gameScreenVars.distance, this->player.getY() - this->gameScreenVars.viewY, Images::PlayerShip);
     }
-
 
 
     // Render bullets and bombs ..
@@ -133,6 +166,22 @@ void Game::game() {
     // Render HUD ..
 
     this->renderHUD();
+
+
+    // Render entry banners ..
+
+    if (this->gameScreenVars.countdown > 0) {
+
+        PD::drawBitmap(50, 65, Images::Countdown[this->gameScreenVars.countdown / 32]);
+        this->gameScreenVars.countdown--;
+
+    }
+
+    if (this->gameState == GameState::GameOver) {
+
+        PD::drawBitmap(50, 65, Images::GameOver);
+
+    }
 
 }
 
@@ -412,6 +461,35 @@ void Game::launchRockets() {
 
             }
             
+        }
+
+    }
+
+}
+
+
+void Game::launchMines() {
+
+    if (this->gameScreenVars.score > 500 && this->gameScreenVars.distance > 750) {
+
+        uint16_t rand = 512 - (this->gameScreenVars.score < 256000 ? (this->gameScreenVars.score / 1000) : 256);
+
+        if (random(0, rand) == 0) {
+
+            uint8_t idx = this->enemies.getInactiveEnemy();
+
+            if (idx != Constants::Enemy_None) {
+
+                Enemy &enemy = this->enemies.enemies[idx];
+
+                enemy.setEnemyType(EnemyType::Mine);
+                enemy.setX(this->gameScreenVars.distance + 220);
+                enemy.setY(this->gameScreenVars.scenery.top[219] + (this->gameScreenVars.scenery.bot[219] / 2));
+                enemy.setActive(true);
+                enemy.setScenery(&this->gameScreenVars.scenery);
+
+            }
+
         }
 
     }
