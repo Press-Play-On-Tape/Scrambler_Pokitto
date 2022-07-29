@@ -169,6 +169,10 @@ void Game::checkPlayerBulletCollision(Bullet &bullet) {
                         this->gameScreenVars.score = this->gameScreenVars.score + 25;
                         break;
 
+                    case EnemyType::FuelCan:
+                        this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Medium, this->gameScreenVars.getColor());
+                        break;
+
                 }
 
                 enemy.setActive(false);
@@ -280,11 +284,24 @@ void Game::checkPlayerCollision() {
 
                 if (collide(enemyRect, playerRect)) {
 
-                    this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
-                    this->player.setActive(false);
-                    this->player.setCountdown(1);
-                    this->player.decLives();
                     enemy.setActive(false);
+
+                    switch (enemy.getEnemyType()) {
+
+                        case EnemyType::FuelCan:
+                            this->explode(enemy.getX() + (Constants::FuelCan_Width / 2), enemy.getY() + (Constants::FuelCan_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
+                            this->player.incFuel(random(0, 75) + 50);
+                            break;
+
+                        default:
+                            this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
+                            this->player.setActive(false);
+                            this->player.setCountdown(1);
+                            this->player.decLives();
+                            break;
+
+                    }
+
                     break;
 
                 }

@@ -52,16 +52,31 @@ void Game::renderHUD() {
     PD::drawBitmap(125, 1, Images::Fuel);
     PD::setColor(4);
 
+
+    // Rneder fuel left ..
+    
     const uint8_t colors[] = { 8, 8, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
 
     for (uint8_t i = 0; i < 45; i = i + 3) {
 
-        PD::setColor(colors[i / 3]);
+        PD::setColor(5);
+
+        if (i <= (this->player.getFuel() * 3) / 10) {
+
+            if (this->player.getFuel() > 30 || PC::frameCount % 64 < 32) { 
+
+                PD::setColor(colors[i / 3]);
+
+            }
+
+        }
+
         PD::fillRect(135 + i, 1, 2, 7);
 
     }
 
 
+    // Render score ..
     {
         uint8_t digits[6] = {};
         extractDigits(digits, this->gameScreenVars.score);
@@ -121,6 +136,15 @@ void Game::renderEnemies() {
 
                     case EnemyType::City_02:
                         PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::City_02);
+                        break;
+
+                    case EnemyType::FuelCan:
+                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::FuelCan);
+                        break;
+
+                    case EnemyType::Eighter:
+                    case EnemyType::Circler:
+                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::Eighter[PC::frameCount % 80 / 16]);
                         break;
                         
 

@@ -51,6 +51,8 @@ void Game::game() {
     this->redirectSurfaceToAir();
     this->launchRockets();
     this->launchMines();
+    this->launchFuelCans();
+    this->launchEighterOrCircler();
 
 
 
@@ -69,6 +71,21 @@ void Game::game() {
         this->gameScreenVars.distance = this->gameScreenVars.distance + 2;
         this->player.incX(2);
 
+        if (this->gameScreenVars.distance % 96 == 0) {
+
+            this->player.decFuel();
+
+            if (this->player.getFuel() == 0) {
+
+                this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
+                this->player.setActive(false);
+                this->player.setCountdown(1);
+                this->player.decLives();
+
+            }
+
+        }
+
         for (Enemy &enemy : this->enemies.enemies) {
 
             if (enemy.getActive()) {
@@ -76,6 +93,8 @@ void Game::game() {
                 switch (enemy.getEnemyType()) {
 
                     case EnemyType::Mine:
+                    case EnemyType::Eighter:
+                    case EnemyType::Circler:
                         enemy.move(this->gameScreenVars.distance);
                         break;
 
@@ -487,6 +506,74 @@ void Game::launchMines() {
                 enemy.setY(this->gameScreenVars.scenery.top[219] + (this->gameScreenVars.scenery.bot[219] / 2));
                 enemy.setActive(true);
                 enemy.setScenery(&this->gameScreenVars.scenery);
+
+            }
+
+        }
+
+    }
+
+}
+
+
+void Game::launchFuelCans() {
+
+   if (this->gameScreenVars.score > 500 && this->gameScreenVars.distance > 750) {
+
+        if (random(0, 512) == 0 && this->gameScreenVars.scenery.bot[219] > 150) {
+
+            uint8_t idx = this->enemies.getInactiveEnemy();
+
+            if (idx != Constants::Enemy_None) {
+
+                Enemy &enemy = this->enemies.enemies[idx];
+
+                enemy.setEnemyType(EnemyType::FuelCan);
+                enemy.setX(this->gameScreenVars.distance + 220);
+                enemy.setY(this->gameScreenVars.scenery.top[219] + (this->gameScreenVars.scenery.bot[219] / 2));
+                enemy.setActive(true);
+                //enemy.setScenery(&this->gameScreenVars.scenery);
+
+            }
+
+        }
+
+    }
+
+}
+
+
+void Game::launchEighterOrCircler() {
+
+    if (this->gameScreenVars.score > 750 && this->gameScreenVars.distance > 1000) {
+    //if (true) {
+
+        if (random(0, 512) == 0) {
+        // if (random(0, 64) == 0) {
+
+            uint8_t idx = this->enemies.getInactiveEnemy();
+                
+            if (idx != Constants::Enemy_None) {
+
+                if (this->gameScreenVars.scenery.bot[219] > 150) {
+
+                    Enemy &enemy = this->enemies.enemies[idx];
+
+                    enemy.setEnemyType(EnemyType::Eighter);
+                    enemy.setX(this->gameScreenVars.distance + 220);
+                    enemy.setY(this->gameScreenVars.scenery.top[219] + (this->gameScreenVars.scenery.bot[219] / 2) - 32);
+                    enemy.setActive(true);
+ 
+                }
+                else {
+
+                    Enemy &enemy = this->enemies.enemies[idx];
+                    enemy.setEnemyType(EnemyType::Circler);
+                    enemy.setX(this->gameScreenVars.distance + 220);
+                    enemy.setY(this->gameScreenVars.scenery.top[219] + (this->gameScreenVars.scenery.bot[219] / 2) - 20);
+                    enemy.setActive(true);
+
+                }
 
             }
 

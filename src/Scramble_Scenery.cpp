@@ -46,7 +46,6 @@ uint16_t Game::launchEnemy(EnemyType enemyType, uint16_t x, int16_t y) {
 
 void Game::createScenery(uint8_t x) {
 
-// printf("t %i, stc %i, sti %i, b %i, sbc %i, sbi %i\n", this->gameScreenVars.scenery.top[x - 1], scenery_Top_Counter, scenery_Top_Inc, this->gameScreenVars.scenery.bot[x - 1], scenery_Bottom_Counter, scenery_Bottom_Inc);
     if (this->gameScreenVars.scenery.top_Counter > 0) {
 
         this->gameScreenVars.scenery.top[x] = this->gameScreenVars.scenery.top[x - 1] + this->gameScreenVars.scenery.top_Inc;

@@ -58,6 +58,8 @@ class Game {
         void redirectSurfaceToAir();
         void launchRockets();
         void launchMines();
+        void launchFuelCans();
+        void launchEighterOrCircler();
         void movePlayerBullets();
         void movePlayerBombs();
         void moveEnemyBullets();

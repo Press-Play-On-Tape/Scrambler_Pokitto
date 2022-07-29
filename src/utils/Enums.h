@@ -16,12 +16,12 @@ namespace Constants {
     constexpr uint8_t Player_Height = 13;
     constexpr uint8_t Player_Inertia = 8;
 
-    constexpr uint8_t Player_Bullet_Count = 4;
+    constexpr uint8_t Player_Bullet_Count = 6;
     constexpr uint8_t Player_Bullet_Width = 8;
     constexpr uint8_t Player_Bullet_Height = 5;
     constexpr uint8_t Bullet_None = 255;
 
-    constexpr uint8_t Player_Bomb_Count = 4;
+    constexpr uint8_t Player_Bomb_Count = 2;
     constexpr uint8_t Player_Bomb_Width = 5;
     constexpr uint8_t Player_Bomb_Height = 8;
 
@@ -53,6 +53,9 @@ namespace Constants {
 
     constexpr uint8_t City_Width = 50;
     constexpr uint8_t City_Height = 21;
+
+    constexpr uint8_t FuelCan_Width = 12;
+    constexpr uint8_t FuelCan_Height = 16;
 
     constexpr uint8_t Particle_Count = 75;
     constexpr uint8_t Particle_None = 255;
@@ -132,7 +135,29 @@ namespace Constants {
 
     constexpr uint16_t LaunchEnemy_Max = LaunchEnemy_OneRocket_SurfaceAir_OneRocket_End;
 
-}
+};
+
+namespace Pathways {
+
+    constexpr uint8_t Figure8[] = {
+        12, 0, 13, 0, 14, 0, 15, 1, 16, 1, 17, 1, 18, 2, 19, 2, 20, 3, 21, 4, 22, 5, 22, 6, 23, 7, 23, 8, 23, 9, 24, 10, 24, 11, 24, 12, 24, 13, 24, 14, 23, 15, 23, 16, 
+        23, 17, 22, 18, 22, 19, 21, 20, 20, 21, 19, 22, 18, 22, 15, 23, 16, 23, 17, 23, 14, 24, 13, 24, 12, 24, 11, 24, 10, 24, 9, 25, 8, 25, 7, 25, 6, 26, 5, 26, 4, 27,    
+        3, 28, 2, 29, 2, 30, 1, 31, 1, 32, 1, 33, 0, 34, 0, 35, 0, 36, 0, 37, 0, 38, 1, 39, 1, 40, 1, 41, 2, 42, 2, 43, 3, 44, 4, 45, 5, 46, 6, 46, 7, 47, 8, 47, 9, 47, 
+        10, 48, 11, 48, 12, 48, 13, 48, 14, 48, 15, 7, 16, 47, 17, 47, 18, 46, 19, 46, 20, 45, 21, 44, 22, 43, 22, 42, 23, 41, 23, 40, 23, 39, 24, 38, 24, 37, 24, 36, 24, 
+        35, 24, 34, 23, 33, 23, 32, 23, 31, 22, 30, 22, 29, 21, 28, 20, 27, 19, 26, 18, 26, 17, 25, 16, 25, 15, 25, 14, 24, 13, 24, 12, 24, 11, 24, 10, 24, 9, 23, 8, 23, 
+        7, 23, 6, 22, 5, 22, 4, 21, 3, 20, 2, 19, 2, 18, 1, 17, 1, 16, 1, 15, 0, 14, 0, 13, 0, 12, 0, 11, 0, 10, 1, 9, 1, 8, 1, 7, 2, 6, 2, 5, 3, 4, 4, 3, 5, 2, 6, 2, 7, 
+        1, 8, 1, 9, 1, 10, 0, 11, 0,
+    };
+
+    constexpr uint8_t Circle[] = {
+        12, 0, 13, 0, 14, 0, 15, 1, 16, 1, 17, 1, 18, 2, 19, 2, 20, 3, 21, 4, 22, 5, 22, 6, 23, 7, 23, 8, 23, 9, 24, 10, 24, 11, 24, 12, 24, 13, 24, 14, 23, 15, 23, 16, 
+        23, 17, 22, 18, 22, 19, 21, 20, 20, 21, 19, 22, 18, 22, 15, 23, 16, 23, 17, 23, 14, 24, 13, 24, 12, 24, 11, 24, 10, 24, 9, 23, 8, 23, 7, 23, 6, 22, 5, 22, 4, 21, 
+        3, 20, 2, 19, 2, 18, 1, 17, 1, 16, 1, 15, 0, 14, 0, 13, 0, 12, 0, 11, 0, 10, 1, 9, 1, 8, 1, 7, 2, 6, 2, 5, 3, 4, 4, 3, 5, 2, 6, 2, 7, 1, 8, 1, 9, 1, 10, 0, 11, 0,
+        
+    };
+
+};
+
 
 enum class GameState : uint8_t {
     Splash_Init,
@@ -155,6 +180,9 @@ enum class EnemyType : uint8_t {
     City_00,
     City_01,
     City_02,
+    FuelCan,
+    Eighter,
+    Circler,
 };
 
 enum class Themes : uint8_t {

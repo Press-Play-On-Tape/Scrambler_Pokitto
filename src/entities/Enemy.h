@@ -16,6 +16,8 @@ class Enemy : public Point {
         Scenery *scenery;
         uint8_t counter = 0;
         int8_t incY = 0;
+        uint8_t prevX = 0;
+        uint8_t prevY = 0;
 
 
     public:
@@ -41,6 +43,19 @@ class Enemy : public Point {
                 this->counter = 0;
                 this->inFlight = false;
                 this->direction = Direction::Left;
+            }
+            else {
+
+                switch (this->enemyType) {
+
+                    case EnemyType::Eighter:
+                    case EnemyType::Circler:
+                        this->counter = 0;
+                        this->prevX = Pathways::Figure8[this->counter];
+                        this->prevY = Pathways::Figure8[this->counter + 1];
+                        break;
+
+                }
             }
 
             Point::setActive(val);
@@ -88,6 +103,74 @@ class Enemy : public Point {
                             break;
 
                     }
+
+                    break;
+
+                case EnemyType::Eighter:
+
+                    this->counter++;
+                    if (this->counter == 136) this->counter = 0;
+
+                    switch (Pathways::Figure8[this->counter * 2] - this->prevX) {
+
+                        case -1:
+                            this->decX();
+                            break;
+
+                        case 1:
+                            this->incX();
+                            break;
+
+                    }
+
+                    switch (Pathways::Figure8[(this->counter * 2) + 1] - this->prevY) {
+
+                        case -1:
+                            this->decY();
+                            break;
+
+                        case 1:
+                            Point::incY();
+                            break;
+
+                    }
+
+                    prevX = Pathways::Figure8[this->counter * 2];
+                    prevY = Pathways::Figure8[(this->counter * 2) + 1];
+
+                    break;
+
+                case EnemyType::Circler:
+
+                    this->counter++;
+                    if (this->counter == 67) this->counter = 0;
+
+                    switch (Pathways::Circle[this->counter * 2] - this->prevX) {
+
+                        case -1:
+                            this->decX();
+                            break;
+
+                        case 1:
+                            this->incX();
+                            break;
+
+                    }
+
+                    switch (Pathways::Circle[(this->counter * 2) + 1] - this->prevY) {
+
+                        case -1:
+                            this->decY();
+                            break;
+
+                        case 1:
+                            Point::incY();
+                            break;
+
+                    }
+
+                    prevX = Pathways::Circle[this->counter * 2];
+                    prevY = Pathways::Circle[(this->counter * 2) + 1];
 
                     break;
 
@@ -156,6 +239,21 @@ class Enemy : public Point {
                     rect.y = this->getY() + 1;
                     rect.width = Constants::Mine_Width;
                     rect.height = Constants::Mine_Height;
+                    return rect;
+
+                case EnemyType::FuelCan:
+                    rect.x = this->getX() + 1;
+                    rect.y = this->getY() + 1;
+                    rect.width = Constants::FuelCan_Width;
+                    rect.height = Constants::FuelCan_Height;
+                    return rect;
+
+                case EnemyType::Eighter:
+                case EnemyType::Circler:
+                    rect.x = this->getX() + 1;
+                    rect.y = this->getY() + 1;
+                    rect.width = 11;
+                    rect.height = 14;
                     return rect;
 
                 default:

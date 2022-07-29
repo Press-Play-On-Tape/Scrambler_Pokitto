@@ -43,6 +43,20 @@ class Player : public Point {
 
         }
         
+        void decFuel() {
+
+            this->fuel--;
+
+        }
+        
+        void incFuel(uint8_t val) {
+
+            this->fuel = this->fuel + val;
+
+            if (this->fuel > 150) this->fuel = 150;
+
+        }
+
         void incX(uint8_t inc) {
 
             this->setX(this->getX() + inc);
