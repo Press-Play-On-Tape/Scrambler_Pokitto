@@ -91,17 +91,7 @@ void Game::playerActions() {
 
         case Direction::Down:
 
-            if (PC::buttons.pressed(BTN_UP) || PC::buttons.repeat(BTN_UP, 1)) {
-
-                this->player.decY(1, PC::frameCount, Constants::Player_Inertia);
-
-                if (this->player.getY() - this->gameScreenVars.viewY < 70) {
-                    this->gameScreenVars.viewY = this->gameScreenVars.viewY - 1;
-                }
-
-            }
-
-            else if (PC::buttons.pressed(BTN_DOWN) || PC::buttons.repeat(BTN_DOWN, (this->player.getYDelay() / 2))) {
+            if (PC::buttons.pressed(BTN_DOWN) || PC::buttons.repeat(BTN_DOWN, (this->player.getYDelay() / 2))) {
 
                 if (this->player.getYDelay() == 1) {
 
@@ -125,6 +115,16 @@ void Game::playerActions() {
             }
 
             else if (PC::buttons.repeat(BTN_DOWN, 1)) { }
+            
+            else if (PC::buttons.pressed(BTN_UP) || PC::buttons.repeat(BTN_UP, 1)) {
+
+                this->player.decY(1, PC::frameCount, Constants::Player_Inertia);
+
+                if (this->player.getY() - this->gameScreenVars.viewY < 70) {
+                    this->gameScreenVars.viewY = this->gameScreenVars.viewY - 1;
+                }
+
+            }
 
             else if (this->player.getYDelay() <= Constants::Player_Inertia) {
 
