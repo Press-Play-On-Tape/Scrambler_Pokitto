@@ -398,7 +398,7 @@ void Game::launchRockets() {
 
             if (!enemy.getInFlight()) {
 
-                enemy.setSpeed(random(2, 5));
+                enemy.setSpeed(random(1, 4));
                     
                 switch (enemy.getX() - this->player.getX()) {
 

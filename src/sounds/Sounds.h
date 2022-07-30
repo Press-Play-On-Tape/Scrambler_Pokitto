@@ -9,5 +9,6 @@ namespace Sounds {
     #include "PlayerLaser.h"
     #include "RocketLaunch.h"
     #include "SurfaceToAir.h"
+    #include "FuelUp.h"
 
 };

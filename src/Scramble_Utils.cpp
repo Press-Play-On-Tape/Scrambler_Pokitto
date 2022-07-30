@@ -210,7 +210,7 @@ void Game::checkPlayerBulletCollision(Bullet &bullet) {
                     case EnemyType::Eighter:
                     case EnemyType::Circler:
                         this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
-                        this->gameScreenVars.score = this->gameScreenVars.score + 10;
+                        this->gameScreenVars.score = this->gameScreenVars.score + 20;
                         break;
 
                 }

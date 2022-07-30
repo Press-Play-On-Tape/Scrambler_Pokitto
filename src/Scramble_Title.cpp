@@ -27,7 +27,7 @@ void Game::title() {
 
     if (PC::buttons.pressed(BTN_A)) { 
 
-        this->gameState = GameState::Game_Init;
+        this->gameState = GameState::Scenario_Init;
 
     }         
 
@@ -77,7 +77,7 @@ void Game::title() {
 
     // Render page ..
 
-    PD::drawBitmap(2, 20, Images::Title);
+    PD::drawBitmap(2, 0, Images::Title);
 
     switch (this->cookie->sfx) {
 

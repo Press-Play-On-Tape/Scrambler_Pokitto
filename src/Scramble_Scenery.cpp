@@ -151,7 +151,26 @@ void Game::createScenery(uint8_t x) {
                 break;
 
             case Constants::Scenery_DistanceBetween_Normal_Start ... Constants::Scenery_DistanceBetween_Normal_End:
-                {
+
+                if (this->gameScreenVars.scenery.countdown > 0) {
+
+                    this->gameScreenVars.scenery.countdown--;
+                    this->gameScreenVars.scenery.bot_Inc = (random(0, 5) - 2);       
+
+                    if (this->gameScreenVars.scenery.bot_Inc == 0) {
+
+                        this->gameScreenVars.scenery.bot_Counter = random(1, 3);
+
+                    }
+                    else {
+                        
+                        this->gameScreenVars.scenery.bot_Counter = random(2, 5);
+
+                    }
+
+                }
+                else {
+
 
                     // Calculate min and max ranges ..
 
@@ -163,7 +182,7 @@ void Game::createScenery(uint8_t x) {
 
                         case 0 ... 150:
                             minRange = Constants::LaunchEnemy_Gap / 4;
-                            maxRange = Constants::LaunchEnemy_FourRocket_End;
+                            maxRange = Constants::LaunchEnemy_ThreeRocket_End;
                             break;
 
                         case 151 ... 500:
@@ -183,7 +202,9 @@ void Game::createScenery(uint8_t x) {
 
                     
                     uint8_t activeEnemies = this->enemies.getInactiveEnemyCount();
-                    uint16_t randomEnemy = random(minRange, maxRange + 1);
+                    uint16_t randomEnemy = 0;
+                    
+                    randomEnemy = random(minRange, maxRange + 1);
 
                     switch (randomEnemy) {
 
@@ -253,33 +274,6 @@ void Game::createScenery(uint8_t x) {
 
                             break;
 
-                        case Constants::LaunchEnemy_FourRocket_Start ... Constants::LaunchEnemy_FourRocket_End:
-
-                            switch (activeEnemies) {
-
-                                case 0:
-                                    randomEnemy = Constants::LaunchEnemy_Start;
-                                    break;
-
-                                case 1:
-                                    randomEnemy = Constants::LaunchEnemy_OneRocket_Start;
-                                    break;
-
-                                case 2:
-                                    randomEnemy = Constants::LaunchEnemy_TwoRocket_Start;
-                                    break;
-
-                                case 3:
-                                    randomEnemy = Constants::LaunchEnemy_ThreeRocket_Start;
-                                    break;
-
-                                case 4 ... Constants::Enemy_Count:
-                                    break;
-                                    
-                            }
-
-                            break;
-
                         default:
                             break;
 
@@ -317,6 +311,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 0, 0, 0, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
 
                             break;
@@ -325,6 +320,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 0, 0, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
 
@@ -334,17 +330,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(3, 0, 0, 0, 0);
-                            x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
-                            x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
-                            x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
-
-                            break;
-
-                        case Constants::LaunchEnemy_FourRocket_Start ... Constants::LaunchEnemy_FourRocket_End:
-
-                            this->gameScreenVars.scenery.bot_Inc = 0;       
-                            this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(4, 0, 0, 0, 0);
-                            x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
@@ -358,6 +344,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 1, 0, 0, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::FuelDepot, x, enemyLaunch);
 
@@ -367,6 +354,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1, 0, 0, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::FuelDepot, x, enemyLaunch);
@@ -377,6 +365,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 1, 0, 0, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::FuelDepot, x, enemyLaunch );
 
@@ -386,6 +375,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1, 0, 0, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::FuelDepot, x, enemyLaunch );
@@ -396,6 +386,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 1, 0, 0, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::FuelDepot, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
@@ -409,6 +400,7 @@ void Game::createScenery(uint8_t x) {
                         case Constants::LaunchEnemy_OneRocket_GroundPod_Start ... Constants::LaunchEnemy_OneRocket_GroundPod_End:
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 0, 1, 0, 0);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::GroundPod, x, enemyLaunch);
@@ -419,6 +411,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 1, 0, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::GroundPod, x, enemyLaunch);
@@ -429,6 +422,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 0, 1, 0, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::GroundPod, x, enemyLaunch );
 
@@ -438,6 +432,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 1, 0, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::GroundPod, x, enemyLaunch );
@@ -448,6 +443,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 1, 0, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::GroundPod, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
@@ -461,6 +457,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 0, 0, 1, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::SurfaceAir, x, enemyLaunch);
 
@@ -470,6 +467,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 0, 1, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch);
                             x = this->launchEnemy(EnemyType::SurfaceAir, x, enemyLaunch);
@@ -480,6 +478,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(1, 0, 0, 1, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::SurfaceAir, x, enemyLaunch );
 
@@ -489,6 +488,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 0, 1, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::SurfaceAir, x, enemyLaunch );
@@ -499,6 +499,7 @@ void Game::createScenery(uint8_t x) {
 
                             this->gameScreenVars.scenery.bot_Inc = 0;       
                             this->gameScreenVars.scenery.bot_Counter = this->getScenerySpace(2, 0, 0, 1, 0);
+                            this->gameScreenVars.scenery.countdown = random(Constants::Scenery_DistanceBetweenEnemies_Min, Constants::Scenery_DistanceBetweenEnemies_Max);       
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::SurfaceAir, x, enemyLaunch );
                             x = this->launchEnemy(EnemyType::Rocket, x, enemyLaunch );
@@ -506,7 +507,7 @@ void Game::createScenery(uint8_t x) {
                             break;
 
 
-
+                        // Defaukt: just create scenery ..
 
                         default:
 

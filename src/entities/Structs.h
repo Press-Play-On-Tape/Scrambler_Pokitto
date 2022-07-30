@@ -13,6 +13,7 @@ struct Scenery {
     int16_t top[220];
     uint8_t bot[220];
     uint8_t rand;
+    uint8_t countdown;
 
     void reset() {
 
@@ -25,6 +26,7 @@ struct Scenery {
         this->bot_Counter = 192;
         this->top_Inc = 0;
         this->bot_Inc = 0;
+        this->countdown = 0;
 
     }
 

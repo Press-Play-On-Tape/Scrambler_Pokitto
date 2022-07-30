@@ -30,6 +30,14 @@ void Game::loop() {
             this->title();
             break;
 
+        case GameState::Scenario_Init:
+            this->scenario_Init();
+            [[fallthrough]]
+
+        case GameState::Scenario:
+            this->scenario();
+            break;
+
         case GameState::Game_Init:
             this->game_Init();
             [[fallthrough]]

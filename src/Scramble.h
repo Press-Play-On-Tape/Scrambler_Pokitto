@@ -44,6 +44,8 @@ class Game {
         void splashScreen();
         void title_Init();
         void title();
+        void scenario_Init();
+        void scenario();
         void game_Init();
         void game();
         void highScore_Init();

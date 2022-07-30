@@ -108,6 +108,10 @@ void Game::renderEnemies() {
 
                     case EnemyType::Rocket:
                         PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::Rocket);
+
+                        if (enemy.getInFlight()) {
+                            PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance + 3, enemy.getY() - this->gameScreenVars.viewY + 16, Images::Flame[PC::frameCount % 16 / 4]);
+                        }
                         break;
 
                     case EnemyType::FuelDepot:
@@ -144,7 +148,7 @@ void Game::renderEnemies() {
 
                     case EnemyType::Eighter:
                     case EnemyType::Circler:
-                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::Eighter[PC::frameCount % 80 / 16]);
+                        PD::drawBitmap(enemy.getX() - this->gameScreenVars.distance, enemy.getY() - this->gameScreenVars.viewY, Images::Eighter[PC::frameCount % 32 / 8]);
                         break;
                         
 

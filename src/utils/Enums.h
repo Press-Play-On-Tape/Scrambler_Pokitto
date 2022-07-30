@@ -72,10 +72,13 @@ namespace Constants {
     constexpr uint16_t Scenery_DistanceBetween_Normal_Start = Scenery_DistanceBetween_Min_End + 1;
     constexpr uint16_t Scenery_DistanceBetween_Normal_End = Scenery_DistanceBetween_Normal_Start + 100;
 
+    constexpr uint16_t Scenery_DistanceBetweenEnemies_Min = 2;
+    constexpr uint16_t Scenery_DistanceBetweenEnemies_Max = 8;
+
 
     // Enemy limits ..
 
-    constexpr uint16_t LaunchEnemy_Gap = 2400;
+    constexpr uint16_t LaunchEnemy_Gap = 2200;
     constexpr uint16_t LaunchEnemy_Start = 0;
     constexpr uint16_t LaunchEnemy_Nothing = LaunchEnemy_Start + LaunchEnemy_Gap;
 
@@ -92,10 +95,8 @@ namespace Constants {
     constexpr uint16_t LaunchEnemy_TwoRocket_End = LaunchEnemy_TwoRocket_Start + 12;
     constexpr uint16_t LaunchEnemy_ThreeRocket_Start = LaunchEnemy_TwoRocket_End + 1;
     constexpr uint16_t LaunchEnemy_ThreeRocket_End = LaunchEnemy_ThreeRocket_Start + 1;
-    constexpr uint16_t LaunchEnemy_FourRocket_Start = LaunchEnemy_ThreeRocket_End + 1;
-    constexpr uint16_t LaunchEnemy_FourRocket_End = LaunchEnemy_FourRocket_Start + 0;
 
-    constexpr uint16_t LaunchEnemy_OneRocket_FuelDepot_Start = LaunchEnemy_FourRocket_End + 1;
+    constexpr uint16_t LaunchEnemy_OneRocket_FuelDepot_Start = LaunchEnemy_ThreeRocket_End + 1;
     constexpr uint16_t LaunchEnemy_OneRocket_FuelDepot_End = LaunchEnemy_OneRocket_FuelDepot_Start + 2;
     constexpr uint16_t LaunchEnemy_TwoRocket_FuelDepot_Start = LaunchEnemy_OneRocket_FuelDepot_End + 1;
     constexpr uint16_t LaunchEnemy_TwoRocket_FuelDepot_End = LaunchEnemy_TwoRocket_FuelDepot_Start + 1;
