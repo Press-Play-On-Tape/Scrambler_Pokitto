@@ -1,7 +1,7 @@
 #pragma once
 
 #define _DEBUG
-#define _SOUNDS
+#define SOUNDS
 #define COOKIE_INITIALISED 16
 
 namespace Constants {
@@ -165,6 +165,8 @@ enum class GameState : uint8_t {
     Splash,
     Title_Init,
     Title,
+    Scenario_Init,
+    Scenario,
     Game_Init,
     Game,
     GameOver,
@@ -188,7 +190,6 @@ enum class EnemyType : uint8_t {
 
 enum class Themes : uint8_t {
     Main,
-    Winner
 };
 
 enum class ExplosionSize : int8_t {
@@ -219,8 +220,14 @@ enum class SoundEffects : uint8_t {
 };
 
 enum class SoundEffect : uint8_t {
-    Deal,
-    EnemyDeath,
+    PlayerLaser,
+    PlayerBomb,
+    Explosion_00,
+    Explosion_01,
+    Explosion_02,
+    RocketLaunch,
+    SurfaceToAir,
+    FuelUp,
 };
 
 inline SoundEffects &operator++(SoundEffects &c ) {

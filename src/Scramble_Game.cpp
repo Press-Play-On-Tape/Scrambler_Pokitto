@@ -13,8 +13,7 @@ using PD = Pokitto::Display;
 void Game::game_Init() {
 
     this->gameState = GameState::Game;
-    // this->playTheme(Themes::Main);
-    // this->gamePlay.setCounter(0);
+    this->muteTheme();
     this->player.reset(true);
     this->enemies.reset();
     this->bullets.reset();
@@ -81,6 +80,10 @@ void Game::game() {
                 this->player.setActive(false);
                 this->player.setCountdown(1);
                 this->player.decLives();
+
+                #ifdef SOUNDS
+                    playSoundEffect(SoundEffect::Explosion_00);
+                #endif
 
             }
 
@@ -370,7 +373,7 @@ void Game::redirectSurfaceToAir() {
                     }
 
                     #ifdef SOUNDS
-                        playSoundEffect(SoundEffect::Laser);
+                        playSoundEffect(SoundEffect::SurfaceToAir);
                     #endif
 
                 }
@@ -412,21 +415,27 @@ void Game::launchRockets() {
                         break;
 
                     case 51 ... 60:
-                        enemy.setInFlight(random(0, 96) == 0);
+                        enemy.setInFlight(random(0, 64) == 0);
                         break;
 
                     case 61 ... 100:
-                        enemy.setInFlight(random(0, 256) == 0);
+                        enemy.setInFlight(random(0, 128) == 0);
                         break;
 
                     case 101 ... 150:
-                        enemy.setInFlight(random(0, 512) == 0);
+                        enemy.setInFlight(random(0, 256) == 0);
                         break;
 
                     case 151 ... 210:
-                        enemy.setInFlight(random(0, 1024) == 0);
+                        enemy.setInFlight(random(0, 768) == 0);
                         break;
 
+                }
+
+                if (enemy.getInFlight()) {
+                    #ifdef SOUNDS
+                        playSoundEffect(SoundEffect::RocketLaunch);
+                    #endif
                 }
 
             }
@@ -455,6 +464,11 @@ void Game::launchRockets() {
 
                         this->explode(enemy.getX() + (Constants::Player_Bullet_Width / 2), enemy.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
                         enemy.setActive(false);
+
+                        #ifdef SOUNDS
+                            playSoundEffect(SoundEffect::Explosion_02);
+                        #endif
+
                         return;
 
                     }
@@ -515,7 +529,6 @@ void Game::launchFuelCans() {
                 enemy.setX(this->gameScreenVars.distance + 220);
                 enemy.setY(this->gameScreenVars.scenery.top[219] + (this->gameScreenVars.scenery.bot[219] / 2));
                 enemy.setActive(true);
-                //enemy.setScenery(&this->gameScreenVars.scenery);
 
             }
 

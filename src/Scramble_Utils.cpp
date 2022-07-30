@@ -8,7 +8,7 @@ void Game::playTheme(Themes theme) {
 
     #ifdef SOUNDS
 
-    constexpr char themes[2][19] = { "music/Regic_01.raw", "music/Regic_02.raw" };
+    constexpr char themes[1][19] = { "music/Scram_01.raw" };
 
     switch (this->cookie->sfx) {
 
@@ -53,12 +53,36 @@ void Game::playSoundEffect(SoundEffect soundEffect) {
                 
             switch (soundEffect) {
                 
-                case SoundEffect::Deal: 
-                    //Audio::play<1>(Sounds::sfx_Tone_00);    
+                case SoundEffect::PlayerLaser: 
+                    Audio::play<1>(Sounds::sfx_PlayerLaser, 255, 2);    
                     break;
                 
-                case SoundEffect::EnemyDeath: 
-                    //Audio::play<1>(Sounds::sfx_Tone_01);    
+                case SoundEffect::PlayerBomb: 
+                    Audio::play<1>(Sounds::sfx_PlayerBomb, 255, 2);    
+                    break;
+                
+                case SoundEffect::Explosion_00: 
+                    Audio::play<1>(Sounds::sfx_Explosion_00, 255, 2);    
+                    break;
+                
+                case SoundEffect::Explosion_01: 
+                    Audio::play<1>(Sounds::sfx_Explosion_01, 255, 2);    
+                    break;
+                
+                case SoundEffect::Explosion_02: 
+                    Audio::play<1>(Sounds::sfx_Explosion_02, 64, 2);    
+                    break;
+                
+                case SoundEffect::RocketLaunch: 
+                    Audio::play<1>(Sounds::sfx_RocketLaunch, 255, 2);    
+                    break;
+                
+                case SoundEffect::SurfaceToAir: 
+                    Audio::play<1>(Sounds::sfx_SurfaceToAir, 255, 2);    
+                    break;
+                
+                case SoundEffect::FuelUp: 
+                    Audio::play<1>(Sounds::sfx_FuelUp, 255, 2);    
                     break;
 
             }
@@ -112,6 +136,11 @@ void Game::checkPlayerBulletCollision(Bullet &bullet) {
 
             this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
             bullet.setActive(false);
+
+            #ifdef SOUNDS
+                playSoundEffect(SoundEffect::Explosion_02);
+            #endif
+
             return;
 
         }
@@ -125,6 +154,11 @@ void Game::checkPlayerBulletCollision(Bullet &bullet) {
 
             this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
             bullet.setActive(false);
+
+            #ifdef SOUNDS
+                playSoundEffect(SoundEffect::Explosion_02);
+            #endif
+
             return;
 
         }
@@ -173,7 +207,17 @@ void Game::checkPlayerBulletCollision(Bullet &bullet) {
                         this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Medium, this->gameScreenVars.getColor());
                         break;
 
+                    case EnemyType::Eighter:
+                    case EnemyType::Circler:
+                        this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
+                        this->gameScreenVars.score = this->gameScreenVars.score + 10;
+                        break;
+
                 }
+
+                #ifdef SOUNDS
+                    playSoundEffect(SoundEffect::Explosion_01);
+                #endif
 
                 enemy.setActive(false);
                 bullet.setActive(false);
@@ -251,6 +295,11 @@ void Game::checkPlayerCollision() {
                 this->player.setActive(false);
                 this->player.setCountdown(1);
                 this->player.decLives();
+
+                #ifdef SOUNDS
+                    playSoundEffect(SoundEffect::Explosion_00);
+                #endif
+
                 break;
 
             }
@@ -266,6 +315,11 @@ void Game::checkPlayerCollision() {
                 this->player.setActive(false);
                 this->player.setCountdown(1);
                 this->player.decLives();
+
+                #ifdef SOUNDS
+                    playSoundEffect(SoundEffect::Explosion_00);
+                #endif
+
                 break;
 
             }
@@ -291,6 +345,11 @@ void Game::checkPlayerCollision() {
                         case EnemyType::FuelCan:
                             this->explode(enemy.getX() + (Constants::FuelCan_Width / 2), enemy.getY() + (Constants::FuelCan_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
                             this->player.incFuel(random(0, 75) + 50);
+                            
+                            #ifdef SOUNDS
+                                playSoundEffect(SoundEffect::FuelUp);
+                            #endif
+
                             break;
 
                         default:
@@ -298,6 +357,11 @@ void Game::checkPlayerCollision() {
                             this->player.setActive(false);
                             this->player.setCountdown(1);
                             this->player.decLives();
+
+                            #ifdef SOUNDS
+                                playSoundEffect(SoundEffect::Explosion_00);
+                            #endif
+
                             break;
 
                     }
@@ -326,6 +390,11 @@ void Game::checkPlayerCollision() {
                     this->player.decLives();
                     this->player.setCountdown(1);
                     enemyBullet.setActive(false);
+
+                    #ifdef SOUNDS
+                        playSoundEffect(SoundEffect::Explosion_00);
+                    #endif
+
                     break;
 
                 }

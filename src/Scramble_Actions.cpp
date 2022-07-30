@@ -266,7 +266,7 @@ void Game::playerActions() {
             bullet.setMuzzleIndex(8);
 
             #ifdef SOUNDS
-                playSoundEffect(SoundEffect::Laser);
+                playSoundEffect(SoundEffect::PlayerLaser);
             #endif
 
         }
@@ -291,7 +291,7 @@ void Game::playerActions() {
             bomb.setXInertia(1);
 
             #ifdef SOUNDS
-                playSoundEffect(SoundEffect::Laser);
+                playSoundEffect(SoundEffect::PlayerBomb);
             #endif
 
         }

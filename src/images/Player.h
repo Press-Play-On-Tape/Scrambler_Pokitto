@@ -11,6 +11,16 @@ namespace Images {
     #include "player/PlayerFlame_02.h"
     #include "player/PlayerFlame_03.h"
 
+    #include "player/Muzzle_00.h"
+    #include "player/Muzzle_01.h"
+    #include "player/Muzzle_02.h"
+    
+    const uint8_t * const Muzzle[] = { 
+        Muzzle_00,
+        Muzzle_01,
+        Muzzle_02,
+    };
+    
     const uint8_t * const PlayerFlame[] = { 
         PlayerFlame_00,
         PlayerFlame_01,
