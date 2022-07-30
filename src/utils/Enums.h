@@ -15,6 +15,7 @@ namespace Constants {
     constexpr uint8_t Player_Width = 20;
     constexpr uint8_t Player_Height = 13;
     constexpr uint8_t Player_Inertia = 8;
+    constexpr uint8_t Player_X_Max = 220 - Constants::Player_Width - 2;
 
     constexpr uint8_t Player_Bullet_Count = 6;
     constexpr uint8_t Player_Bullet_Width = 8;

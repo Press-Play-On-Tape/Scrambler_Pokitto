@@ -8,6 +8,9 @@ using PD = Pokitto::Display;
 
 void Game::playerActions() {
 
+
+    // Move Up and Down ..
+
     switch (this->player.getYDirection()) {
 
         case Direction::None:
@@ -146,14 +149,105 @@ void Game::playerActions() {
 
     }
 
-    if (PC::buttons.pressed(BTN_LEFT) || PC::buttons.repeat(BTN_LEFT, 1) && this->player.getX() > this->gameScreenVars.distance) {
-        this->player.setX(this->player.getX() - 1);
-    }
 
-    if (PC::buttons.pressed(BTN_RIGHT) || PC::buttons.repeat(BTN_RIGHT, 1) && this->player.getX() < this->gameScreenVars.distance + 220 - Constants::Player_Width) {
-        this->player.setX(this->player.getX() + 1);
-    }
 
+    // Move Left and Right ..
+    
+    switch (this->player.getXDirection()) {
+
+        case Direction::None:
+
+            if (PC::buttons.pressed(BTN_LEFT) || PC::buttons.repeat(BTN_LEFT, 1)) {
+
+                if (this->player.getX() - this->gameScreenVars.distance > 1) {
+                    this->player.decX(1, PC::frameCount, Constants::Player_Inertia);
+                }
+
+            }
+
+            if (PC::buttons.pressed(BTN_RIGHT) || PC::buttons.repeat(BTN_RIGHT, 1)) {
+
+                if (this->player.getX() - this->gameScreenVars.distance < 220 - Constants::Player_Width) {
+                    this->player.incX(1, PC::frameCount, Constants::Player_Inertia);
+                }
+
+            }
+
+            break;
+
+        case Direction::Left:
+
+            if (PC::buttons.pressed(BTN_LEFT) || PC::buttons.repeat(BTN_LEFT, (this->player.getXDelay() / 2))) {
+
+                if (this->player.getX() - this->gameScreenVars.distance > 1) {
+                    this->player.decX(this->player.getXDelay() == 1 ? 1 : 0, PC::frameCount);
+                }
+
+            }
+
+            else if (PC::buttons.repeat(BTN_LEFT, 1)) { }
+
+            else if (PC::buttons.pressed(BTN_RIGHT) || PC::buttons.repeat(BTN_RIGHT, 1)) {
+                
+                if (this->player.getX() - this->gameScreenVars.distance < Constants::Player_X_Max) {
+                    this->player.incX(1, PC::frameCount);
+                }
+
+            }
+
+            else if (this->player.getXDelay() <= Constants::Player_Inertia) {
+
+                if (this->player.getXDelay() == 1) { this->player.setXDelay(2); }
+
+                if (this->player.movePlayerX(PC::frameCount)) {
+
+                    if (this->player.getX() - this->gameScreenVars.distance < Constants::Player_X_Max) {
+                        this->player.incX(1, PC::frameCount, this->player.getXDelay() * 2, true);
+                    }
+
+                }
+
+            }
+
+            break;
+
+        case Direction::Right:
+
+            if (PC::buttons.pressed(BTN_RIGHT) || PC::buttons.repeat(BTN_RIGHT, (this->player.getXDelay() / 2))) {
+
+                if (this->player.getX() - this->gameScreenVars.distance < Constants::Player_X_Max) {
+                    this->player.incX(this->player.getXDelay() == 1 ? 2 : 1, PC::frameCount);
+                }
+
+            }
+
+            else if (PC::buttons.repeat(BTN_RIGHT, 1)) { }
+            
+            else if (PC::buttons.pressed(BTN_LEFT) || PC::buttons.repeat(BTN_LEFT, 1)) {
+
+                if (this->player.getX() - this->gameScreenVars.distance > 1) {
+                    this->player.decX(1, PC::frameCount);
+                }
+
+            }
+
+            else if (this->player.getXDelay() <= Constants::Player_Inertia) {
+
+                if (this->player.getXDelay() == 1) { this->player.setXDelay(2); }
+
+                if (this->player.movePlayerX(PC::frameCount)) {
+
+                    if (this->player.getX() - this->gameScreenVars.distance < Constants::Player_X_Max) {
+                        this->player.incX(1, PC::frameCount, this->player.getXDelay() * 2, true);
+                    }
+
+                }
+
+            }
+
+            break;
+
+    }
 
 
     // Player shoots bullet ..

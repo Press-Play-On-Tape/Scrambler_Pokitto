@@ -14,6 +14,10 @@ class Player : public Point {
 
         // Inertia ..
 
+        uint8_t xDelay = 16;
+        uint16_t xFrameCount = 0;
+        Direction xDirection = Direction::None;
+
         uint8_t yDelay = 16;
         uint16_t yFrameCount = 0;
         Direction yDirection = Direction::None;
@@ -24,6 +28,9 @@ class Player : public Point {
         uint8_t getFuel()                       { return this->fuel; }
         uint8_t getLives()                      { return this->lives; }
         uint8_t getCountdown()                  { return this->countdown; }
+        uint8_t getXDelay()                     { return this->xDelay; }
+        uint16_t getXFrameCount()               { return this->xFrameCount; }
+        Direction getXDirection()               { return this->xDirection; }
         uint8_t getYDelay()                     { return this->yDelay; }
         uint16_t getYFrameCount()               { return this->yFrameCount; }
         Direction getYDirection()               { return this->yDirection; }
@@ -31,6 +38,9 @@ class Player : public Point {
         void setFuel(uint8_t val)               { this->fuel = val; }
         void setLives(uint8_t val)              { this->lives = val; }
         void setCountdown(uint8_t val)          { this->countdown = val; }
+        void setXDelay(uint8_t val)             { this->xDelay = val; }
+        void setXFrameCount(uint16_t val)       { this->xFrameCount = val; }
+        void setXDirection(Direction val)       { this->xDirection = val; }
         void setYDelay(uint8_t val)             { this->yDelay = val; }
         void setYFrameCount(uint16_t val)       { this->yFrameCount = val; }
         void setYDirection(Direction val)       { this->yDirection = val; }
@@ -49,9 +59,9 @@ class Player : public Point {
 
         }
         
-        void incFuel(uint8_t val) {
+        void incFuel(uint8_t inc) {
 
-            this->fuel = this->fuel + val;
+            this->fuel = this->fuel + inc;
 
             if (this->fuel > 150) this->fuel = 150;
 
@@ -60,6 +70,48 @@ class Player : public Point {
         void incX(uint8_t inc) {
 
             this->setX(this->getX() + inc);
+
+        }
+
+        void incX(uint8_t inc, uint16_t frameCount) {
+
+            this->setX(this->getX() + inc);
+            this->xFrameCount = frameCount;
+            this->xDirection = Direction::Right;
+
+            if (this->xDelay > 1) this->xDelay = this->xDelay / 2;
+
+        }
+
+        void incX(uint8_t inc, uint16_t frameCount, uint8_t delay, bool movingToStop = false) {
+
+            this->setX(this->getX() + inc);
+            this->xDelay = delay;
+            this->xFrameCount = frameCount;
+            this->xDirection = Direction::Right;
+
+            if (movingToStop && this->yDelay == Constants::Player_Inertia) this->xDirection = Direction::None;
+
+        }
+
+        void decX(uint8_t inc, uint16_t frameCount) {
+
+            this->setX(this->getX() - inc);
+            this->xFrameCount = frameCount;
+            this->xDirection = Direction::Left;
+
+            if (this->xDelay > 1) this->xDelay = this->xDelay / 2;
+
+        }
+
+        void decX(uint8_t inc, uint16_t frameCount, uint8_t delay, bool movingToStop = false) {
+
+            this->setX(this->getX() - inc);
+            this->xDelay = delay;
+            this->xFrameCount = frameCount;
+            this->xDirection = Direction::Left;
+
+            if (movingToStop && this->xDelay == Constants::Player_Inertia) this->xDirection = Direction::None;
 
         }
 
@@ -102,6 +154,12 @@ class Player : public Point {
             this->yDirection = Direction::Up;
 
             if (movingToStop && this->yDelay == Constants::Player_Inertia) this->yDirection = Direction::None;
+
+        }
+
+        bool movePlayerX(uint16_t frameCount) {
+
+            return ((frameCount - this->xFrameCount) % (this->xDelay / 2) == 0); 
 
         }
 

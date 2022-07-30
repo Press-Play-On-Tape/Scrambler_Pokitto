@@ -76,7 +76,7 @@ struct GameScreenVars {
         this->countdown = (32 * 4) - 1;
         this->scenery.reset();
 
-        if (!startOfGame) {
+        if (startOfGame) {
     
             this->score = 0;
 

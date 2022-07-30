@@ -166,6 +166,7 @@ void Game::game() {
 
     if (this->player.getActive()) {
         PD::drawBitmap(this->player.getX() - this->gameScreenVars.distance, this->player.getY() - this->gameScreenVars.viewY, Images::PlayerShip);
+        PD::drawBitmap(this->player.getX() - this->gameScreenVars.distance - 8, this->player.getY() - this->gameScreenVars.viewY + 5, Images::PlayerFlame[PC::frameCount % 16 / 4]);
     }
 
 
