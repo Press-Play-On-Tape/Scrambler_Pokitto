@@ -12,7 +12,6 @@ class Bullet : public Point {
 
     private:
 
-        uint8_t hitCount = 0;
         uint8_t muzzleIndex = 0;
         uint8_t xInertia = 0;
         uint8_t xInertiaCounter = 0;
@@ -22,13 +21,11 @@ class Bullet : public Point {
     
     public:
 
-        uint8_t getHitCount()                   { return this->hitCount; }
         uint8_t getMuzzleIndex()                { return this->muzzleIndex; }
         uint8_t getXInertia()                   { return this->xInertia; }
         BulletType getBulletType()              { return this->bulletType; }
         Direction getDirection()                { return this->direction; }
 
-        void setHitCount(uint8_t val)           { this->hitCount = val; }
         void setMuzzleIndex(uint8_t val)        { this->muzzleIndex = val; }
         void setXInertia(uint8_t val)           { this->xInertia = val; this->xInertiaCounter = 0; }
         void setBulletType(BulletType val)      { this->bulletType = val; }
@@ -38,12 +35,6 @@ class Bullet : public Point {
 
             this->setX(-1);
             this->setActive(false);
-
-        }
-
-        void incHitCount() {
-
-            this->hitCount++;
 
         }
 

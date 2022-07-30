@@ -7,8 +7,8 @@
 struct Scenery {
 
     int8_t top_Inc;
-    uint8_t top_Counter;
     int8_t bot_Inc;
+    uint8_t top_Counter;
     uint8_t bot_Counter;
     int16_t top[220];
     uint8_t bot[220];

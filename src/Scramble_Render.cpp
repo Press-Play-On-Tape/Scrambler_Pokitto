@@ -175,18 +175,7 @@ void Game::renderPlayerBullets() {
             }
             else {
 
-                switch (bullet.getHitCount()) {
-
-                    case 0:
-                        PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY, Images::Bullet);
-                        break;
-
-                    default:
-
-                        PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY - 5, Images::Hit[bullet.getHitCount() - 1]);
-                        break;
-
-                }
+                PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY, Images::Bullet);
 
             }
 
@@ -213,18 +202,7 @@ void Game::renderPlayerBombs() {
             }
             else {
 
-                switch (bomb.getHitCount()) {
-
-                    case 0:
-                        PD::drawBitmap(bomb.getX() - this->gameScreenVars.distance, bomb.getY() - this->gameScreenVars.viewY, Images::Bomb);
-                        break;
-
-                    default:
-
-                        PD::drawBitmap(bomb.getX() - this->gameScreenVars.distance, bomb.getY() - this->gameScreenVars.viewY - 5, Images::Hit[bomb.getHitCount() - 1]);
-                        break;
-
-                }
+                PD::drawBitmap(bomb.getX() - this->gameScreenVars.distance, bomb.getY() - this->gameScreenVars.viewY, Images::Bomb);
 
             }
 
@@ -251,17 +229,7 @@ void Game::renderEnemyBullets() {
             }
             else {
 
-                switch (bullet.getHitCount()) {
-
-                    case 0:
-                        PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY, Images::EnemyBullet);
-                        break;
-
-                    default:
-                        PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY - 5, Images::Hit[bullet.getHitCount() - 1]);
-                        break;
-
-                }
+                PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY, Images::EnemyBullet);
 
             }
 

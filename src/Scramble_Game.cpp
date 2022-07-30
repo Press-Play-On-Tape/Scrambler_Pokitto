@@ -212,14 +212,8 @@ void Game::movePlayerBullets() {
     // Process player bullets ..
 
     for (Bullet &bullet : bullets.bullets) {
-            
-        if (bullet.getHitCount() > 0) {
 
-            bullet.incHitCount();
-
-        }
-
-        if (bullet.getX() > 0 && bullet.getHitCount() == 0) {
+        if (bullet.getX() > 0) {
 
             if (bullet.getMuzzleIndex() > 0) {
 
@@ -255,13 +249,7 @@ void Game::movePlayerBombs() {
 
     for (Bullet &bomb : bullets.bombs) {
             
-        if (bomb.getHitCount() > 0) {
-
-            bomb.incHitCount();
-
-        }
-
-        if (bomb.getX() > 0 && bomb.getHitCount() == 0) {
+        if (bomb.getX() > 0) {
 
             if (bomb.getMuzzleIndex() > 0) {
 
@@ -294,14 +282,8 @@ void Game::moveEnemyBullets() {
     // Process enemy bullets ..
 
     for (Bullet &enemyBullet : bullets.enemyBullets) {
-            
-        if (enemyBullet.getHitCount() > 0) {
-
-            enemyBullet.incHitCount();
-
-        }
-
-        if (enemyBullet.getX() > 0 && enemyBullet.getHitCount() == 0) {
+           
+        if (enemyBullet.getX() > 0) {
 
             if (enemyBullet.getMuzzleIndex() > 0) {
 
