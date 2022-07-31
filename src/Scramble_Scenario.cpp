@@ -49,9 +49,13 @@ void Game::scenario() {
     PD::setCursor(50, 85);
     PD::print(".. 20 Pts");
 
-    PD::drawBitmap(16, 110, Images::FuelDepot);
+    PD::drawBitmap(20, 110, Images::Mine);
     PD::setCursor(50, 115);
-    PD::print(".. 100 Pts");
+    PD::print(".. 25 Pts");
+
+    // PD::drawBitmap(16, 110, Images::FuelDepot_Sml);
+    // PD::setCursor(50, 115);
+    // PD::print(".. 100 Pts");
 
     PD::drawBitmap(20, 140, Images::GroundPod);
     PD::setCursor(50, 145);
@@ -61,13 +65,19 @@ void Game::scenario() {
     PD::setCursor(150, 85);
     PD::print(".. 20 Pts");
 
-    PD::drawBitmap(115, 110, Images::SurfaceToAir[PC::frameCount % 128 / 32]);
+    PD::drawBitmap(114, 110, Images::SurfaceToAir[PC::frameCount % 128 / 32]);
     PD::setCursor(150, 115);
     PD::print(".. 100 Pts");
 
-    PD::drawBitmap(120, 140, Images::Mine);
+    // PD::drawBitmap(120, 140, Images::Mine);
+    // PD::setCursor(150, 145);
+    // PD::print(".. 25 Pts");
+
+    PD::drawBitmap(114, 140, Images::FuelDepot_Sml);
     PD::setCursor(150, 145);
-    PD::print(".. 25 Pts");
+    PD::print(".. 100 Pts");
+    PD::setCursor(150, 154);
+    PD::print("    + Fuel");
 
 
 

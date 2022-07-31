@@ -5,6 +5,7 @@ namespace Images {
     #include "enemy/EnemyBullet.h"
     #include "enemy/Rocket.h"
     #include "enemy/FuelDepot.h"
+    #include "enemy/FuelDepot_Sml.h"
     #include "enemy/GroundPod.h"
     #include "enemy/Mine.h"
     #include "enemy/FuelCan.h"

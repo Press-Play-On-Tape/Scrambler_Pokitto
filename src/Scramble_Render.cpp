@@ -42,21 +42,11 @@ void Game::renderScenery() {
 
 void Game::renderHUD() {
 
-    // PD::setColor(0);
-    // PD::fillRect(98, 0, 121, 9);
-    // PD::setColor(0);
-    // PD::fillRect(0, 0, 220, 9);
-    // PD::setColor(7);
-    // PD::setCursor(181, 2);
-
     PD::drawBitmap(0, 0, Images::HUD);
 
     PD::drawBitmap(110, 3, Images::Lives[this->player.getLives() > 0]);
     PD::drawBitmap(119, 3, Images::Lives[this->player.getLives() > 1]);
     PD::drawBitmap(128, 3, Images::Lives[this->player.getLives() > 2]);
-
-    // PD::drawBitmap(125, 1, Images::Fuel);
-    // PD::setColor(4);
 
 
     // Rneder fuel left ..

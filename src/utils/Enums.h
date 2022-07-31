@@ -40,8 +40,8 @@ namespace Constants {
     constexpr uint8_t Rocket_Width = 9;
     constexpr uint8_t Rocket_Height = 20;
 
-    constexpr uint8_t FuelDepot_Width = 25;
-    constexpr uint8_t FuelDepot_Height = 15;
+    constexpr uint8_t FuelDepot_Width = 23;
+    constexpr uint8_t FuelDepot_Height = 31;
 
     constexpr uint8_t GroundPod_Width = 16;
     constexpr uint8_t GroundPod_Height = 16;

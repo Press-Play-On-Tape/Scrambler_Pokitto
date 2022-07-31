@@ -224,7 +224,7 @@ void Game::movePlayerBullets() {
             if (bullet.getMuzzleIndex() > 0) {
 
                 bullet.decMuzzleIndex();
-                bullet.setX(this->player.getX() + Constants::Player_Width);
+                bullet.setX(this->player.getX() + Constants::Player_Width + 4);
 
             }
             else {
@@ -294,7 +294,6 @@ void Game::moveEnemyBullets() {
             if (enemyBullet.getMuzzleIndex() > 0) {
 
                 enemyBullet.decMuzzleIndex();
-                // enemyBullet.setX(this->player.getX() + (Constants::Player_Width / 2));
 
             }
             else {

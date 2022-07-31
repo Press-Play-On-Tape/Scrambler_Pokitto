@@ -261,7 +261,7 @@ void Game::playerActions() {
             Bullet &bullet = bullets.bullets[bulletIdx];
             bullet.setActive(true);
             bullet.setBulletType(BulletType::PlayerBullet);
-            bullet.setX(this->player.getX() + Constants::Player_Width);
+            bullet.setX(this->player.getX() + Constants::Player_Width + 4);
             bullet.setY(this->player.getY() + 4);
             bullet.setMuzzleIndex(8);
 
@@ -286,7 +286,7 @@ void Game::playerActions() {
             bomb.setActive(true);
             bomb.setBulletType(BulletType::PlayerBomb);
             bomb.setX(this->player.getX() + (Constants::Player_Width / 2));
-            bomb.setY(this->player.getY() + Constants::Player_Height);
+            bomb.setY(this->player.getY() + Constants::Player_Height - 1);
             bomb.setMuzzleIndex(8);
             bomb.setXInertia(1);
 
