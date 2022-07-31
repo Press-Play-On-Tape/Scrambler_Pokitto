@@ -12,3 +12,5 @@
 #include "Bullets.h"
 #include "Player.h"
 #include "Rect.h"
+#include "Star.h"
+#include "Stars.h"

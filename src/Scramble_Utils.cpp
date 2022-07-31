@@ -74,7 +74,7 @@ void Game::playSoundEffect(SoundEffect soundEffect) {
                     break;
                 
                 case SoundEffect::RocketLaunch: 
-                    Audio::play<1>(Sounds::sfx_RocketLaunch, 255, 2);    
+                    Audio::play<1>(Sounds::sfx_RocketLaunch, 128, 2);    
                     break;
                 
                 case SoundEffect::SurfaceToAir: 
@@ -186,6 +186,7 @@ void Game::checkPlayerBulletCollision(Bullet &bullet) {
                     case EnemyType::FuelDepot:
                         this->explode(bullet.getX() + (Constants::Player_Bullet_Width / 2), bullet.getY() + (Constants::Player_Bullet_Height / 2), ExplosionSize::Large, this->gameScreenVars.getColor());
                         this->gameScreenVars.score = this->gameScreenVars.score + 100;
+                        this->player.incFuel(random(10, 25));
                         break;
 
                     case EnemyType::GroundPod:
@@ -344,7 +345,7 @@ void Game::checkPlayerCollision() {
 
                         case EnemyType::FuelCan:
                             this->explode(enemy.getX() + (Constants::FuelCan_Width / 2), enemy.getY() + (Constants::FuelCan_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
-                            this->player.incFuel(random(0, 75) + 50);
+                            this->player.incFuel(random(0, 50) + 30);
                             
                             #ifdef SOUNDS
                                 playSoundEffect(SoundEffect::FuelUp);

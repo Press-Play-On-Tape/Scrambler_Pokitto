@@ -31,6 +31,7 @@ class Game {
 
         Enemies enemies;
         Bullets bullets;
+        Stars stars;
 
         uint8_t cursor;
 
@@ -72,6 +73,7 @@ class Game {
         void renderEnemyBullets();
         void renderEnemies();
         void renderHUD();
+        void renderStars();
 
 
         // Music and sounds ..

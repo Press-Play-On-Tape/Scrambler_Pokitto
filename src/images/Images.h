@@ -8,3 +8,4 @@
 #include "Numbers.h"
 #include "Banners.h"
 #include "HighScore.h"
+#include "HUD.h"

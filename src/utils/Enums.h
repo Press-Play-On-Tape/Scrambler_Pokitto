@@ -7,6 +7,7 @@
 namespace Constants {
 
     constexpr uint8_t No_Score = 255;
+    constexpr uint8_t Star_Count = 40;
 
     constexpr uint8_t Screen_Height = 188;
     constexpr uint8_t Distance = 64;

@@ -17,6 +17,7 @@ void Game::game_Init() {
     this->player.reset(true);
     this->enemies.reset();
     this->bullets.reset();
+    this->stars.reset();
     this->gameScreenVars.reset(true);
 
 }   
@@ -64,6 +65,7 @@ void Game::game() {
 
     if (this->player.getMoveScenery()) {
 
+        this->stars.move(this->gameScreenVars.viewY);
         this->moveScenery(2);
         this->createScenery(218);
         this->createScenery(219);
@@ -161,6 +163,7 @@ void Game::game() {
     // Render page ..
     // ----------------------------------------------------------------------------------------------------
 
+    this->renderStars();
     this->renderScenery();
     this->renderEnemies();
 
@@ -402,8 +405,12 @@ void Game::launchRockets() {
                     
                 switch (enemy.getX() - this->player.getX()) {
 
-                    case -999 ... 30:
+                    case -999 ... 0:
                         enemy.setInFlight(true);
+                        break;
+
+                    case 1 ... 30:
+                        enemy.setInFlight(random(0, 4) == 0);
                         break;
 
                     case 31 ... 40:
@@ -517,7 +524,7 @@ void Game::launchFuelCans() {
 
    if (this->gameScreenVars.score > 500 && this->gameScreenVars.distance > 750) {
 
-        if (random(0, 512) == 0 && this->gameScreenVars.scenery.bot[219] > 150) {
+        if (random(0, 800) == 0 && this->gameScreenVars.scenery.bot[219] > 150) {
 
             uint8_t idx = this->enemies.getInactiveEnemy();
 

@@ -8,15 +8,17 @@ using PD = Pokitto::Display;
 
 void Game::renderScenery() {
 
-    for (uint8_t i = 0; i < 220; i++) {
+    PD::setColor(5);
+    PD::drawFastHLine(0, 10, 220);
 
+    for (uint8_t i = 0; i < 220; i++) {
 
         // Top 
 
-        if (this->gameScreenVars.scenery.top[i] > this->gameScreenVars.viewY && (this->gameScreenVars.scenery.top[i] <= this->gameScreenVars.viewY + Constants::Screen_Height)) {
+        if (this->gameScreenVars.scenery.top[i] > this->gameScreenVars.viewY + 14 && (this->gameScreenVars.scenery.top[i] <= this->gameScreenVars.viewY + Constants::Screen_Height)) {
 
             PD::setColor(15);
-            PD::drawFastVLine(i, 0, this->gameScreenVars.scenery.top[i] - this->gameScreenVars.viewY);
+            PD::drawFastVLine(i, 14, this->gameScreenVars.scenery.top[i] - this->gameScreenVars.viewY - 14);
             PD::setColor(3);
             PD::drawFastVLine(i, this->gameScreenVars.scenery.top[i] - this->gameScreenVars.viewY - 1, 1);
 
@@ -40,26 +42,28 @@ void Game::renderScenery() {
 
 void Game::renderHUD() {
 
-    PD::setColor(0);
-    PD::fillRect(98, 0, 121, 9);
-    PD::setColor(7);
-    PD::setCursor(181, 2);
+    // PD::setColor(0);
+    // PD::fillRect(98, 0, 121, 9);
+    // PD::setColor(0);
+    // PD::fillRect(0, 0, 220, 9);
+    // PD::setColor(7);
+    // PD::setCursor(181, 2);
 
-    PD::drawBitmap(99, 1, Images::Lives[this->player.getLives() > 0]);
-    PD::drawBitmap(107, 1, Images::Lives[this->player.getLives() > 1]);
-    PD::drawBitmap(115, 1, Images::Lives[this->player.getLives() > 2]);
+    PD::drawBitmap(0, 0, Images::HUD);
 
-    PD::drawBitmap(125, 1, Images::Fuel);
-    PD::setColor(4);
+    PD::drawBitmap(110, 3, Images::Lives[this->player.getLives() > 0]);
+    PD::drawBitmap(119, 3, Images::Lives[this->player.getLives() > 1]);
+    PD::drawBitmap(128, 3, Images::Lives[this->player.getLives() > 2]);
+
+    // PD::drawBitmap(125, 1, Images::Fuel);
+    // PD::setColor(4);
 
 
     // Rneder fuel left ..
     
     const uint8_t colors[] = { 8, 8, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
 
-    for (uint8_t i = 0; i < 45; i = i + 3) {
-
-        PD::setColor(5);
+    for (uint8_t i = 0; i < (this->player.getFuel() * 3) / 10; i = i + 3) {
 
         if (i <= (this->player.getFuel() * 3) / 10) {
 
@@ -71,7 +75,7 @@ void Game::renderHUD() {
 
         }
 
-        PD::fillRect(135 + i, 1, 2, 7);
+        PD::fillRect(31 + i, 3, 2, 7);
 
     }
 
@@ -81,11 +85,11 @@ void Game::renderHUD() {
         uint8_t digits[6] = {};
         extractDigits(digits, this->gameScreenVars.score);
 
-        uint8_t location = 213;
+        uint8_t location = 197;
 
         for (uint8_t j = 0; j < 6; ++j, location -= 6) {
 
-            PD::drawBitmap(location, 1, Images::Numbers[digits[j]]);
+            PD::drawBitmap(location, 3, Images::Numbers[digits[j]]);
 
         }
 
@@ -236,6 +240,28 @@ void Game::renderEnemyBullets() {
                 PD::drawBitmap(bullet.getX() - this->gameScreenVars.distance, bullet.getY() - this->gameScreenVars.viewY, Images::EnemyBullet);
 
             }
+
+        }
+
+    }
+
+}
+
+
+void Game::renderStars() {
+
+    const uint8_t colors[] = {1, 5, 6 };
+
+    // Render enemy bullets ..
+    
+    for (uint8_t i = 0; i < Constants::Star_Count; i++) {
+
+        Star &star = this->stars.stars[i];
+
+        if ((PC::frameCount + i) % 8 > 1) {
+
+            PD::setColor(colors[i % 3]);
+            PD::drawPixel(star.getX(), star.getY() - this->gameScreenVars.viewY);
 
         }
 
