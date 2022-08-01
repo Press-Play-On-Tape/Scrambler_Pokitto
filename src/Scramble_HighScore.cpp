@@ -14,6 +14,7 @@ void Game::highScore_Init() {
 
     this->gameState = GameState::HighScore;
     this->cursor = 0;
+    this->stars.reset();
 }   
 
 
@@ -74,10 +75,13 @@ void Game::highScore() {
    
     }
 
+    this->stars.moveY();
+
 
     // ----------------------------------------------------------------------------
     //  Render the state .. 
    
+    this->renderStars(false);
     PD::drawBitmap(6, 0, Images::HighScore);
 
 

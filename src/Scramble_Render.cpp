@@ -238,7 +238,7 @@ void Game::renderEnemyBullets() {
 }
 
 
-void Game::renderStars() {
+void Game::renderStars(bool incOffset) {
 
     const uint8_t colors[] = {1, 5, 6 };
 
@@ -251,7 +251,7 @@ void Game::renderStars() {
         if ((PC::frameCount + i) % 8 > 1) {
 
             PD::setColor(colors[i % 3]);
-            PD::drawPixel(star.getX(), star.getY() - this->gameScreenVars.viewY);
+            PD::drawPixel(star.getX(), star.getY() - (incOffset ? this->gameScreenVars.viewY : 0));
 
         }
 

@@ -36,7 +36,12 @@ void Game::scenario() {
     }         
 
 
+    this->stars.moveY();
+
+
     // Render page ..
+
+    this->renderStars(false);
 
     PD::setColor(6);
     PD::drawBitmap(6, 0, Images::Title);

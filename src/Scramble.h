@@ -73,7 +73,7 @@ class Game {
         void renderEnemyBullets();
         void renderEnemies();
         void renderHUD();
-        void renderStars();
+        void renderStars(bool incOffset);
 
 
         // Music and sounds ..

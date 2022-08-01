@@ -13,6 +13,8 @@ void Game::title_Init() {
 
     this->gameState = GameState::Title;
     this->playTheme(Themes::Main);
+
+    this->stars.reset();
     // this->gamePlay.setCounter(0);
 
 }   
@@ -83,9 +85,13 @@ void Game::title() {
 
     }
 
+    this->stars.moveY();
+
+
 
     // Render page ..
 
+    this->renderStars(false);
     PD::drawBitmap(6, 52, Images::Title);
 
     switch (this->cookie->sfx) {

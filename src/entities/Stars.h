@@ -39,16 +39,16 @@ class Stars {
 
         }
 
-        void moveY(uint16_t yOffset) {
+        void moveY() {
 
             for (Star &star : this->stars) {
 
-                star.setX(star.getX() - 2);
+                star.setY(star.getY() + 2);
 
-                if (star.getX() > 250) {
+                if (star.getY() > 178) {
 
-                    star.setX(220);
-                    star.setY(yOffset + random(0, 176));
+                    star.setY(0);
+                    star.setX(random(0, 220));
 
                 }
 

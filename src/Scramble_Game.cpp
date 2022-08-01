@@ -159,7 +159,7 @@ void Game::game() {
     // Render page ..
     // ----------------------------------------------------------------------------------------------------
 
-    this->renderStars();
+    this->renderStars(true);
     this->renderScenery();
     this->renderEnemies();
 
