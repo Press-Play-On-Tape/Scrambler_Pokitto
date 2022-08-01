@@ -44,9 +44,9 @@ void Game::renderHUD() {
 
     PD::drawBitmap(0, 0, Images::HUD);
 
-    PD::drawBitmap(110, 3, Images::Lives[this->player.getLives() > 0]);
-    PD::drawBitmap(119, 3, Images::Lives[this->player.getLives() > 1]);
-    PD::drawBitmap(128, 3, Images::Lives[this->player.getLives() > 2]);
+    PD::drawBitmap(105, 3, Images::Lives[this->player.getLives() > 0]);
+    PD::drawBitmap(118, 3, Images::Lives[this->player.getLives() > 1]);
+    PD::drawBitmap(131, 3, Images::Lives[this->player.getLives() > 2]);
 
 
     // Rneder fuel left ..

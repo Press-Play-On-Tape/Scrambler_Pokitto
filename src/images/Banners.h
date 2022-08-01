@@ -6,8 +6,6 @@ namespace Images {
     #include "banners/Countdown_01.h"
     #include "banners/Countdown_02.h"
     #include "banners/Countdown_03.h"
-    #include "banners/GameOver.h"
-    #include "banners/HighScore.h"
 
     const uint8_t * const Countdown[] = { 
         Countdown_03,

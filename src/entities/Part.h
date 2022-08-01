@@ -51,6 +51,15 @@ struct Part {
 
         void reset() {
 
+            this->x = 0;
+            this->y = 0;
+            this->deltaX = 0;
+            this->deltaY = 0;
+            this->size = 0;
+            this->age = 0;
+            this->maxAge = 0;
+            this->active = false;
+
         }
 };
 

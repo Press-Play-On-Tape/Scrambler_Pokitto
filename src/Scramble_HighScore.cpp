@@ -78,8 +78,7 @@ void Game::highScore() {
     // ----------------------------------------------------------------------------
     //  Render the state .. 
    
-    PD::drawBitmap(24, 10, Images::HighScore);
-
+    PD::drawBitmap(6, 0, Images::HighScore);
 
 
     // Has a new High Score been set ?

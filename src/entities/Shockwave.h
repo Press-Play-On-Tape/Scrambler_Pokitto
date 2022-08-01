@@ -26,6 +26,8 @@ class Shockwave : public Point {
             this->maxRadius = 0;
             this->speed = 0;
 
+            Point::setActive(false);
+
         }
 
 };

@@ -61,7 +61,7 @@ void Game::game() {
 
     if (this->player.getMoveScenery()) {
 
-        this->stars.move(this->gameScreenVars.viewY);
+        this->stars.moveX(this->gameScreenVars.viewY);
         this->moveScenery(2);
         this->createScenery(218);
         this->createScenery(219);
@@ -201,7 +201,7 @@ void Game::game() {
 
     if (this->gameState == GameState::GameOver) {
 
-        PD::drawBitmap(50, 65, Images::GameOver);
+        PD::drawBitmap(6, 62, Images::GameOver);
 
     }
 
