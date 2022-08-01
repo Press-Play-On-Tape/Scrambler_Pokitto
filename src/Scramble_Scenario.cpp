@@ -39,7 +39,7 @@ void Game::scenario() {
     // Render page ..
 
     PD::setColor(6);
-    PD::drawBitmap(2, 0, Images::Title);
+    PD::drawBitmap(6, 0, Images::Title);
 
     PD::setCursor(60, 65);
     PD::print("-- Score Table --");

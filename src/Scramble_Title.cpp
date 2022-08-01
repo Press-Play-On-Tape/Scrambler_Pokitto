@@ -75,9 +75,18 @@ void Game::title() {
     }
 
 
+    // Create explosions ..
+
+    if (PC::frameCount % 60 == 0) {
+
+        this->explode(random(6, 210) + this->gameScreenVars.distance, random(62, 62 + 52) + this->gameScreenVars.viewY, static_cast<ExplosionSize>(random(1, 3)), this->gameScreenVars.getColor());
+
+    }
+
+
     // Render page ..
 
-    PD::drawBitmap(2, 0, Images::Title);
+    PD::drawBitmap(6, 62, Images::Title);
 
     switch (this->cookie->sfx) {
 
@@ -98,5 +107,11 @@ void Game::title() {
             break;
 
     }
+
+
+    // Render shockwaves and particles ..
+
+    this->renderShockwave(this->gameScreenVars.distance, this->gameScreenVars.viewY);
+    this->renderParticles(this->gameScreenVars.distance, this->gameScreenVars.viewY);
 
 }

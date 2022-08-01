@@ -6,26 +6,22 @@ using PC = Pokitto::Core;
 using PD = Pokitto::Display;
 
 
-
-// ----------------------------------------------------------------------------
-//  Handle state updates .. 
-//
 void Game::game_Init() {
 
-    this->gameState = GameState::Game;
     this->muteTheme();
+    this->gameState = GameState::Game;
+
     this->player.reset(true);
     this->enemies.reset();
     this->bullets.reset();
     this->stars.reset();
+    this->shockwaves.reset();
+    this->particles.reset();
+
     this->gameScreenVars.reset(true);
 
 }   
 
-
-// ----------------------------------------------------------------------------
-//  Handle state updates .. 
-//
 
 void Game::game() {
 
@@ -260,7 +256,7 @@ void Game::movePlayerBombs() {
             if (bomb.getMuzzleIndex() > 0) {
 
                 bomb.decMuzzleIndex();
-                bomb.setX(this->player.getX() + (Constants::Player_Width / 2));
+                bomb.setX(this->player.getX() + (Constants::Player_Width / 2) - 3);
 
             }
             else {
