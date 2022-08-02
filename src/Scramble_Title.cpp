@@ -80,7 +80,7 @@ void Game::title() {
 
     // Create explosions ..
 
-    if (PC::frameCount % 60 == 0 && this->titleScreenVars.counter == 90) {
+    if (PC::frameCount % 60 == 0 && this->titleScreenVars.counter >= 90) {
 
         this->explode(random(16, 200) + this->gameScreenVars.distance, random(62, 62 + 37) + this->gameScreenVars.viewY, static_cast<ExplosionSize>(random(1, 3)), this->gameScreenVars.getColor());
 
