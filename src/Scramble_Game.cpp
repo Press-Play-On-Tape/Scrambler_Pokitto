@@ -68,7 +68,7 @@ void Game::game() {
         this->gameScreenVars.distance = this->gameScreenVars.distance + 2;
         this->player.incX(2);
 
-        if (this->gameScreenVars.distance % 96 == 0) {
+        if (this->gameScreenVars.distance % 64 == 0) {
 
             this->player.decFuel();
 
@@ -201,7 +201,31 @@ void Game::game() {
 
     if (this->gameState == GameState::GameOver) {
 
-        PD::drawBitmap(6, 62, Images::GameOver);
+
+        // Increase underline ..
+
+        if (this->gameScreenVars.counter < 87) {
+            this->gameScreenVars.counter = this->gameScreenVars.counter + 4;
+        }
+
+        if (this->gameScreenVars.counter > 4) {
+
+            for (uint16_t i = 110 - 2 - this->gameScreenVars.counter; i < 110 + this->gameScreenVars.counter; i = i + 3) {
+                PD::drawBitmap(i, 93, Images::Title_Mid);
+            }
+
+        }
+
+        PD::drawBitmap(110 - 4 - this->gameScreenVars.counter, 93, Images::Title_Left);
+        PD::drawBitmap(110 + this->gameScreenVars.counter, 93, Images::Title_Right);
+
+        for (uint8_t i = 0; i < 8; i++) {
+
+            PD::drawBitmap(this->gameScreenVars.charsX[i] + 22, this->gameScreenVars.charsY[i] + 5, Images::TitleLetters[this->gameScreenVars.charsIdx[i]]);
+
+        }
+
+        this->gameScreenVars.incLetters();
 
     }
 

@@ -19,6 +19,7 @@ class Game {
     private:
 
         SplashScreenVariables splashScreenVariables;
+        TitleScreenVariables titleScreenVars;
         GameScreenVars gameScreenVars;
         GameState gameState = GameState::Splash;
         GameCookie *cookie;

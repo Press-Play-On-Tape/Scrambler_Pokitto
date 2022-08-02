@@ -14,6 +14,7 @@ void Game::title_Init() {
     this->gameState = GameState::Title;
     this->playTheme(Themes::Main);
 
+    this->titleScreenVars.reset();
     this->stars.reset();
     // this->gamePlay.setCounter(0);
 
@@ -79,7 +80,7 @@ void Game::title() {
 
     // Create explosions ..
 
-    if (PC::frameCount % 60 == 0) {
+    if (PC::frameCount % 60 == 0 && this->titleScreenVars.counter == 90) {
 
         this->explode(random(16, 200) + this->gameScreenVars.distance, random(62, 62 + 37) + this->gameScreenVars.viewY, static_cast<ExplosionSize>(random(1, 3)), this->gameScreenVars.getColor());
 
@@ -89,10 +90,40 @@ void Game::title() {
 
 
 
+    // Increase underline ..
+
+    if (this->titleScreenVars.counter < 90) {
+        this->titleScreenVars.counter = this->titleScreenVars.counter + 4;
+    }
+
+
     // Render page ..
 
     this->renderStars(false);
-    PD::drawBitmap(6, 52, Images::Title);
+
+
+    // Title underline ..
+
+    if (this->titleScreenVars.counter > 4) {
+
+        for (uint16_t i = 110 - 2 - this->titleScreenVars.counter; i < 110 + this->titleScreenVars.counter; i = i + 3) {
+            PD::drawBitmap(i, 93, Images::Title_Mid);
+        }
+
+    }
+
+    PD::drawBitmap(110 - 4 - this->titleScreenVars.counter, 93, Images::Title_Left);
+    PD::drawBitmap(110 + this->titleScreenVars.counter, 93, Images::Title_Right);
+
+    for (uint8_t i = 0; i < 9; i++) {
+
+        PD::drawBitmap(this->titleScreenVars.charsX[i] + 19, this->titleScreenVars.charsY[i] + 5, Images::TitleLetters[this->titleScreenVars.charsIdx[i]]);
+
+    }
+
+    this->titleScreenVars.incLetters();
+
+
 
     switch (this->cookie->sfx) {
 
