@@ -67,6 +67,18 @@ class Player : public Point {
 
         }
 
+        void incY(uint8_t inc) {
+
+            this->setY(this->getY() + inc);
+
+        }
+
+        void decY(uint8_t inc) {
+
+            this->setY(this->getY() - inc);
+
+        }
+
         void incX(uint8_t inc) {
 
             this->setX(this->getX() + inc);
@@ -218,8 +230,8 @@ class Player : public Point {
 
             this->setActive(true);
             this->countdown = 0;
-            this->setX(40);
-            this->setY(1030);
+            this->setX(25);
+            this->setY(16015);
             this->fuel = 150;
             if (resetLives) this->lives = 3;
             

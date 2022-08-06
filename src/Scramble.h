@@ -75,6 +75,9 @@ class Game {
         void renderEnemies();
         void renderHUD();
         void renderStars(bool incOffset);
+        void renderGameOver();
+        void renderStageStart();
+        void renderStageComplete();
 
 
         // Music and sounds ..

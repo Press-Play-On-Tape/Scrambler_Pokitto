@@ -23,7 +23,7 @@ int main() {
     PD::persistence = true;
     PD::setColor(5);
     PD::setInvisibleColor(14);
-    PC::setFrameRate(45);
+    PC::setFrameRate(55);
 
     PD::setFont(font5x7);
     PD::adjustCharStep = 1;

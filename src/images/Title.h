@@ -16,6 +16,9 @@ namespace Images {
     #include "title/Title_R.h"
     #include "title/Title_S.h"
     #include "title/Title_V.h"
+    #include "title/Title_T.h"
+    #include "title/Title_P.h"
+    #include "title/Title_N.h"
 
     #include "title/Title_Left.h"
     #include "title/Title_Mid.h"
@@ -38,5 +41,8 @@ namespace Images {
         Title_R, //10
         Title_S, //11
         Title_V, //12
+        Title_T, //13
+        Title_P, //14
+        Title_N, //15
     };
 };

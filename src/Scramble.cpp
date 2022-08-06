@@ -43,6 +43,7 @@ void Game::loop() {
             [[fallthrough]]
 
         case GameState::Game:
+        case GameState::Game_Start:
         case GameState::GameOver:
             this->game();
             break;

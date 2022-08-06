@@ -10,5 +10,6 @@ namespace Sounds {
     #include "RocketLaunch.h"
     #include "SurfaceToAir.h"
     #include "FuelUp.h"
+    #include "StageComplete.h"
 
 };

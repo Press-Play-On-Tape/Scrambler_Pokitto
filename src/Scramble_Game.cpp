@@ -9,7 +9,7 @@ using PD = Pokitto::Display;
 void Game::game_Init() {
 
     this->muteTheme();
-    this->gameState = GameState::Game;
+    this->gameState = GameState::Game_Start;
 
     this->player.reset(true);
     this->enemies.reset();
@@ -19,12 +19,13 @@ void Game::game_Init() {
     this->particles.reset();
 
     this->gameScreenVars.reset(true);
+    this->gameScreenVars.resetAnimation(GameState::Game_Start);
+    this->gameScreenVars.stageTransition  = static_cast<uint16_t>(TransitionMode::Sequence_End);
 
 }   
 
 
 void Game::game() {
-
 
     // Process player actions ..
 
@@ -51,7 +52,6 @@ void Game::game() {
     this->launchEighterOrCircler();
 
 
-
     // Has the player collided with anything ?
 
     this->checkPlayerCollision();
@@ -61,6 +61,26 @@ void Game::game() {
 
     if (this->player.getMoveScenery()) {
 
+        // Decrease stage counter ..
+
+        if (this->gameScreenVars.stageCount > 0 && this->gameScreenVars.stageTransition == 0) {
+
+            if (this->gameScreenVars.distance % 256 == 0) {
+                this->gameScreenVars.stageCount--;
+            }
+
+            if (this->gameScreenVars.stageCount == 0) {
+                this->gameScreenVars.stageTransition = static_cast<uint16_t>(TransitionMode::Sequence_End);
+                this->gameScreenVars.score = this->gameScreenVars.score + 250;
+
+                #ifdef SOUNDS
+                    this->playTheme(Themes::Main);
+                #endif
+
+            }
+
+        }
+
         this->stars.moveX(this->gameScreenVars.viewY);
         this->moveScenery(2);
         this->createScenery(218);
@@ -68,7 +88,7 @@ void Game::game() {
         this->gameScreenVars.distance = this->gameScreenVars.distance + 2;
         this->player.incX(2);
 
-        if (this->gameScreenVars.distance % 64 == 0) {
+        if (this->gameScreenVars.distance % 64 == 0 && this->gameScreenVars.stageTransition == 0) {
 
             this->player.decFuel();
 
@@ -164,6 +184,148 @@ void Game::game() {
     this->renderEnemies();
 
 
+
+
+    // Render entry banners ..
+
+    // if (this->gameScreenVars.countdown > 0) {
+
+    //     PD::drawBitmap(50, 65, Images::Countdown[this->gameScreenVars.countdown / 32]);
+    //     this->gameScreenVars.countdown--;
+
+    // }
+
+    // if (this->gameState == GameState::GameOver) {
+
+    //     this->renderGameOver();
+
+        // // Increase underline ..
+
+        // if (this->gameScreenVars.gameOver_Counter < 87) {
+        //     this->gameScreenVars.gameOver_Counter = this->gameScreenVars.gameOver_Counter + 4;
+        // }
+
+        // if (this->gameScreenVars.gameOver_Counter > 4) {
+
+        //     for (uint16_t i = 110 - 2 - this->gameScreenVars.gameOver_Counter; i < 110 + this->gameScreenVars.gameOver_Counter; i = i + 3) {
+        //         PD::drawBitmap(i, 93, Images::Title_Mid);
+        //     }
+
+        // }
+
+        // PD::drawBitmap(110 - 4 - this->gameScreenVars.gameOver_Counter, 93, Images::Title_Left);
+        // PD::drawBitmap(110 + this->gameScreenVars.gameOver_Counter, 93, Images::Title_Right);
+
+        // for (uint8_t i = 0; i < 8; i++) {
+
+        //     PD::drawBitmap(this->gameScreenVars.gameOver_CharsX[i] + 22, this->gameScreenVars.gameOver_CharsY[i] + 5, Images::TitleLetters[this->gameScreenVars.gameOver_CharsIdx[i]]);
+
+        // }
+
+        // this->gameScreenVars.incGameOverLetters();
+
+    // }
+
+    switch (this->gameState) {
+
+        case GameState::Game_Start:
+            this->renderStageStart();
+            break;
+
+        case GameState::GameOver:
+            this->renderGameOver();
+            break;
+
+        default:
+            this->renderStageComplete();
+            break;
+
+    }
+/*
+
+    // Render stage complete ..
+
+    if (this->gameScreenVars.stageTransition > 0) {
+
+    //printf("(stageTransition %i, stageCompT %i, stageLineCounter %i) \n", this->gameScreenVars.stageTransition, this->gameScreenVars.stageCompT, this->gameScreenVars.stageLineCounter);
+
+
+        switch (static_cast<uint16_t>(TransitionMode::Sequence_End) - this->gameScreenVars.stageTransition) {
+
+            case static_cast<uint16_t>(TransitionMode::LineEntry_Start) ... static_cast<uint16_t>(TransitionMode::LineEntry_End):
+                this->gameScreenVars.stageLineCounter = this->gameScreenVars.stageLineCounter + 4;
+                break;
+
+            case static_cast<uint16_t>(TransitionMode::TextEntry_Start) ... static_cast<uint16_t>(TransitionMode::TextEntry_End):
+                this->gameScreenVars.stageCompT = this->gameScreenVars.stageCompT + 4;
+                break;
+
+            case static_cast<uint16_t>(TransitionMode::TextExit_Start) ... static_cast<uint16_t>(TransitionMode::TextExit_End):
+                this->gameScreenVars.stageCompT = this->gameScreenVars.stageCompT + 4;
+                break;
+
+            case static_cast<uint16_t>(TransitionMode::LineExit_Start) ... static_cast<uint16_t>(TransitionMode::LineExit_End) - 2:
+                this->gameScreenVars.stageLineCounter = this->gameScreenVars.stageLineCounter - 4;
+                break;
+
+            case static_cast<uint16_t>(TransitionMode::LineExit_End) - 1 ... static_cast<uint16_t>(TransitionMode::LineExit_End):
+                this->gameScreenVars.stageLineCounter = this->gameScreenVars.stageLineCounter - 4;
+                this->gameScreenVars.resetAnimation();
+                this->gameScreenVars.stage++;
+                this->gameScreenVars.stageCount = 31;
+                break;
+
+            default:
+                break;
+
+        }
+
+
+        // Stage Complete underline ..
+
+        if (static_cast<uint16_t>(TransitionMode::Sequence_End) - this->gameScreenVars.stageTransition >= static_cast<uint16_t>(TransitionMode::LineEntry_Start) &
+            static_cast<uint16_t>(TransitionMode::Sequence_End) - this->gameScreenVars.stageTransition <= static_cast<uint16_t>(TransitionMode::LineExit_End)) {
+
+            if (this->gameScreenVars.stageLineCounter > 4) {
+
+                for (uint16_t i = 110 - 2 - this->gameScreenVars.stageLineCounter; i < 110 + this->gameScreenVars.stageLineCounter; i = i + 3) {
+                    PD::drawBitmap(i, 86, Images::Title_Mid);
+                }
+
+            }
+
+            PD::drawBitmap(110 - 4 - this->gameScreenVars.stageLineCounter, 86, Images::Title_Left);
+            PD::drawBitmap(110 + this->gameScreenVars.stageLineCounter, 86, Images::Title_Right);
+
+        }
+
+
+        // Stage
+
+        int16_t x = this->gameScreenVars.stageCompT;
+        
+        for (uint8_t i = 0; i < 5; i++) {
+
+            x = x + this->gameScreenVars.stageCompT_CharsX[i];
+            PD::drawBitmap(x, 56, Images::TitleLetters[this->gameScreenVars.stageCompT_CharsIdx[i]]);
+
+        }
+
+        // Complete
+
+        x = 86 - this->gameScreenVars.stageCompT;
+        
+        for (uint8_t i = 0; i < 8; i++) {
+
+            x = x + this->gameScreenVars.stageCompB_CharsX[i];
+            PD::drawBitmap(x, 96, Images::TitleLetters[this->gameScreenVars.stageCompB_CharsIdx[i]]);
+
+        }
+
+    }
+*/
+
+
     // Render player ..
 
     if (this->player.getActive()) {
@@ -188,46 +350,6 @@ void Game::game() {
     // Render HUD ..
 
     this->renderHUD();
-
-
-    // Render entry banners ..
-
-    if (this->gameScreenVars.countdown > 0) {
-
-        PD::drawBitmap(50, 65, Images::Countdown[this->gameScreenVars.countdown / 32]);
-        this->gameScreenVars.countdown--;
-
-    }
-
-    if (this->gameState == GameState::GameOver) {
-
-
-        // Increase underline ..
-
-        if (this->gameScreenVars.counter < 87) {
-            this->gameScreenVars.counter = this->gameScreenVars.counter + 4;
-        }
-
-        if (this->gameScreenVars.counter > 4) {
-
-            for (uint16_t i = 110 - 2 - this->gameScreenVars.counter; i < 110 + this->gameScreenVars.counter; i = i + 3) {
-                PD::drawBitmap(i, 93, Images::Title_Mid);
-            }
-
-        }
-
-        PD::drawBitmap(110 - 4 - this->gameScreenVars.counter, 93, Images::Title_Left);
-        PD::drawBitmap(110 + this->gameScreenVars.counter, 93, Images::Title_Right);
-
-        for (uint8_t i = 0; i < 8; i++) {
-
-            PD::drawBitmap(this->gameScreenVars.charsX[i] + 22, this->gameScreenVars.charsY[i] + 5, Images::TitleLetters[this->gameScreenVars.charsIdx[i]]);
-
-        }
-
-        this->gameScreenVars.incLetters();
-
-    }
 
 }
 
@@ -266,7 +388,6 @@ void Game::movePlayerBullets() {
     }
 
 }
-
 
 void Game::movePlayerBombs() {
 
@@ -335,7 +456,6 @@ void Game::moveEnemyBullets() {
     }
 
 }
-
 
 void Game::redirectSurfaceToAir() {
 
@@ -407,7 +527,6 @@ void Game::redirectSurfaceToAir() {
     }
 
 }
-
 
 void Game::launchRockets() {
 
@@ -509,7 +628,6 @@ void Game::launchRockets() {
 
 }
 
-
 void Game::launchMines() {
 
     if (this->gameScreenVars.score > 500 && this->gameScreenVars.distance > 750) {
@@ -538,7 +656,6 @@ void Game::launchMines() {
 
 }
 
-
 void Game::launchFuelCans() {
 
    if (this->gameScreenVars.score > 500 && this->gameScreenVars.distance > 750) {
@@ -563,7 +680,6 @@ void Game::launchFuelCans() {
     }
 
 }
-
 
 void Game::launchEighterOrCircler() {
 

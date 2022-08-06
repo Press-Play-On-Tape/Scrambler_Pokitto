@@ -8,7 +8,7 @@ void Game::playTheme(Themes theme) {
 
     #ifdef SOUNDS
 
-    constexpr char themes[1][19] = { "music/Scram_01.raw" };
+    constexpr char themes[2][19] = { "music/Scram_01.raw", "music/Scram_02.raw" };
 
     switch (this->cookie->sfx) {
 
@@ -17,7 +17,18 @@ void Game::playTheme(Themes theme) {
 
             if (this->mainThemeFile.openRO(themes[static_cast<uint8_t>(theme)])) {
                 auto& music = Audio::play<0>(this->mainThemeFile);
-                music.setLoop(true);
+
+                switch (theme) {
+
+                    case Themes::Main:
+                        music.setLoop(true);
+                        break;
+
+                    case Themes::StageComplete:
+                        music.setLoop(false);
+                        break;
+
+                }
             }
 
             break;
@@ -292,16 +303,31 @@ void Game::checkPlayerCollision() {
 
             if (this->collide(point, playerRect)) {
 
-                this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
-                this->player.setActive(false);
-                this->player.setCountdown(1);
-                this->player.decLives();
+                if (this->gameScreenVars.stageTransition == 0) {
 
-                #ifdef SOUNDS
-                    playSoundEffect(SoundEffect::Explosion_00);
-                #endif
+                    this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
+                    this->player.setActive(false);
+                    this->player.setCountdown(1);
+                    this->player.decLives();
 
-                break;
+                    #ifdef SOUNDS
+                        playSoundEffect(SoundEffect::Explosion_00);
+                    #endif
+
+                    break;
+
+                }
+                else {
+
+                    this->player.incY(2);
+
+                    if (this->player.getY() - this->gameScreenVars.viewY > 176 - 90) {
+                        this->gameScreenVars.viewY = this->gameScreenVars.viewY + 1;
+                    }
+
+                    break;
+
+                }
 
             }
 
@@ -312,59 +338,26 @@ void Game::checkPlayerCollision() {
 
             if (this->collide(point, playerRect)) {
 
-                this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
-                this->player.setActive(false);
-                this->player.setCountdown(1);
-                this->player.decLives();
+                if (this->gameScreenVars.stageTransition == 0) {
 
-                #ifdef SOUNDS
-                    playSoundEffect(SoundEffect::Explosion_00);
-                #endif
+                    this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
+                    this->player.setActive(false);
+                    this->player.setCountdown(1);
+                    this->player.decLives();
 
-                break;
+                    #ifdef SOUNDS
+                        playSoundEffect(SoundEffect::Explosion_00);
+                    #endif
 
-            }
+                    break;
 
-        }
+                }
+                else {
 
+                    this->player.decY(2);
 
-
-        // Has the player collided with an enemy?
-
-        for (Enemy &enemy : this->enemies.enemies) {
-
-            if (enemy.getActive()) {
-
-                Rect enemyRect = enemy.getRect();
-
-                if (collide(enemyRect, playerRect)) {
-
-                    enemy.setActive(false);
-
-                    switch (enemy.getEnemyType()) {
-
-                        case EnemyType::FuelCan:
-                            this->explode(enemy.getX() + (Constants::FuelCan_Width / 2), enemy.getY() + (Constants::FuelCan_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
-                            this->player.incFuel(random(0, 50) + 30);
-                            
-                            #ifdef SOUNDS
-                                playSoundEffect(SoundEffect::FuelUp);
-                            #endif
-
-                            break;
-
-                        default:
-                            this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
-                            this->player.setActive(false);
-                            this->player.setCountdown(1);
-                            this->player.decLives();
-
-                            #ifdef SOUNDS
-                                playSoundEffect(SoundEffect::Explosion_00);
-                            #endif
-
-                            break;
-
+                    if (this->player.getY() - this->gameScreenVars.viewY < 70) {
+                        this->gameScreenVars.viewY = this->gameScreenVars.viewY - 1;
                     }
 
                     break;
@@ -376,27 +369,79 @@ void Game::checkPlayerCollision() {
         }
 
 
-        // Has the player collided with an enemy bullet?
 
-        for (Bullet &enemyBullet : this->bullets.enemyBullets) {
+        // Has the player collided with an enemy?
 
-            if (enemyBullet.getActive()) {
+        if (this->gameScreenVars.stageTransition == 0) {
 
-                Rect enemyBulletRect = enemyBullet.getRect();
+            for (Enemy &enemy : this->enemies.enemies) {
 
-                if (collide(enemyBulletRect, playerRect)) {
+                if (enemy.getActive()) {
 
-                    this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
-                    this->player.setActive(false);
-                    this->player.decLives();
-                    this->player.setCountdown(1);
-                    enemyBullet.setActive(false);
+                    Rect enemyRect = enemy.getRect();
 
-                    #ifdef SOUNDS
-                        playSoundEffect(SoundEffect::Explosion_00);
-                    #endif
+                    if (collide(enemyRect, playerRect)) {
 
-                    break;
+                        enemy.setActive(false);
+
+                        switch (enemy.getEnemyType()) {
+
+                            case EnemyType::FuelCan:
+                                this->explode(enemy.getX() + (Constants::FuelCan_Width / 2), enemy.getY() + (Constants::FuelCan_Height / 2), ExplosionSize::Small, this->gameScreenVars.getColor());
+                                this->player.incFuel(random(0, 50) + 30);
+                                
+                                #ifdef SOUNDS
+                                    playSoundEffect(SoundEffect::FuelUp);
+                                #endif
+
+                                break;
+
+                            default:
+                                this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
+                                this->player.setActive(false);
+                                this->player.setCountdown(1);
+                                this->player.decLives();
+
+                                #ifdef SOUNDS
+                                    playSoundEffect(SoundEffect::Explosion_00);
+                                #endif
+
+                                break;
+
+                        }
+
+                        break;
+
+                    }
+
+                }
+
+            }
+
+
+            // Has the player collided with an enemy bullet?
+
+            for (Bullet &enemyBullet : this->bullets.enemyBullets) {
+
+                if (enemyBullet.getActive()) {
+
+                    Rect enemyBulletRect = enemyBullet.getRect();
+
+                    if (collide(enemyBulletRect, playerRect)) {
+
+                        this->explode(this->player.getX() + (Constants::Player_Width / 2), this->player.getY() + (Constants::Player_Height / 2), ExplosionSize::Huge, this->gameScreenVars.getColor());
+                        this->player.setActive(false);
+                        this->player.decLives();
+                        this->player.setCountdown(1);
+                        enemyBullet.setActive(false);
+
+                        #ifdef SOUNDS
+                            playSoundEffect(SoundEffect::Explosion_00);
+                        #endif
+
+                        break;
+
+                    }
 
                 }
 

@@ -9,7 +9,7 @@ namespace Constants {
     constexpr uint8_t No_Score = 255;
     constexpr uint8_t Star_Count = 40;
 
-    constexpr uint8_t Screen_Height = 188;
+    constexpr uint8_t Screen_Height = 176;
     constexpr uint8_t Distance = 64;
     constexpr uint8_t GrindToHalt = 113;
 
@@ -63,6 +63,8 @@ namespace Constants {
     constexpr uint8_t Particle_None = 255;
     constexpr uint8_t Shockwave_Count = 20;
     constexpr uint8_t Shockwave_None = 255;
+
+    constexpr uint8_t Stage_Transition_Phase_Length = 184;
 
 
     // Scenery limits ..
@@ -164,6 +166,33 @@ namespace Pathways {
 
 };
 
+enum class GameStartMode : int16_t {
+    LineEntry_Start = 50,
+    LineEntry_End = LineEntry_Start + 50,
+    TextEntry_Start = LineEntry_End + 1,
+    TextEntry_End = TextEntry_Start + 106,
+    Pause_Start = TextEntry_End + 1,
+    Pause_End = Pause_Start + 150,
+    TextExit_Start = Pause_End + 1,
+    TextExit_End = TextExit_Start + 111,
+    LineExit_Start = TextExit_End + 1,
+    LineExit_End = LineExit_Start + 50,
+    Sequence_End = LineExit_End + 51
+};
+
+enum class TransitionMode : int16_t {
+    LineEntry_Start = 50,
+    LineEntry_End = LineEntry_Start + 50,
+    TextEntry_Start = LineEntry_End + 1,
+    TextEntry_End = TextEntry_Start + 99,
+    Pause_Start = TextEntry_End + 1,
+    Pause_End = Pause_Start + 150,
+    TextExit_Start = Pause_End + 1,
+    TextExit_End = TextExit_Start + 98,
+    LineExit_Start = TextExit_End + 1,
+    LineExit_End = LineExit_Start + 50,
+    Sequence_End = LineExit_End + 51
+};
 
 enum class GameState : uint8_t {
     Splash_Init,
@@ -173,6 +202,7 @@ enum class GameState : uint8_t {
     Scenario_Init,
     Scenario,
     Game_Init,
+    Game_Start,
     Game,
     GameOver,
     HighScore_Init,
@@ -195,6 +225,7 @@ enum class EnemyType : uint8_t {
 
 enum class Themes : uint8_t {
     Main,
+    StageComplete
 };
 
 enum class ExplosionSize : int8_t {
@@ -232,7 +263,7 @@ enum class SoundEffect : uint8_t {
     Explosion_02,
     RocketLaunch,
     SurfaceToAir,
-    FuelUp,
+    FuelUp
 };
 
 inline SoundEffects &operator++(SoundEffects &c ) {
