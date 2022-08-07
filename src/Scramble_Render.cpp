@@ -468,7 +468,6 @@ void Game::renderStageStart() {
             case static_cast<uint16_t>(GameStartMode::LineExit_End) - 1 ... static_cast<uint16_t>(GameStartMode::LineExit_End):
                 this->gameScreenVars.stageLineCounter = this->gameScreenVars.stageLineCounter - 4;
                 this->gameScreenVars.resetAnimation(GameState::Game);
-                this->gameScreenVars.stage++;
                 this->gameScreenVars.stageCount = 31;
                 break;
 

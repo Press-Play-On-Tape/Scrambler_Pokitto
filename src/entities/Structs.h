@@ -24,8 +24,8 @@ struct Scenery {
             
         }
 
-        this->top_Counter = 192;
-        this->bot_Counter = 192;
+        this->top_Counter = 1;
+        this->bot_Counter = 1;
         this->top_Inc = 0;
         this->bot_Inc = 0;
         this->countdown = 0;
@@ -159,13 +159,12 @@ struct GameScreenVars {
         this->distance = 0;
         this->countdown = (32 * 4) - 1;
 
-        this->stage = 1;
-        this->stageCount = 31;//31;
-
+        this->stageCount = 31;
         this->scenery.reset();
 
         if (startOfGame) {
     
+            this->stage = 1;
             this->score = 0;
 
         }

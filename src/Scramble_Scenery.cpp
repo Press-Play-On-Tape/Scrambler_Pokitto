@@ -68,7 +68,6 @@ void Game::createScenery(uint8_t x) {
                 break;
 
         }
-
     }
     else {
 

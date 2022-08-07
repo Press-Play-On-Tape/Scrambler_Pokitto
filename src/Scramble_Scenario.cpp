@@ -73,17 +73,17 @@ void Game::scenario() {
     if (this->titleScreenVars.counter > 4) {
 
         for (uint16_t i = 110 - 2 - this->titleScreenVars.counter; i < 110 + this->titleScreenVars.counter; i = i + 3) {
-            PD::drawBitmap(i, 35 + this->titleScreenVars.charsY[0], Images::Title_Mid);
+            PD::drawBitmap(i, 31 + this->titleScreenVars.charsY[0], Images::Title_Mid);
         }
 
     }
 
-    PD::drawBitmap(110 - 4 - this->titleScreenVars.counter, 35 + this->titleScreenVars.charsY[0], Images::Title_Left);
-    PD::drawBitmap(110 + this->titleScreenVars.counter, 35 + this->titleScreenVars.charsY[0], Images::Title_Right);
+    PD::drawBitmap(110 - 4 - this->titleScreenVars.counter, 31 + this->titleScreenVars.charsY[0], Images::Title_Left);
+    PD::drawBitmap(110 + this->titleScreenVars.counter, 31 + this->titleScreenVars.charsY[0], Images::Title_Right);
 
     for (uint8_t i = 0; i < 9; i++) {
 
-        PD::drawBitmap(this->titleScreenVars.charsX[i] + 19, this->titleScreenVars.charsY[i] + 5, Images::TitleLetters[this->titleScreenVars.charsIdx[i]]);
+        PD::drawBitmap(this->titleScreenVars.charsX[i] + 19, this->titleScreenVars.charsY[i] + 1, Images::TitleLetters[this->titleScreenVars.charsIdx[i]]);
 
     }
 

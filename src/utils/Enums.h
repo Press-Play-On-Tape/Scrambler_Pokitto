@@ -64,7 +64,7 @@ namespace Constants {
     constexpr uint8_t Shockwave_Count = 20;
     constexpr uint8_t Shockwave_None = 255;
 
-    constexpr uint8_t Stage_Transition_Phase_Length = 184;
+    constexpr uint8_t Stage_Transition_Phase_Length = 172;
 
 
     // Scenery limits ..
