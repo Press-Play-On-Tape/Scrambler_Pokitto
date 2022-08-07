@@ -21,9 +21,6 @@ void Game::game_Init() {
     this->gameScreenVars.reset(true);
     this->gameScreenVars.resetAnimation(GameState::Game_Start);
     this->gameScreenVars.stageTransition  = static_cast<uint16_t>(TransitionMode::Sequence_End);
-    this->gameScreenVars.seed = rand(0, 65535);
-
-    srand(this->gameScreenVars.seed);
 
 }   
 
