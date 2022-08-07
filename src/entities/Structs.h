@@ -14,12 +14,14 @@ struct Scenery {
     uint16_t bot[220];
     uint8_t rand;
     uint8_t countdown;
-
+    
     void reset() {
 
         for (uint8_t i = 0; i < 220; i++) {
+
             this->top[i] = 15880;
             this->bot[i] = 240;
+            
         }
 
         this->top_Counter = 192;
